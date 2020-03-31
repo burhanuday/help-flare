@@ -5,6 +5,7 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import { classnames } from "./helpers";
 import "./LocationSearchInput.css";
+import { TextField } from "@material-ui/core";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -86,18 +87,29 @@ class SearchBar extends React.Component {
           value={address}
           onSelect={this.handleSelect}
           onError={this.handleError}
-          shouldFetchSuggestions={address.length > 2}
+          shouldFetchSuggestions={address.length > 3}
         >
           {({ getInputProps, suggestions, getSuggestionItemProps }) => {
             return (
               <div className="Demo__search-bar-container">
                 <div className="Demo__search-input-container">
-                  <input
+                  <TextField
+                    required
+                    fullWidth
+                    label="Vicinity"
+                    placeholder="Enter your vicinity"
+                    variant="outlined"
                     {...getInputProps({
-                      placeholder: "Search Places...",
+                      placeholder: "Enter your vicinity",
                       className: "Demo__search-input"
                     })}
                   />
+                  {/* <input
+                    {...getInputProps({
+                      placeholder: "Enter your vicinity",
+                      className: "Demo__search-input"
+                    })}
+                  /> */}
                   {this.state.address.length > 0 && (
                     <button
                       className="Demo__clear-button"

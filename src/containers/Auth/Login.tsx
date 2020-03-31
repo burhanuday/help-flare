@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Paper,
-  Typography,
-  TextField,
-  Button
-} from "@material-ui/core";
+import React from "react";
+import { Container, Paper, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import Input from "../../components/Form/Input";
 
 const Login = (props: any) => {
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit, errors, setValue, reset } = useForm();
+
+  const loginHandler = (data: any) => {
+    console.log(data);
+  };
 
   return (
     <div>
@@ -25,29 +24,36 @@ const Login = (props: any) => {
         >
           <Typography variant="h4">Social Connect</Typography>
 
-          <form style={{ marginTop: "10px" }}>
-            <TextField
-              type="number"
+          <form
+            style={{ marginTop: "10px" }}
+            onSubmit={handleSubmit(loginHandler)}
+          >
+            <Input
               required
-              style={{ marginTop: "15px" }}
               fullWidth
               label="Phone"
               placeholder="Enter your phone number"
-              variant="outlined"
-              value={phone}
-              onChange={event => setPhone(event.target.value)}
+              rules={{ required: true, minLength: 10, maxLength: 10 }}
+              name="phone"
+              type="number"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              errorMessage={"Required"}
             />
 
-            <TextField
+            <Input
               required
-              style={{ marginTop: "15px" }}
               fullWidth
               type="password"
               label="Password"
-              placeholder="Enter your password"
-              variant="outlined"
-              value={password}
-              onChange={event => setPassword(event.target.value)}
+              placeholder="Create a password for your account"
+              name="password"
+              rules={{ required: true, minLength: 6, maxLength: 18 }}
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              errorMessage={"Required"}
             />
 
             <div
@@ -57,12 +63,12 @@ const Login = (props: any) => {
                 justifyContent: "space-between"
               }}
             >
-              <Link to="/auth/register">
+              <Link style={{ textDecoration: "none" }} to="/auth/register">
                 <Button color="primary" style={{ marginRight: "15px" }}>
                   Register instead
                 </Button>
               </Link>
-              <Button variant="contained" color="primary">
+              <Button type="submit" variant="contained" color="primary">
                 Login
               </Button>
             </div>

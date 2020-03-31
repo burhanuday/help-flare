@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Paper,
-  Typography,
-  TextField,
-  Button
-} from "@material-ui/core";
+import { Container, Paper, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import Input from "../../components/Form/Input";
 import LocationSearchInput from "../../components/LocationSearchInput/LocationSearchInput";
 
 interface GeoData {
@@ -18,14 +14,16 @@ interface GeoData {
 }
 
 const Register = (props: any) => {
+  const { register, handleSubmit, errors, setValue, reset } = useForm();
+
   const [geoData, setGeoData] = useState<GeoData>({
     latitude: "",
     longitude: ""
   });
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [organisation, setOrganisation] = useState("");
-  const [password, setPassword] = useState("");
+
+  const registerHandler = (data: any) => {
+    console.log(data, geoData);
+  };
 
   return (
     <div>
@@ -43,69 +41,79 @@ const Register = (props: any) => {
             Registration for NGOs or groups interested in helping
           </Typography>
 
-          <TextField
-            required
-            style={{ marginTop: "25px" }}
-            fullWidth
-            label="Name"
-            placeholder="Enter your name"
-            variant="outlined"
-            value={name}
-            onChange={event => setName(event.target.value)}
-          />
+          <form onSubmit={handleSubmit(registerHandler)}>
+            <Input
+              required
+              style={{ marginTop: "25px" }}
+              fullWidth
+              label="Name"
+              placeholder="Enter your name"
+              rules={{ required: true }}
+              name="name"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              errorMessage={"Required"}
+            />
 
-          <TextField
-            required
-            style={{ marginTop: "15px" }}
-            fullWidth
-            type="number"
-            label="Phone"
-            placeholder="Enter your phone number"
-            variant="outlined"
-            value={phone}
-            onChange={event => setPhone(event.target.value)}
-          />
+            <Input
+              required
+              fullWidth
+              label="Phone"
+              placeholder="Enter your phone number"
+              rules={{ required: true, minLength: 10, maxLength: 10 }}
+              name="phone"
+              type="number"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              errorMessage={"Required"}
+            />
 
-          <TextField
-            style={{ marginTop: "15px" }}
-            fullWidth
-            label="Organisation (optional)"
-            placeholder="Enter your organisation name (if any)"
-            variant="outlined"
-            value={organisation}
-            onChange={event => setOrganisation(event.target.value)}
-          />
+            <Input
+              fullWidth
+              label="Organisation (optional)"
+              placeholder="Enter your organisation name (if any)"
+              name="organisation"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              errorMessage={"Required"}
+            />
 
-          <TextField
-            required
-            style={{ marginTop: "15px" }}
-            fullWidth
-            type="password"
-            label="Password"
-            placeholder="Create a password for your account"
-            variant="outlined"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
+            <Input
+              required
+              fullWidth
+              type="password"
+              label="Password"
+              placeholder="Create a password for your account"
+              name="password"
+              rules={{ required: true, minLength: 6, maxLength: 18 }}
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              errorMessage={"Required"}
+            />
 
-          <LocationSearchInput setGeoData={setGeoData} />
+            <LocationSearchInput setGeoData={setGeoData} />
 
-          <div
-            style={{
-              marginTop: "15px",
-              display: "flex",
-              justifyContent: "space-between"
-            }}
-          >
-            <Link to="/auth">
-              <Button color="primary" style={{ marginRight: "15px" }}>
-                Login instead
+            <div
+              style={{
+                marginTop: "15px",
+                display: "flex",
+                justifyContent: "space-between"
+              }}
+            >
+              <Link style={{ textDecoration: "none" }} to="/auth">
+                <Button color="primary" style={{ marginRight: "15px" }}>
+                  Login instead
+                </Button>
+              </Link>
+              <Button type="submit" variant="contained" color="primary">
+                Register
               </Button>
-            </Link>
-            <Button variant="contained" color="primary">
-              Register
-            </Button>
-          </div>
+            </div>
+          </form>
 
           {/* <p>{geoData.latitude}</p>
           <p>{geoData.longitude}</p>
