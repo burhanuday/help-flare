@@ -39,7 +39,10 @@ const Login = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              errorMessage={"Required"}
+              errorMessages={{
+                maxLength: "Phone number should be 10 digits",
+                minLength: "Phone number should be 10 digits"
+              }}
             />
 
             <Input
@@ -53,7 +56,10 @@ const Login = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              errorMessage={"Required"}
+              errorMessages={{
+                minLength: "Password should be more than 6 characters",
+                maxLength: "Password should be less than 18 characters"
+              }}
             />
 
             <div

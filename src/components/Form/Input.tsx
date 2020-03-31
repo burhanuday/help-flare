@@ -1,6 +1,5 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
-import { useForm, Controller } from "react-hook-form";
 import { RHFInput } from "react-hook-form-input";
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
   type?: string;
   rules?: any;
   errors?: any;
-  errorMessage?: string;
+  errorMessages?: any;
 }
 
 const ErrorMessage: React.FC = (props: any) => {
@@ -24,7 +23,9 @@ const ErrorMessage: React.FC = (props: any) => {
     <p
       style={{
         color: "red",
-        fontSize: "12px"
+        fontSize: "12px",
+        margin: 0,
+        padding: 0
       }}
     >
       {props.children}
@@ -52,20 +53,33 @@ const Input: React.FC<Props> = props => {
         register={props.register}
         setValue={props.setValue}
       />
+      {console.log(props.errors[props.name])}
       {props.errors[props.name] &&
-        props.errors[props.name].type === "required" && (
-          <ErrorMessage>This field is required</ErrorMessage>
-        )}
-      {props.errors[props.name] &&
-        props.errors[props.name].type === "minLength" && (
+        props.errors[props.name].type === "required" &&
+        props.errorMessages[props.errors[props.name].type] && (
           <ErrorMessage>
-            Input is less than the required length
+            {props.errorMessages[props.errors[props.name].type]}
+          </ErrorMessage>
+        )
+      /*  : (
+        <ErrorMessage>This field is required</ErrorMessage>
+      ) */
+      }
+
+      {props.errors[props.name] &&
+        props.errors[props.name].type === "minLength" &&
+        props.errorMessages[props.errors[props.name].type] && (
+          <ErrorMessage>
+            {props.errorMessages[props.errors[props.name].type]}
           </ErrorMessage>
         )}
 
       {props.errors[props.name] &&
-        props.errors[props.name].type === "maxLength" && (
-          <ErrorMessage>Input is more than the required length</ErrorMessage>
+        props.errors[props.name].type === "maxLength" &&
+        props.errorMessages[props.errors[props.name].type] && (
+          <ErrorMessage>
+            {props.errorMessages[props.errors[props.name].type]}
+          </ErrorMessage>
         )}
     </>
   );

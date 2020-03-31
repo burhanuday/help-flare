@@ -48,12 +48,11 @@ const Register = (props: any) => {
               fullWidth
               label="Name"
               placeholder="Enter your name"
-              rules={{ required: true }}
+              rules={{ required: true, minLength: 5 }}
               name="name"
               register={register}
               setValue={setValue}
               errors={errors}
-              errorMessage={"Required"}
             />
 
             <Input
@@ -67,7 +66,10 @@ const Register = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              errorMessage={"Required"}
+              errorMessages={{
+                maxLength: "Phone number should be 10 digits",
+                minLength: "Phone number should be 10 digits"
+              }}
             />
 
             <Input
@@ -78,7 +80,6 @@ const Register = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              errorMessage={"Required"}
             />
 
             <Input
@@ -92,7 +93,10 @@ const Register = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              errorMessage={"Required"}
+              errorMessages={{
+                minLength: "Password should be more than 6 characters",
+                maxLength: "Password should be less than 18 characters"
+              }}
             />
 
             <LocationSearchInput setGeoData={setGeoData} />
