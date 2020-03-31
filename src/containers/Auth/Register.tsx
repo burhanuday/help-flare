@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Container, Paper, Typography, Button } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Input from "../../components/Form/Input";
 import LocationSearchInput from "../../components/LocationSearchInput/LocationSearchInput";
+import axios from "../../axios/axios";
 
 interface GeoData {
   latitude: string;
@@ -20,9 +22,56 @@ const Register = (props: any) => {
     latitude: "",
     longitude: ""
   });
+  const [showAlert, setShowAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const registerHandler = (data: any) => {
     console.log(data, geoData);
+
+    if (!geoData.latitude || !geoData.longitude) {
+      setShowAlert(true);
+      return;
+    } else {
+      setShowAlert(false);
+    }
+
+    const formData = new FormData();
+    formData.append("group_name", data.organisation);
+    formData.append("representative", data.name);
+    formData.append("phone", data.phone);
+    formData.append("password", data.password);
+    formData.append(
+      "locality",
+      JSON.stringify({
+        lat: geoData.latitude,
+        lng: geoData.longitude
+      })
+    );
+    formData.append("social_service", data.typeOfService);
+
+    setLoading(true);
+
+    axios
+      .post(`/helper`, formData)
+      .then(response => {
+        console.log(response);
+        if (response.data.error === 0) {
+          setSuccessMessage("Registered successfully!");
+          setErrorMessage("");
+          reset();
+        } else if (response.data.error === 1) {
+          setErrorMessage(response.data.message);
+          setSuccessMessage("");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setErrorMessage("There was an error with the request");
+        setSuccessMessage("");
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -42,6 +91,18 @@ const Register = (props: any) => {
           </Typography>
 
           <form onSubmit={handleSubmit(registerHandler)}>
+            {errorMessage && (
+              <Alert variant="filled" severity="error">
+                {errorMessage}
+              </Alert>
+            )}
+
+            {successMessage && (
+              <Alert variant="filled" severity="success">
+                {successMessage}
+              </Alert>
+            )}
+
             <Input
               required
               style={{ marginTop: "25px" }}
@@ -77,6 +138,7 @@ const Register = (props: any) => {
               label="Organisation (optional)"
               placeholder="Enter your organisation name (if any)"
               name="organisation"
+              rules={{ required: true }}
               register={register}
               setValue={setValue}
               errors={errors}
@@ -101,6 +163,12 @@ const Register = (props: any) => {
 
             <LocationSearchInput setGeoData={setGeoData} />
 
+            {showAlert && (
+              <Alert variant="filled" severity="error">
+                Enter the area your group is active in
+              </Alert>
+            )}
+
             <Input
               fullWidth
               label="Type of service (optional)"
@@ -119,11 +187,20 @@ const Register = (props: any) => {
               }}
             >
               <Link style={{ textDecoration: "none" }} to="/auth">
-                <Button color="primary" style={{ marginRight: "15px" }}>
+                <Button
+                  disabled={loading}
+                  color="primary"
+                  style={{ marginRight: "15px" }}
+                >
                   Login instead
                 </Button>
               </Link>
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                disabled={loading}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
                 Register
               </Button>
             </div>
