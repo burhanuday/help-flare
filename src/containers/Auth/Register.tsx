@@ -101,6 +101,16 @@ const Register = (props: any) => {
 
             <LocationSearchInput setGeoData={setGeoData} />
 
+            <Input
+              fullWidth
+              label="Type of service (optional)"
+              placeholder="State how you can help"
+              name="typeOfService"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+            />
+
             <div
               style={{
                 marginTop: "15px",

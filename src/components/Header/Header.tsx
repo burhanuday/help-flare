@@ -19,8 +19,8 @@ const Header: React.FC = props => {
         <Typography style={{ flexGrow: 1 }} variant="h6">
           Social Connect
         </Typography>
-        <Link style={{ color: "white", textDecoration: "none" }} to="/auth">
-          <Button color="inherit">NGO Login</Button>
+        <Link style={{ color: "white", textDecoration: "none" }} to="/profile">
+          <Button color="inherit">Profile</Button>
         </Link>
       </Toolbar>
     </AppBar>
