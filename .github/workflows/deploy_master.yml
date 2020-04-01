@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  firebase-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: '12.x'
+    - run: yarn
+    - run: yarn build
+    - uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting:social-connect-now
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
