@@ -17,6 +17,7 @@ interface Props {
   errors?: any;
   errorMessages?: any;
   multiline?: boolean;
+  disabled?: boolean;
 }
 
 const ErrorMessage: React.FC = (props: any) => {
@@ -48,6 +49,7 @@ const Input: React.FC<Props> = props => {
             placeholder={props.placeholder}
             variant={props.variant || "outlined"}
             multiline={props.multiline}
+            disabled={props.disabled}
           />
         }
         rules={props.rules}

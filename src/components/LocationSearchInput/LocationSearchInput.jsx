@@ -103,6 +103,7 @@ class SearchBar extends React.Component {
                       placeholder: "Enter your vicinity",
                       className: "Demo__search-input"
                     })}
+                    disabled={this.props.disabled}
                   />
                   {/* <input
                     {...getInputProps({

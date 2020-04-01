@@ -15,8 +15,18 @@ interface GeoData {
   isGeocoding?: boolean;
 }
 
+const defaultValues = {
+  organisation: "",
+  name: "",
+  phone: "",
+  password: "",
+  typeOfService: ""
+};
+
 const Register = (props: any) => {
-  const { register, handleSubmit, errors, setValue, reset } = useForm();
+  const { register, handleSubmit, errors, setValue, reset } = useForm({
+    defaultValues
+  });
 
   const [geoData, setGeoData] = useState<GeoData>({
     latitude: "",
@@ -60,11 +70,10 @@ const Register = (props: any) => {
         if (response.data.error === 0) {
           setSuccessMessage("Registered successfully!");
           setErrorMessage("");
-          reset({
-            organisation: undefined,
-            name: undefined,
-            phone: undefined,
-            password: undefined
+          reset(defaultValues);
+          setGeoData({
+            latitude: "",
+            longitude: ""
           });
         } else if (response.data.error === 1) {
           setErrorMessage(response.data.message);
@@ -118,6 +127,7 @@ const Register = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
+              disabled={loading}
             />
 
             <Input
@@ -135,6 +145,7 @@ const Register = (props: any) => {
                 maxLength: "Phone number should be 10 digits",
                 minLength: "Phone number should be 10 digits"
               }}
+              disabled={loading}
             />
 
             <Input
@@ -146,6 +157,7 @@ const Register = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
+              disabled={loading}
             />
 
             <Input
@@ -163,9 +175,10 @@ const Register = (props: any) => {
                 minLength: "Password should be more than 6 characters",
                 maxLength: "Password should be less than 18 characters"
               }}
+              disabled={loading}
             />
 
-            <LocationSearchInput setGeoData={setGeoData} />
+            <LocationSearchInput disabled={loading} setGeoData={setGeoData} />
 
             {showAlert && (
               <Alert variant="filled" severity="error">
@@ -181,6 +194,7 @@ const Register = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
+              disabled={loading}
             />
 
             <div

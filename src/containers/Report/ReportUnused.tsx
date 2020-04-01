@@ -1,25 +1,39 @@
 import React, { useState } from "react";
 import Header from "../../components/Header/Header";
-import { Grid, useTheme, useMediaQuery, Button } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  useTheme,
+  useMediaQuery,
+  Button,
+  IconButton,
+  Icon
+} from "@material-ui/core";
+import { Room } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
 import GoogleMapReact from "google-map-react";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
 import Input from "../../components/Form/Input";
+import { usePosition } from "use-position";
 import MapMarker from "./MapMarker";
-
-const defaultValues = {
-  phone: "",
-  reported_by: "",
-  helpType: ""
-};
+import { MapContainer } from "./MapContainer";
 
 const Report: React.FC = (props: any) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
-  const { register, handleSubmit, errors, setValue, reset } = useForm({
-    defaultValues
-  });
+  const { register, handleSubmit, errors, setValue, reset } = useForm();
+  /*   const {
+    latitude,
+    longitude,
+    timestamp,
+    accuracy,
+    errorMessage
+  } = usePosition(true, {
+    enableHighAccuracy: false,
+    timeout: 0,
+    maximumAge: Infinity
+  }); */
 
   const [error, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -28,19 +42,10 @@ const Report: React.FC = (props: any) => {
 
   const reportHandler = (data: any) => {
     console.log(data);
-    if (markerLocations.length < 3) {
-      setErrorMessage("Select at least three points on the map");
-      setSuccessMessage("");
-      return;
-    } else {
-      setErrorMessage("");
-      setSuccessMessage("");
-    }
+    return;
     const formData = new FormData();
-    formData.append("area_coordinates", JSON.stringify(markerLocations));
-    formData.append("reported_by", data.reported_by);
     formData.append("phone", data.phone);
-    formData.append("helpType", data.helpType);
+    formData.append("password", data.password);
 
     setLoading(true);
     axios
@@ -48,10 +53,9 @@ const Report: React.FC = (props: any) => {
       .then(response => {
         console.log(response);
         if (response.data.error === 0) {
-          setSuccessMessage("Submitted successfully!");
+          setSuccessMessage("Logged in successfully!");
           setErrorMessage("");
-          reset(defaultValues);
-          setMarkerLocations([]);
+          reset();
         } else if (response.data.error === 1) {
           setErrorMessage(response.data.message);
           setSuccessMessage("");
@@ -68,6 +72,8 @@ const Report: React.FC = (props: any) => {
   return (
     <div>
       <Header />
+      {/* {console.log(latitude, longitude)} */}
+      {/* {console.log(errorMessage)} */}
       <Grid
         container
         direction={matches ? "column-reverse" : "row"}
@@ -99,7 +105,6 @@ const Report: React.FC = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              disabled={loading}
             />
 
             <Input
@@ -113,7 +118,6 @@ const Report: React.FC = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              disabled={loading}
               errorMessages={{
                 maxLength: "Phone number should be 10 digits",
                 minLength: "Phone number should be 10 digits"
@@ -137,7 +141,6 @@ const Report: React.FC = (props: any) => {
               register={register}
               setValue={setValue}
               errors={errors}
-              disabled={loading}
             />
 
             <div
@@ -159,48 +162,17 @@ const Report: React.FC = (props: any) => {
             </div>
           </form>
         </Grid>
-        <Grid item xs={12} md={8} lg={9}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          lg={9}
+          style={{
+            backgroundColor: "green"
+          }}
+        >
           <div style={{ height: matches ? "50vh" : "100vh", width: "100%" }}>
-            <GoogleMapReact
-              /*   bootstrapURLKeys={{
-                key: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ"
-              }} */
-              options={() => ({
-                fullscreenControl: false
-              })}
-              defaultCenter={{
-                lat: 19.0748,
-                lng: 72.8856
-              }}
-              defaultZoom={10}
-              onClick={({ x, y, lat, lng, event }) => {
-                console.log(lat, lng);
-                setMarkerLocations([...markerLocations, [lat, lng]]);
-              }}
-              onChildClick={(a, b) => {
-                console.log(a, b);
-                const newMarkerLocations = markerLocations.filter(
-                  (location: any) =>
-                    location[0] !== b.loc[0] && location[1] !== b.loc[1]
-                );
-                setMarkerLocations(newMarkerLocations);
-              }}
-              yesIWantToUseGoogleMapApiInternals
-              onGoogleApiLoaded={({ map, maps }) => {
-                console.log(map, maps);
-                // map.setCenter({ lat: latitude, lng: longitude });
-              }}
-            >
-              {markerLocations.map((loc: any, index: number) => (
-                <MapMarker
-                  key={`${loc[0]}${loc[1]}`}
-                  lat={loc[0]}
-                  lng={loc[1]}
-                  loc={loc}
-                  index={index}
-                />
-              ))}
-            </GoogleMapReact>
+            <MapContainer />
           </div>
         </Grid>
       </Grid>

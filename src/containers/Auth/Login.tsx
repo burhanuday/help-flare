@@ -86,6 +86,7 @@ const Login = (props: any) => {
                 maxLength: "Phone number should be 10 digits",
                 minLength: "Phone number should be 10 digits"
               }}
+              disabled={loading}
             />
 
             <Input
@@ -93,7 +94,7 @@ const Login = (props: any) => {
               fullWidth
               type="password"
               label="Password"
-              placeholder="Create a password for your account"
+              placeholder="Enter the password for your account"
               name="password"
               rules={{ required: true, minLength: 6, maxLength: 18 }}
               register={register}
@@ -103,6 +104,7 @@ const Login = (props: any) => {
                 minLength: "Password should be more than 6 characters",
                 maxLength: "Password should be less than 18 characters"
               }}
+              disabled={loading}
             />
 
             <div
