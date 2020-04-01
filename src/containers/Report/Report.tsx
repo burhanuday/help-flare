@@ -52,6 +52,7 @@ const Report: React.FC = (props: any) => {
       bermudaTriangle.setMap(map);
       setCurrentPolygon(bermudaTriangle);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markerLocations, mapsObject]);
 
   const reportHandler = (data: any) => {
