@@ -1,15 +1,16 @@
 import React from "react";
 import Header from "../../components/Header/Header";
-import { Container, Paper, Button } from "@material-ui/core";
+import { Container, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 const Home = (props: any) => {
+  const loggedIn = localStorage.getItem("accessToken") ? true : false;
+
   return (
     <div>
       <Header />
       <Container maxWidth="sm">
-        <Paper
-          elevation={3}
+        <div
           style={{
             marginTop: "30px",
             marginBottom: "30px",
@@ -29,28 +30,32 @@ const Home = (props: any) => {
               Report an area that needs help
             </Button>
           </Link>
-          <Link to="/help" style={{ textDecoration: "none", color: "white" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: "15px" }}
+          {loggedIn && (
+            <Link to="/help" style={{ textDecoration: "none", color: "white" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ marginTop: "15px" }}
+              >
+                Help an area
+              </Button>
+            </Link>
+          )}
+          {!loggedIn && (
+            <Link
+              to="/auth/register"
+              style={{ textDecoration: "none", color: "white" }}
             >
-              Help an area
-            </Button>
-          </Link>
-          <Link
-            to="/auth/register"
-            style={{ textDecoration: "none", color: "white" }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: "15px" }}
-            >
-              Register as a helper
-            </Button>
-          </Link>
-        </Paper>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ marginTop: "15px" }}
+              >
+                Register as a helper
+              </Button>
+            </Link>
+          )}
+        </div>
       </Container>
     </div>
   );

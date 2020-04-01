@@ -16,6 +16,7 @@ interface Props {
   rules?: any;
   errors?: any;
   errorMessages?: any;
+  multiline?: boolean;
 }
 
 const ErrorMessage: React.FC = (props: any) => {
@@ -46,6 +47,7 @@ const Input: React.FC<Props> = props => {
             label={props.label}
             placeholder={props.placeholder}
             variant={props.variant || "outlined"}
+            multiline={props.multiline}
           />
         }
         rules={props.rules}
@@ -53,7 +55,7 @@ const Input: React.FC<Props> = props => {
         register={props.register}
         setValue={props.setValue}
       />
-      {console.log(props.errors[props.name])}
+      {/* {console.log(props.errors[props.name])} */}
       {props.errors[props.name] &&
         props.errors[props.name].type === "required" &&
         props.errorMessages[props.errors[props.name].type] && (

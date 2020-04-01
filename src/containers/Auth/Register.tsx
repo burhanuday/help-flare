@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Paper, Typography, Button } from "@material-ui/core";
+import { Container, Typography, Button } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -60,7 +60,12 @@ const Register = (props: any) => {
         if (response.data.error === 0) {
           setSuccessMessage("Registered successfully!");
           setErrorMessage("");
-          reset();
+          reset({
+            organisation: undefined,
+            name: undefined,
+            phone: undefined,
+            password: undefined
+          });
         } else if (response.data.error === 1) {
           setErrorMessage(response.data.message);
           setSuccessMessage("");
@@ -77,8 +82,7 @@ const Register = (props: any) => {
   return (
     <div>
       <Container maxWidth="sm">
-        <Paper
-          elevation={3}
+        <div
           style={{
             marginTop: "30px",
             marginBottom: "30px",
@@ -209,7 +213,7 @@ const Register = (props: any) => {
           {/* <p>{geoData.latitude}</p>
           <p>{geoData.longitude}</p>
           <p>{geoData.address}</p> */}
-        </Paper>
+        </div>
       </Container>
     </div>
   );

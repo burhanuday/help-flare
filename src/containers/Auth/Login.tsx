@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Container, Paper, Typography, Button } from "@material-ui/core";
+import React, { useState } from "react";
+import { Container, Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Input from "../../components/Form/Input";
@@ -29,6 +29,8 @@ const Login = (props: any) => {
           setSuccessMessage("Logged in successfully!");
           setErrorMessage("");
           reset();
+          localStorage.setItem("accessToken", response.data.accessToken);
+          window.location.reload();
         } else if (response.data.error === 1) {
           setErrorMessage(response.data.message);
           setSuccessMessage("");
@@ -45,8 +47,7 @@ const Login = (props: any) => {
   return (
     <div>
       <Container maxWidth="sm">
-        <Paper
-          elevation={3}
+        <div
           style={{
             marginTop: "30px",
             marginBottom: "30px",
@@ -130,7 +131,7 @@ const Login = (props: any) => {
               </Button>
             </div>
           </form>
-        </Paper>
+        </div>
       </Container>
     </div>
   );
