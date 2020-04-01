@@ -7,7 +7,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 // import { Menu } from "@material-ui/icons";
 
 interface Props {
@@ -16,6 +16,7 @@ interface Props {
 
 const Header: React.FC<Props> = props => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
+  let location = useLocation();
 
   return (
     <AppBar position="static">
@@ -23,10 +24,12 @@ const Header: React.FC<Props> = props => {
         {/* <IconButton edge="start" color="inherit" aria-label="menu">
           <Menu />
         </IconButton> */}
-        {props.showBackButton && (
-          <IconButton>
-            <ArrowBack style={{ color: "white" }} />
-          </IconButton>
+        {location.pathname !== "/home" && (
+          <Link to="/home">
+            <IconButton>
+              <ArrowBack style={{ color: "white" }} />
+            </IconButton>
+          </Link>
         )}
         <Link
           to="/home"
