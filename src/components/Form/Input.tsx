@@ -27,7 +27,7 @@ const ErrorMessage: React.FC = (props: any) => {
         color: "red",
         fontSize: "12px",
         margin: 0,
-        padding: 0
+        padding: 0,
       }}
     >
       {props.children}

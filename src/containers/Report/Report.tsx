@@ -11,14 +11,14 @@ import MapMarker from "./MapMarker";
 const defaultValues = {
   phone: "",
   reported_by: "",
-  helpType: ""
+  helpType: "",
 };
 
 const Report: React.FC = (props: any) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const { register, handleSubmit, errors, setValue, reset } = useForm({
-    defaultValues
+    defaultValues,
   });
 
   const [error, setErrorMessage] = useState("");
@@ -36,11 +36,18 @@ const Report: React.FC = (props: any) => {
       setErrorMessage("");
       setSuccessMessage("");
     }
+    const locations = `${JSON.stringify(markerLocations)}`;
     const formData = new FormData();
-    formData.append("area_coordinates", JSON.stringify(markerLocations));
+    formData.append("area_coordinates", locations);
     formData.append("reported_by", data.reported_by);
     formData.append("phone", data.phone);
     formData.append("helpType", data.helpType);
+
+    console.log(formData);
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + " - " + pair[1]);
+    }
+    console.log("str", locations);
 
     setLoading(true);
     axios
@@ -116,7 +123,7 @@ const Report: React.FC = (props: any) => {
               disabled={loading}
               errorMessages={{
                 maxLength: "Phone number should be 10 digits",
-                minLength: "Phone number should be 10 digits"
+                minLength: "Phone number should be 10 digits",
               }}
             />
             <p
@@ -144,7 +151,7 @@ const Report: React.FC = (props: any) => {
               style={{
                 marginTop: "15px",
                 display: "flex",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <Button
@@ -166,11 +173,11 @@ const Report: React.FC = (props: any) => {
                 key: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ"
               }} */
               options={() => ({
-                fullscreenControl: false
+                fullscreenControl: false,
               })}
               defaultCenter={{
                 lat: 19.0748,
-                lng: 72.8856
+                lng: 72.8856,
               }}
               defaultZoom={10}
               onClick={({ x, y, lat, lng, event }) => {

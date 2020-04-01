@@ -1,7 +1,7 @@
 import React from "react";
 import PlacesAutocomplete, {
   geocodeByAddress,
-  getLatLng
+  getLatLng,
 } from "react-places-autocomplete";
 import { classnames } from "./helpers";
 import "./LocationSearchInput.css";
@@ -15,7 +15,7 @@ class SearchBar extends React.Component {
       errorMessage: "",
       latitude: null,
       longitude: null,
-      isGeocoding: false
+      isGeocoding: false,
     };
   }
 
@@ -24,13 +24,13 @@ class SearchBar extends React.Component {
       address,
       latitude: null,
       longitude: null,
-      errorMessage: ""
+      errorMessage: "",
     });
     this.props.setGeoData({
       address,
       latitude: null,
       longitude: null,
-      errorMessage: ""
+      errorMessage: "",
     });
   };
 
@@ -42,12 +42,12 @@ class SearchBar extends React.Component {
         this.setState({
           latitude: lat,
           longitude: lng,
-          isGeocoding: false
+          isGeocoding: false,
         });
         this.props.setGeoData({
           latitude: lat,
           longitude: lng,
-          isGeocoding: false
+          isGeocoding: false,
         });
       })
       .catch(error => {
@@ -60,12 +60,12 @@ class SearchBar extends React.Component {
     this.setState({
       address: "",
       latitude: null,
-      longitude: null
+      longitude: null,
     });
     this.props.setGeoData({
       address: "",
       latitude: null,
-      longitude: null
+      longitude: null,
     });
   };
 
@@ -101,7 +101,7 @@ class SearchBar extends React.Component {
                     variant="outlined"
                     {...getInputProps({
                       placeholder: "Enter your vicinity",
-                      className: "Demo__search-input"
+                      className: "Demo__search-input",
                     })}
                     disabled={this.props.disabled}
                   />
@@ -124,7 +124,7 @@ class SearchBar extends React.Component {
                   <div className="Demo__autocomplete-container">
                     {suggestions.map(suggestion => {
                       const className = classnames("Demo__suggestion-item", {
-                        "Demo__suggestion-item--active": suggestion.active
+                        "Demo__suggestion-item--active": suggestion.active,
                       });
 
                       return (

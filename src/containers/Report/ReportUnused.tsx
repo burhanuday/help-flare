@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   Button,
   IconButton,
-  Icon
+  Icon,
 } from "@material-ui/core";
 import { Room } from "@material-ui/icons";
 import { useForm } from "react-hook-form";
@@ -120,7 +120,7 @@ const Report: React.FC = (props: any) => {
               errors={errors}
               errorMessages={{
                 maxLength: "Phone number should be 10 digits",
-                minLength: "Phone number should be 10 digits"
+                minLength: "Phone number should be 10 digits",
               }}
             />
             <p
@@ -147,7 +147,7 @@ const Report: React.FC = (props: any) => {
               style={{
                 marginTop: "15px",
                 display: "flex",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <Button
@@ -168,7 +168,7 @@ const Report: React.FC = (props: any) => {
           md={8}
           lg={9}
           style={{
-            backgroundColor: "green"
+            backgroundColor: "green",
           }}
         >
           <div style={{ height: matches ? "50vh" : "100vh", width: "100%" }}>

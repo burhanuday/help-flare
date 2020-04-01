@@ -20,17 +20,17 @@ const defaultValues = {
   name: "",
   phone: "",
   password: "",
-  typeOfService: ""
+  typeOfService: "",
 };
 
 const Register = (props: any) => {
   const { register, handleSubmit, errors, setValue, reset } = useForm({
-    defaultValues
+    defaultValues,
   });
 
   const [geoData, setGeoData] = useState<GeoData>({
     latitude: "",
-    longitude: ""
+    longitude: "",
   });
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,7 +56,7 @@ const Register = (props: any) => {
       "locality",
       JSON.stringify({
         lat: geoData.latitude,
-        lng: geoData.longitude
+        lng: geoData.longitude,
       })
     );
     formData.append("social_service", data.typeOfService);
@@ -73,7 +73,7 @@ const Register = (props: any) => {
           reset(defaultValues);
           setGeoData({
             latitude: "",
-            longitude: ""
+            longitude: "",
           });
         } else if (response.data.error === 1) {
           setErrorMessage(response.data.message);
@@ -95,7 +95,7 @@ const Register = (props: any) => {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            padding: "30px 30px"
+            padding: "30px 30px",
           }}
         >
           <Typography variant="h4">Social Connect</Typography>
@@ -143,7 +143,7 @@ const Register = (props: any) => {
               errors={errors}
               errorMessages={{
                 maxLength: "Phone number should be 10 digits",
-                minLength: "Phone number should be 10 digits"
+                minLength: "Phone number should be 10 digits",
               }}
               disabled={loading}
             />
@@ -173,7 +173,7 @@ const Register = (props: any) => {
               errors={errors}
               errorMessages={{
                 minLength: "Password should be more than 6 characters",
-                maxLength: "Password should be less than 18 characters"
+                maxLength: "Password should be less than 18 characters",
               }}
               disabled={loading}
             />
@@ -201,7 +201,7 @@ const Register = (props: any) => {
               style={{
                 marginTop: "15px",
                 display: "flex",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <Link style={{ textDecoration: "none" }} to="/auth">

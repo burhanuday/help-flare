@@ -51,7 +51,7 @@ const Login = (props: any) => {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            padding: "30px 30px"
+            padding: "30px 30px",
           }}
         >
           <Typography variant="h4">Social Connect</Typography>
@@ -84,7 +84,7 @@ const Login = (props: any) => {
               errors={errors}
               errorMessages={{
                 maxLength: "Phone number should be 10 digits",
-                minLength: "Phone number should be 10 digits"
+                minLength: "Phone number should be 10 digits",
               }}
               disabled={loading}
             />
@@ -102,7 +102,7 @@ const Login = (props: any) => {
               errors={errors}
               errorMessages={{
                 minLength: "Password should be more than 6 characters",
-                maxLength: "Password should be less than 18 characters"
+                maxLength: "Password should be less than 18 characters",
               }}
               disabled={loading}
             />
@@ -111,7 +111,7 @@ const Login = (props: any) => {
               style={{
                 marginTop: "15px",
                 display: "flex",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <Link style={{ textDecoration: "none" }} to="/auth/register">

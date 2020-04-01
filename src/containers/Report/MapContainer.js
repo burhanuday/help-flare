@@ -18,7 +18,7 @@ export class MapContainer extends Component {
         }} */
         initialCenter={{
           lat: 19.0748,
-          lng: 72.8856
+          lng: 72.8856,
         }}
       >
         {/* <Marker onClick={this.onMarkerClick} name={"Current location"} />
@@ -34,5 +34,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ"
+  apiKey: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ",
 })(MapContainer);

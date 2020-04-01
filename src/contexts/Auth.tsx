@@ -3,7 +3,7 @@ import React, { useReducer } from "react";
 const initialState = {
   loading: false,
   error: false,
-  errorMessage: ""
+  errorMessage: "",
 };
 
 const reducer = (state: any, action: any) => {
@@ -14,7 +14,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         loading: true,
         error: false,
-        errorMessage: ""
+        errorMessage: "",
       };
   }
   return state;
@@ -28,7 +28,7 @@ const Auth = (props: any) => {
     <AuthContext.Provider
       value={{
         authState: auth,
-        authDispatch: dispatch
+        authDispatch: dispatch,
       }}
     >
       {props.children}

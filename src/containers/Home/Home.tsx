@@ -18,7 +18,7 @@ const Home = (props: any) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <Link to="/report" style={{ textDecoration: "none", color: "white" }}>

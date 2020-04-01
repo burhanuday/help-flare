@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import Home from "./containers/Home/Home";
 import Auth from "./containers/Auth/Auth";

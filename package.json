@@ -34,7 +34,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy:firebase": "firebase deploy --only hosting:social-connect-now"
+    "deploy:firebase": "firebase deploy --only hosting:social-connect-now",
+    "prettier": "prettier --write src/"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^2.0.2"
   }
 }
