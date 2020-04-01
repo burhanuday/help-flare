@@ -71,12 +71,6 @@ const Report: React.FC = (props: any) => {
     formData.append("phone", data.phone);
     formData.append("helpType", data.helpType);
 
-    console.log(formData);
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + " - " + pair[1]);
-    }
-    console.log("str", locations);
-
     setLoading(true);
     axios
       .post(`/report_help`, formData)
