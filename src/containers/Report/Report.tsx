@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import { Grid, useTheme, useMediaQuery, Button } from "@material-ui/core";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,34 @@ const Report: React.FC = (props: any) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [markerLocations, setMarkerLocations] = useState<any>([]);
+  const [mapsObject, setMapsObject] = useState<any>(undefined);
+  const [currentPolygon, setCurrentPolygon] = useState<any>(undefined);
+
+  useEffect(() => {
+    if (mapsObject) {
+      const { map, maps } = mapsObject;
+      const triangleCoords = markerLocations.map((loc: any) => ({
+        lat: loc[0],
+        lng: loc[1],
+      }));
+
+      if (currentPolygon) {
+        currentPolygon.setMap(null);
+      }
+
+      // Construct the polygon.
+      var bermudaTriangle = new maps.Polygon({
+        paths: triangleCoords,
+        strokeColor: "#0000FF",
+        strokeOpacity: 0.6,
+        strokeWeight: 2,
+        fillColor: "#0000FF",
+        fillOpacity: 0.35,
+      });
+      bermudaTriangle.setMap(map);
+      setCurrentPolygon(bermudaTriangle);
+    }
+  }, [markerLocations, mapsObject]);
 
   const reportHandler = (data: any) => {
     console.log(data);
@@ -196,6 +224,14 @@ const Report: React.FC = (props: any) => {
               onGoogleApiLoaded={({ map, maps }) => {
                 console.log(map, maps);
                 // map.setCenter({ lat: latitude, lng: longitude });
+                /* var triangleCoords = [
+                  { lat: 25.774, lng: -80.19 },
+                  { lat: 18.466, lng: -66.118 },
+                  { lat: 32.321, lng: -64.757 },
+                  { lat: 25.774, lng: -80.19 },
+                ]; */
+
+                setMapsObject({ map, maps });
               }}
             >
               {markerLocations.map((loc: any, index: number) => (
