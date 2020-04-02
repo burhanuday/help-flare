@@ -22,9 +22,11 @@ function App() {
             <Auth />
           </Route>
         )}
-        <Route path="/profile">
-          <Profile />
-        </Route>
+        {loggedIn && (
+          <Route path="/profile">
+            <Profile />
+          </Route>
+        )}
         {loggedIn && (
           <Route path="/help">
             <Help />

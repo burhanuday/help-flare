@@ -21,9 +21,6 @@ const Header: React.FC<Props> = props => {
   return (
     <AppBar position="static">
       <Toolbar>
-        {/* <IconButton edge="start" color="inherit" aria-label="menu">
-          <Menu />
-        </IconButton> */}
         {location.pathname !== "/home" && (
           <Link to="/home">
             <IconButton>

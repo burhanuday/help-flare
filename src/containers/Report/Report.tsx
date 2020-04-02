@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
-import { Grid, useTheme, useMediaQuery, Button } from "@material-ui/core";
+import {
+  Grid,
+  useTheme,
+  useMediaQuery,
+  Button,
+  Snackbar,
+} from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import GoogleMapReact from "google-map-react";
+import { geolocated, GeolocatedProps } from "react-geolocated";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
 import Input from "../../components/Form/Input";
@@ -27,6 +34,22 @@ const Report: React.FC = (props: any) => {
   const [markerLocations, setMarkerLocations] = useState<any>([]);
   const [mapsObject, setMapsObject] = useState<any>(undefined);
   const [currentPolygon, setCurrentPolygon] = useState<any>(undefined);
+  const [showZoomAlert, setShowZoomAlert] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (mapsObject) {
+      const { map, maps } = mapsObject;
+      if (props.isGeolocationAvailable && props.isGeolocationEnabled) {
+        if (props.coords && props.coords.latitude && props.coords.longitude) {
+          console.log("triggered");
+          map.setCenter({
+            lat: props.coords.latitude,
+            lng: props.coords.longitude,
+          });
+        }
+      }
+    }
+  }, [mapsObject, props.coords]);
 
   useEffect(() => {
     if (mapsObject) {
@@ -52,8 +75,16 @@ const Report: React.FC = (props: any) => {
       bermudaTriangle.setMap(map);
       setCurrentPolygon(bermudaTriangle);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markerLocations, mapsObject]);
+
+  const handleAlertClosed = (event: any, reason: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setShowZoomAlert(false);
+  };
 
   const reportHandler = (data: any) => {
     console.log(data);
@@ -108,6 +139,19 @@ const Report: React.FC = (props: any) => {
             style={{ marginTop: "10px", padding: "0px 20px" }}
             onSubmit={handleSubmit(reportHandler)}
           >
+            {!props.isGeolocationAvailable && (
+              <Alert variant="filled" severity="warning">
+                Your browser does not support Geolocation
+              </Alert>
+            )}
+
+            {!props.isGeolocationEnabled && (
+              <Alert variant="filled" severity="warning">
+                Geolocation is not enabled. Give location permission for a
+                better experience
+              </Alert>
+            )}
+
             {error && (
               <Alert variant="filled" severity="error">
                 {error}
@@ -130,6 +174,7 @@ const Report: React.FC = (props: any) => {
               setValue={setValue}
               errors={errors}
               disabled={loading}
+              size="small"
             />
 
             <Input
@@ -148,6 +193,7 @@ const Report: React.FC = (props: any) => {
                 maxLength: "Phone number should be 10 digits",
                 minLength: "Phone number should be 10 digits",
               }}
+              size="small"
             />
             <p
               style={{ margin: 0, padding: 0, fontSize: "12px", color: "blue" }}
@@ -168,6 +214,7 @@ const Report: React.FC = (props: any) => {
               setValue={setValue}
               errors={errors}
               disabled={loading}
+              size="small"
             />
 
             <div
@@ -175,6 +222,7 @@ const Report: React.FC = (props: any) => {
                 marginTop: "15px",
                 display: "flex",
                 justifyContent: "space-between",
+                paddingBottom: "15px",
               }}
             >
               <Button
@@ -191,12 +239,27 @@ const Report: React.FC = (props: any) => {
         </Grid>
         <Grid item xs={12} md={8} lg={9}>
           <div style={{ height: matches ? "50vh" : "100vh", width: "100%" }}>
+            <Snackbar
+              open={showZoomAlert}
+              autoHideDuration={3000}
+              onClose={handleAlertClosed}
+            >
+              <Alert
+                onClose={event => setShowZoomAlert(false)}
+                severity="error"
+                variant="filled"
+              >
+                Zoom in more to select an area
+              </Alert>
+            </Snackbar>
             <GoogleMapReact
               /*   bootstrapURLKeys={{
                 key: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ"
               }} */
               options={() => ({
                 fullscreenControl: false,
+                zoomControl: false,
+                gestureHandling: "greedy",
               })}
               defaultCenter={{
                 lat: 19.0748,
@@ -205,7 +268,12 @@ const Report: React.FC = (props: any) => {
               defaultZoom={10}
               onClick={({ x, y, lat, lng, event }) => {
                 console.log(lat, lng);
-                setMarkerLocations([...markerLocations, [lat, lng]]);
+                console.log(mapsObject.map.getZoom());
+                if (mapsObject.map.getZoom() >= 17) {
+                  setMarkerLocations([...markerLocations, [lat, lng]]);
+                } else {
+                  setShowZoomAlert(true);
+                }
               }}
               onChildClick={(a, b) => {
                 console.log(a, b);
@@ -246,4 +314,9 @@ const Report: React.FC = (props: any) => {
   );
 };
 
-export default Report;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+  },
+  userDecisionTimeout: 5000,
+})(Report);
