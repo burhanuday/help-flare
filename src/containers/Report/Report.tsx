@@ -249,7 +249,7 @@ const Report: React.FC = (props: any) => {
                 severity="error"
                 variant="filled"
               >
-                Zoom in more to select an area
+                Zoom in more till you see a satellite view to select an area
               </Alert>
             </Snackbar>
             <GoogleMapReact
@@ -273,6 +273,21 @@ const Report: React.FC = (props: any) => {
                   setMarkerLocations([...markerLocations, [lat, lng]]);
                 } else {
                   setShowZoomAlert(true);
+                }
+              }}
+              onChange={({ center, zoom, bounds, marginBounds }) => {
+                console.log(center, zoom);
+                if (zoom >= 17) {
+                  console.log(mapsObject.map.getMapTypeId());
+                  if (mapsObject.map.getMapTypeId() !== "satellite") {
+                    mapsObject.map.setMapTypeId("satellite");
+                  }
+                } else if (
+                  mapsObject &&
+                  mapsObject.map &&
+                  mapsObject.map.getMapTypeId() !== "roadmap"
+                ) {
+                  mapsObject.map.setMapTypeId("roadmap");
                 }
               }}
               onChildClick={(a, b) => {
