@@ -7,30 +7,30 @@ import {
   Button,
   Snackbar,
 } from "@material-ui/core";
-import { useForm } from "react-hook-form";
+import { Formik } from "formik";
+import * as yup from "yup";
 import GoogleMapReact from "google-map-react";
 import { geolocated, GeolocatedProps } from "react-geolocated";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
 import Input from "../../components/Form/Input";
+import Select from "../../components/Form/Select";
 import MapMarker from "./MapMarker";
 
-const defaultValues = {
-  phone: "",
-  reported_by: "",
-  helpType: "",
-};
+const schema = yup.object({
+  phone: yup
+    .string()
+    .required("Phone number is required")
+    .length(10, "Phone number should be 10 digits"),
+  name: yup.string().required("Name is required"),
+  helpType: yup.array().required("Select the help type"),
+});
 
-const Report: React.FC = (props: any) => {
+const Report: React.FC = (ogProps: any) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
-  const { register, handleSubmit, errors, setValue, reset } = useForm({
-    defaultValues,
-  });
-
   const [error, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const [markerLocations, setMarkerLocations] = useState<any>([]);
   const [mapsObject, setMapsObject] = useState<any>(undefined);
   const [currentPolygon, setCurrentPolygon] = useState<any>(undefined);
@@ -39,17 +39,21 @@ const Report: React.FC = (props: any) => {
   useEffect(() => {
     if (mapsObject) {
       const { map, maps } = mapsObject;
-      if (props.isGeolocationAvailable && props.isGeolocationEnabled) {
-        if (props.coords && props.coords.latitude && props.coords.longitude) {
+      if (ogProps.isGeolocationAvailable && ogProps.isGeolocationEnabled) {
+        if (
+          ogProps.coords &&
+          ogProps.coords.latitude &&
+          ogProps.coords.longitude
+        ) {
           console.log("triggered");
           map.setCenter({
-            lat: props.coords.latitude,
-            lng: props.coords.longitude,
+            lat: ogProps.coords.latitude,
+            lng: ogProps.coords.longitude,
           });
         }
       }
     }
-  }, [mapsObject, props.coords]);
+  }, [mapsObject, ogProps.coords]);
 
   useEffect(() => {
     if (mapsObject) {
@@ -86,46 +90,6 @@ const Report: React.FC = (props: any) => {
     setShowZoomAlert(false);
   };
 
-  const reportHandler = (data: any) => {
-    console.log(data);
-    if (markerLocations.length < 3) {
-      setErrorMessage("Select at least three points on the map");
-      setSuccessMessage("");
-      return;
-    } else {
-      setErrorMessage("");
-      setSuccessMessage("");
-    }
-    const locations = `${JSON.stringify(markerLocations)}`;
-    const formData = new FormData();
-    formData.append("area_coordinates", locations);
-    formData.append("reported_by", data.reported_by);
-    formData.append("phone", data.phone);
-    formData.append("helpType", data.helpType);
-
-    setLoading(true);
-    axios
-      .post(`/report_help`, formData)
-      .then(response => {
-        console.log(response);
-        if (response.data.error === 0) {
-          setSuccessMessage("Submitted successfully!");
-          setErrorMessage("");
-          reset(defaultValues);
-          setMarkerLocations([]);
-        } else if (response.data.error === 1) {
-          setErrorMessage(response.data.message);
-          setSuccessMessage("");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage("There was an error with the request");
-        setSuccessMessage("");
-      })
-      .finally(() => setLoading(false));
-  };
-
   return (
     <div>
       <Header />
@@ -135,107 +99,156 @@ const Report: React.FC = (props: any) => {
         spacing={0}
       >
         <Grid item xs={12} md={4} lg={3}>
-          <form
-            style={{ marginTop: "10px", padding: "0px 20px" }}
-            onSubmit={handleSubmit(reportHandler)}
-          >
-            {!props.isGeolocationAvailable && (
-              <Alert variant="filled" severity="warning">
-                Your browser does not support Geolocation
-              </Alert>
-            )}
+          <Formik
+            validationSchema={schema}
+            initialValues={{
+              phone: "",
+              name: "",
+              helpType: [],
+            }}
+            onSubmit={(values, actions) => {
+              const data = values;
+              console.log(data);
+              if (markerLocations.length < 3) {
+                setErrorMessage("Select at least three points on the map");
+                setSuccessMessage("");
+                actions.setSubmitting(false);
+                return;
+              } else {
+                setErrorMessage("");
+                setSuccessMessage("");
+              }
+              const locations = `${JSON.stringify(markerLocations)}`;
+              const formData = new FormData();
+              formData.append("area_coordinates", locations);
+              formData.append("reported_by", data.name);
+              formData.append("phone", data.phone);
+              formData.append("helpType", `${JSON.stringify(data.helpType)}`);
+              for (var value of formData.values()) {
+                console.log(value);
+              }
 
-            {!props.isGeolocationEnabled && (
-              <Alert variant="filled" severity="warning">
-                Geolocation is not enabled. Give location permission for a
-                better experience
-              </Alert>
-            )}
-
-            {error && (
-              <Alert variant="filled" severity="error">
-                {error}
-              </Alert>
-            )}
-
-            {successMessage && (
-              <Alert variant="filled" severity="success">
-                {successMessage}
-              </Alert>
-            )}
-            <Input
-              required
-              fullWidth
-              label="Name"
-              placeholder="Enter your name"
-              rules={{ required: true }}
-              name="reported_by"
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              disabled={loading}
-              size="small"
-            />
-
-            <Input
-              required
-              fullWidth
-              label="Phone"
-              placeholder="Enter your phone number"
-              rules={{ required: true, minLength: 10, maxLength: 10 }}
-              name="phone"
-              type="number"
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              disabled={loading}
-              errorMessages={{
-                maxLength: "Phone number should be 10 digits",
-                minLength: "Phone number should be 10 digits",
-              }}
-              size="small"
-            />
-            <p
-              style={{ margin: 0, padding: 0, fontSize: "12px", color: "blue" }}
-            >
-              Your number will be used in case someone requires more information
-              about the area you have reported
-            </p>
-
-            <Input
-              required
-              fullWidth
-              multiline
-              label="Help required"
-              placeholder="State the nature of help required"
-              rules={{ required: true }}
-              name="helpType"
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              disabled={loading}
-              size="small"
-            />
-
-            <div
-              style={{
-                marginTop: "15px",
-                display: "flex",
-                justifyContent: "space-between",
-                paddingBottom: "15px",
-              }}
-            >
-              <Button
-                disabled={loading}
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
+              actions.setSubmitting(true);
+              axios
+                .post(`/report_help`, formData)
+                .then(response => {
+                  console.log(response);
+                  if (response.data.error === 0) {
+                    setSuccessMessage("Submitted successfully!");
+                    setErrorMessage("");
+                    setMarkerLocations([]);
+                    actions.resetForm();
+                  } else if (response.data.error === 1) {
+                    setErrorMessage(response.data.message);
+                    setSuccessMessage("");
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                  setErrorMessage("There was an error with the request");
+                  setSuccessMessage("");
+                })
+                .finally(() => {
+                  actions.setSubmitting(false);
+                });
+            }}
+            render={props => (
+              <form
+                style={{
+                  padding: "20px 20px",
+                }}
+                onSubmit={props.handleSubmit}
               >
-                Report
-              </Button>
-            </div>
-          </form>
+                {!ogProps.isGeolocationAvailable && (
+                  <Alert variant="filled" severity="warning">
+                    Your browser does not support Geolocation
+                  </Alert>
+                )}
+
+                {!ogProps.isGeolocationEnabled && (
+                  <Alert variant="filled" severity="warning">
+                    Geolocation is not enabled. Give location permission for a
+                    better experience
+                  </Alert>
+                )}
+
+                {error && (
+                  <Alert variant="filled" severity="error">
+                    {error}
+                  </Alert>
+                )}
+
+                {successMessage && (
+                  <Alert variant="filled" severity="success">
+                    {successMessage}
+                  </Alert>
+                )}
+                <Input
+                  required
+                  fullWidth
+                  name="name"
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  value={props.values.name}
+                  error={props.errors.name}
+                  disabled={props.isSubmitting}
+                  placeholder="Enter name"
+                  label="Name"
+                  touched={props.touched.name}
+                />
+
+                <Input
+                  required
+                  fullWidth
+                  type="number"
+                  name="phone"
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  value={props.values.phone}
+                  error={props.errors.phone}
+                  disabled={props.isSubmitting}
+                  placeholder="Enter phone"
+                  label="Phone"
+                  touched={props.touched.phone}
+                />
+
+                <Select
+                  fullWidth
+                  name="helpType"
+                  onChange={props.setFieldValue}
+                  onBlur={props.handleBlur}
+                  value={props.values.helpType}
+                  error={props.errors.helpType}
+                  placeholder={"Select the help the area requires"}
+                  label="Help required (select multiple)"
+                  touched={props.touched}
+                  options={[
+                    { title: "Food", value: "food" },
+                    { title: "Water", value: "water" },
+                    { title: "Sanitation", value: "sanitation" },
+                  ]}
+                  multiple
+                />
+
+                <div
+                  style={{
+                    marginTop: "15px",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Button
+                    disabled={props.isSubmitting}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                  >
+                    Report
+                  </Button>
+                </div>
+              </form>
+            )}
+          />
         </Grid>
         <Grid item xs={12} md={8} lg={9}>
           <div style={{ height: matches ? "50vh" : "100vh", width: "100%" }}>

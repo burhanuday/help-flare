@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Button } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import Input from "../../components/Form/Input";
+import Select from "../../components/Form/Select";
 import LocationSearchInput from "../../components/LocationSearchInput/LocationSearchInput";
 import axios from "../../axios/axios";
+import { Formik } from "formik";
+import * as yup from "yup";
 
 interface GeoData {
   latitude: string;
@@ -15,19 +17,20 @@ interface GeoData {
   isGeocoding?: boolean;
 }
 
-const defaultValues = {
-  organisation: "",
-  name: "",
-  phone: "",
-  password: "",
-  typeOfService: "",
-};
+const schema = yup.object({
+  phone: yup
+    .string()
+    .required("Phone number is required")
+    .length(10, "Phone number should be 10 digits"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password should be at least 6 characters")
+    .max(18, "Password cannot be longer than 18 characters"),
+  name: yup.string().required("Name is required"),
+});
 
 const Register = (props: any) => {
-  const { register, handleSubmit, errors, setValue, reset } = useForm({
-    defaultValues,
-  });
-
   const [geoData, setGeoData] = useState<GeoData>({
     latitude: "",
     longitude: "",
@@ -35,58 +38,6 @@ const Register = (props: any) => {
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const registerHandler = (data: any) => {
-    console.log(data, geoData);
-
-    if (!geoData.latitude || !geoData.longitude) {
-      setShowAlert(true);
-      return;
-    } else {
-      setShowAlert(false);
-    }
-
-    const formData = new FormData();
-    formData.append("group_name", data.organisation);
-    formData.append("representative", data.name);
-    formData.append("phone", data.phone);
-    formData.append("password", data.password);
-    formData.append(
-      "locality",
-      JSON.stringify({
-        lat: geoData.latitude,
-        lng: geoData.longitude,
-      })
-    );
-    formData.append("social_service", data.typeOfService);
-
-    setLoading(true);
-
-    axios
-      .post(`/helper`, formData)
-      .then(response => {
-        console.log(response);
-        if (response.data.error === 0) {
-          setSuccessMessage("Registered successfully!");
-          setErrorMessage("");
-          reset(defaultValues);
-          setGeoData({
-            latitude: "",
-            longitude: "",
-          });
-        } else if (response.data.error === 1) {
-          setErrorMessage(response.data.message);
-          setSuccessMessage("");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        setErrorMessage("There was an error with the request");
-        setSuccessMessage("");
-      })
-      .finally(() => setLoading(false));
-  };
 
   return (
     <div>
@@ -103,130 +54,199 @@ const Register = (props: any) => {
             Registration for NGOs or groups interested in helping
           </Typography>
 
-          <form onSubmit={handleSubmit(registerHandler)}>
-            {errorMessage && (
-              <Alert variant="filled" severity="error">
-                {errorMessage}
-              </Alert>
-            )}
+          <Formik
+            validationSchema={schema}
+            initialValues={{
+              phone: "",
+              password: "",
+              organisation: "",
+              name: "",
+              typeOfService: [],
+            }}
+            onSubmit={(values, actions) => {
+              const data = values;
+              console.log(data, geoData);
 
-            {successMessage && (
-              <Alert variant="filled" severity="success">
-                {successMessage}
-              </Alert>
-            )}
+              if (!geoData.latitude || !geoData.longitude) {
+                setShowAlert(true);
+                actions.setSubmitting(false);
+                return;
+              } else {
+                setShowAlert(false);
+              }
+              const formData = new FormData();
+              formData.append("group_name", data.organisation);
+              formData.append("representative", data.name);
+              formData.append("phone", data.phone);
+              formData.append("password", data.password);
+              formData.append(
+                "locality",
+                JSON.stringify({
+                  lat: geoData.latitude,
+                  lng: geoData.longitude,
+                })
+              );
+              formData.append(
+                "social_service",
+                JSON.stringify(data.typeOfService)
+              );
 
-            <Input
-              required
-              style={{ marginTop: "25px" }}
-              fullWidth
-              label="Name"
-              placeholder="Enter your name"
-              rules={{ required: true, minLength: 5 }}
-              name="name"
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              disabled={loading}
-            />
+              actions.setSubmitting(true);
 
-            <Input
-              required
-              fullWidth
-              label="Phone"
-              placeholder="Enter your phone number"
-              rules={{ required: true, minLength: 10, maxLength: 10 }}
-              name="phone"
-              type="number"
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              errorMessages={{
-                maxLength: "Phone number should be 10 digits",
-                minLength: "Phone number should be 10 digits",
-              }}
-              disabled={loading}
-            />
+              axios
+                .post(`/helper`, formData)
+                .then(response => {
+                  console.log(response);
+                  if (response.data.error === 0) {
+                    setSuccessMessage("Registered successfully!");
+                    setErrorMessage("");
+                    actions.resetForm();
+                    setGeoData({
+                      latitude: "",
+                      longitude: "",
+                      address: "",
+                    });
+                  } else if (response.data.error === 1) {
+                    setErrorMessage(response.data.message);
+                    setSuccessMessage("");
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                  setErrorMessage("There was an error with the request");
+                  setSuccessMessage("");
+                })
+                .finally(() => {
+                  actions.setSubmitting(false);
+                });
+            }}
+            render={props => (
+              <form onSubmit={props.handleSubmit}>
+                {errorMessage && (
+                  <Alert variant="filled" severity="error">
+                    {errorMessage}
+                  </Alert>
+                )}
 
-            <Input
-              fullWidth
-              label="Organisation (optional)"
-              placeholder="Enter your organisation name (if any)"
-              name="organisation"
-              rules={{ required: true }}
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              disabled={loading}
-            />
+                {successMessage && (
+                  <Alert variant="filled" severity="success">
+                    {successMessage}
+                  </Alert>
+                )}
+                <Input
+                  required
+                  fullWidth
+                  name="name"
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  value={props.values.name}
+                  error={props.errors.name}
+                  disabled={props.isSubmitting}
+                  placeholder="Enter name"
+                  label="Name"
+                  touched={props.touched.name}
+                />
 
-            <Input
-              required
-              fullWidth
-              type="password"
-              label="Password"
-              placeholder="Create a password for your account"
-              name="password"
-              rules={{ required: true, minLength: 6, maxLength: 18 }}
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              errorMessages={{
-                minLength: "Password should be more than 6 characters",
-                maxLength: "Password should be less than 18 characters",
-              }}
-              disabled={loading}
-            />
+                <Input
+                  required
+                  fullWidth
+                  type="number"
+                  name="phone"
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  value={props.values.phone}
+                  error={props.errors.phone}
+                  disabled={props.isSubmitting}
+                  placeholder="Enter phone"
+                  label="Phone"
+                  touched={props.touched.phone}
+                />
 
-            <LocationSearchInput disabled={loading} setGeoData={setGeoData} />
+                <Input
+                  fullWidth
+                  name="organisation"
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  value={props.values.organisation}
+                  error={props.errors.organisation}
+                  disabled={props.isSubmitting}
+                  placeholder="Enter organisation name (optional)"
+                  label="Organisation (optional)"
+                  touched={props.touched.organisation}
+                />
 
-            {showAlert && (
-              <Alert variant="filled" severity="error">
-                Enter the area your group is active in
-              </Alert>
-            )}
+                <Input
+                  required
+                  fullWidth
+                  type="password"
+                  name="password"
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  value={props.values.password}
+                  error={props.errors.password}
+                  disabled={props.isSubmitting}
+                  placeholder="Enter password"
+                  label="Password"
+                  touched={props.touched.password}
+                />
 
-            <Input
-              fullWidth
-              label="Type of service (optional)"
-              placeholder="State how you can help"
-              name="typeOfService"
-              register={register}
-              setValue={setValue}
-              errors={errors}
-              disabled={loading}
-            />
+                <LocationSearchInput
+                  disabled={props.isSubmitting}
+                  setGeoData={setGeoData}
+                />
 
-            <div
-              style={{
-                marginTop: "15px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Link style={{ textDecoration: "none" }} to="/auth">
-                <Button
-                  disabled={loading}
-                  color="primary"
-                  style={{ marginRight: "15px" }}
+                {showAlert && (
+                  <Alert variant="filled" severity="error">
+                    Enter the area your group is active in
+                  </Alert>
+                )}
+
+                <Select
+                  fullWidth
+                  name="typeOfService"
+                  onChange={props.setFieldValue}
+                  onBlur={props.handleBlur}
+                  value={props.values.typeOfService}
+                  error={props.errors.typeOfService}
+                  placeholder={"Select all services you can provide"}
+                  label="Services you can provide"
+                  touched={props.touched}
+                  options={[
+                    { title: "Food", value: "food" },
+                    { title: "Water", value: "water" },
+                    { title: "Sanitation", value: "sanitation" },
+                  ]}
+                  multiple
+                />
+
+                <div
+                  style={{
+                    marginTop: "15px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  Login instead
-                </Button>
-              </Link>
-              <Button
-                disabled={loading}
-                type="submit"
-                variant="contained"
-                color="primary"
-              >
-                Register
-              </Button>
-            </div>
-          </form>
-
-          {/* <p>{geoData.latitude}</p>
-          <p>{geoData.longitude}</p>
-          <p>{geoData.address}</p> */}
+                  <Link style={{ textDecoration: "none" }} to="/auth">
+                    <Button
+                      disabled={props.isSubmitting}
+                      color="primary"
+                      style={{ marginRight: "15px" }}
+                    >
+                      Login instead
+                    </Button>
+                  </Link>
+                  <Button
+                    disabled={props.isSubmitting}
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                  >
+                    Register
+                  </Button>
+                </div>
+              </form>
+            )}
+          />
         </div>
       </Container>
     </div>
