@@ -16,13 +16,17 @@ import { Alert } from "@material-ui/lab";
 import Input from "../../components/Form/Input";
 import Select from "../../components/Form/Select";
 import MapMarker from "./MapMarker";
-import Joyride, { BeaconRenderProps, TooltipRenderProps } from "react-joyride";
+import Joyride, {
+  BeaconRenderProps,
+  ACTIONS,
+  EVENTS,
+  STATUS,
+} from "react-joyride";
 
 const steps = [
   {
     target: "#step-1",
-    content:
-      `Zoom in till you see then satellite view
+    content: `Zoom in till you see then satellite view
       \n then select at least 3 points on the map covering the area that needs help`,
     disableBeacon: true,
   },
@@ -46,6 +50,9 @@ const Report: React.FC = (ogProps: any) => {
   const [mapsObject, setMapsObject] = useState<any>(undefined);
   const [currentPolygon, setCurrentPolygon] = useState<any>(undefined);
   const [showZoomAlert, setShowZoomAlert] = useState<boolean>(false);
+  const tutorialComplete = localStorage.getItem("tutorialComplete")
+    ? true
+    : false;
 
   useEffect(() => {
     if (mapsObject) {
@@ -98,31 +105,6 @@ const Report: React.FC = (ogProps: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markerLocations, mapsObject]);
 
-  /*   useEffect(() => {
-    if (mapsObject) {
-      const { map, maps } = mapsObject;
-      map.addListener("click", (event: any) => {
-        const lat = event.latLng.lat();
-        const lng = event.latLng.lng();
-        console.log("loca", lat, lng);
-        console.log(map.getZoom());
-        if (map.getZoom() >= 17) {
-          console.log("mark", markerLocations);
-          setMarkerLocations([...markerLocations, [lat, lng]]);
-        } else {
-          setShowZoomAlert(true);
-        }
-      });
-      map.addListener("click", function (e: any) {
-        var marker = new maps.Marker({
-          position: e.latLng,
-          map: map,
-        });
-        map.panTo(e.latLng);
-      });
-    }
-  }, [mapsObject, setMarkerLocations]); */
-
   const handleAlertClosed = (event: any, reason: string) => {
     if (reason === "clickaway") {
       return;
@@ -136,10 +118,19 @@ const Report: React.FC = (ogProps: any) => {
   return (
     <div>
       <Header />
-      <Joyride
-        beaconComponent={Beacon as React.ElementType<BeaconRenderProps>}
-        steps={steps}
-      />
+      {!tutorialComplete && (
+        <Joyride
+          beaconComponent={Beacon as React.ElementType<BeaconRenderProps>}
+          steps={steps}
+          callback={data => {
+            const { action, index, status, type } = data;
+            if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+              // Need to set our running state to false, so we can restart if we click start again.
+              localStorage.setItem("tutorialComplete", "yes");
+            }
+          }}
+        />
+      )}
       <Grid
         container
         direction={matches ? "column-reverse" : "row"}
@@ -388,7 +379,7 @@ const Report: React.FC = (ogProps: any) => {
 
 export default geolocated({
   positionOptions: {
-    enableHighAccuracy: false,
+    enableHighAccuracy: true,
   },
   userDecisionTimeout: 5000,
 })(Report);

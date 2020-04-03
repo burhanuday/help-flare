@@ -10,6 +10,7 @@ import Auth from "./containers/Auth/Auth";
 import Report from "./containers/Report/Report";
 import Help from "./containers/Help/Help";
 import Profile from "./containers/Profile/Profile";
+import NewHelp from "./containers/Help/NewHelp";
 
 function App() {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -27,11 +28,14 @@ function App() {
             <Profile />
           </Route>
         )}
-        {loggedIn && (
+        {/* {loggedIn && (
           <Route path="/help">
             <Help />
           </Route>
-        )}
+        )} */}
+        <Route path="/help">
+          <NewHelp />
+        </Route>
         <Route path="/report">
           <Report />
         </Route>
