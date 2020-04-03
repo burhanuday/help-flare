@@ -209,7 +209,7 @@ const Register = (props: any) => {
                   value={props.values.typeOfService}
                   error={props.errors.typeOfService}
                   placeholder={"Select all services you can provide"}
-                  label="Services you can provide"
+                  label="Select all the you can provide (optional)"
                   touched={props.touched}
                   options={[
                     { title: "Food", value: "food" },

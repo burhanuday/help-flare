@@ -1,20 +1,5 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
-
-const ErrorMessage: React.FC = (props: any) => {
-  return (
-    <p
-      style={{
-        color: "red",
-        fontSize: "12px",
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      {props.children}
-    </p>
-  );
-};
+import { TextField, Typography } from "@material-ui/core";
 
 export default (props: any) => {
   return (
@@ -39,9 +24,9 @@ export default (props: any) => {
         value={props.value || ""}
         onChange={props.onChange}
       />
-      <ErrorMessage>
+      <Typography variant="body2" color="error">
         {props.error && props.touched ? props.error : null}
-      </ErrorMessage>
+      </Typography>
     </div>
   );
 };

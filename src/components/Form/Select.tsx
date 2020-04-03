@@ -1,20 +1,11 @@
 import React from "react";
-import { Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
-
-const ErrorMessage: React.FC = (props: any) => {
-  return (
-    <p
-      style={{
-        color: "red",
-        fontSize: "12px",
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      {props.children}
-    </p>
-  );
-};
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Typography,
+} from "@material-ui/core";
 
 export default (props: any) => {
   return (
@@ -50,9 +41,9 @@ export default (props: any) => {
             ))}
         </Select>
       </FormControl>
-      <ErrorMessage>
+      <Typography variant="body2" color="error">
         {props.error && props.touched ? props.error : null}
-      </ErrorMessage>
+      </Typography>
     </div>
   );
 };

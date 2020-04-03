@@ -16,6 +16,17 @@ import { Alert } from "@material-ui/lab";
 import Input from "../../components/Form/Input";
 import Select from "../../components/Form/Select";
 import MapMarker from "./MapMarker";
+import Joyride, { BeaconRenderProps, TooltipRenderProps } from "react-joyride";
+
+const steps = [
+  {
+    target: "#step-1",
+    content:
+      `Zoom in till you see then satellite view
+      \n then select at least 3 points on the map covering the area that needs help`,
+    disableBeacon: true,
+  },
+];
 
 const schema = yup.object({
   phone: yup
@@ -53,7 +64,12 @@ const Report: React.FC = (ogProps: any) => {
         }
       }
     }
-  }, [mapsObject, ogProps.coords]);
+  }, [
+    mapsObject,
+    ogProps.coords,
+    ogProps.isGeolocationAvailable,
+    ogProps.isGeolocationEnabled,
+  ]);
 
   useEffect(() => {
     if (mapsObject) {
@@ -82,6 +98,31 @@ const Report: React.FC = (ogProps: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [markerLocations, mapsObject]);
 
+  /*   useEffect(() => {
+    if (mapsObject) {
+      const { map, maps } = mapsObject;
+      map.addListener("click", (event: any) => {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+        console.log("loca", lat, lng);
+        console.log(map.getZoom());
+        if (map.getZoom() >= 17) {
+          console.log("mark", markerLocations);
+          setMarkerLocations([...markerLocations, [lat, lng]]);
+        } else {
+          setShowZoomAlert(true);
+        }
+      });
+      map.addListener("click", function (e: any) {
+        var marker = new maps.Marker({
+          position: e.latLng,
+          map: map,
+        });
+        map.panTo(e.latLng);
+      });
+    }
+  }, [mapsObject, setMarkerLocations]); */
+
   const handleAlertClosed = (event: any, reason: string) => {
     if (reason === "clickaway") {
       return;
@@ -90,9 +131,15 @@ const Report: React.FC = (ogProps: any) => {
     setShowZoomAlert(false);
   };
 
+  const Beacon = (props: any) => <Button {...props}>Show tutorial</Button>;
+
   return (
     <div>
       <Header />
+      <Joyride
+        beaconComponent={Beacon as React.ElementType<BeaconRenderProps>}
+        steps={steps}
+      />
       <Grid
         container
         direction={matches ? "column-reverse" : "row"}
@@ -242,6 +289,7 @@ const Report: React.FC = (ogProps: any) => {
                     type="submit"
                     variant="contained"
                     color="primary"
+                    fullWidth
                   >
                     Report
                   </Button>
@@ -251,7 +299,10 @@ const Report: React.FC = (ogProps: any) => {
           />
         </Grid>
         <Grid item xs={12} md={8} lg={9}>
-          <div style={{ height: matches ? "50vh" : "100vh", width: "100%" }}>
+          <div
+            id="step-1"
+            style={{ height: matches ? "50vh" : "100vh", width: "100%" }}
+          >
             <Snackbar
               open={showZoomAlert}
               autoHideDuration={3000}
@@ -280,8 +331,8 @@ const Report: React.FC = (ogProps: any) => {
               }}
               defaultZoom={10}
               onClick={({ x, y, lat, lng, event }) => {
-                console.log(lat, lng);
-                console.log(mapsObject.map.getZoom());
+                // console.log(lat, lng);
+                // console.log(mapsObject.map.getZoom());
                 if (mapsObject.map.getZoom() >= 17) {
                   setMarkerLocations([...markerLocations, [lat, lng]]);
                 } else {
@@ -289,9 +340,9 @@ const Report: React.FC = (ogProps: any) => {
                 }
               }}
               onChange={({ center, zoom, bounds, marginBounds }) => {
-                console.log(center, zoom);
+                // console.log(center, zoom);
                 if (zoom >= 17) {
-                  console.log(mapsObject.map.getMapTypeId());
+                  // console.log(mapsObject.map.getMapTypeId());
                   if (mapsObject.map.getMapTypeId() !== "satellite") {
                     mapsObject.map.setMapTypeId("satellite");
                   }
@@ -314,13 +365,6 @@ const Report: React.FC = (ogProps: any) => {
               yesIWantToUseGoogleMapApiInternals
               onGoogleApiLoaded={({ map, maps }) => {
                 console.log(map, maps);
-                // map.setCenter({ lat: latitude, lng: longitude });
-                /* var triangleCoords = [
-                  { lat: 25.774, lng: -80.19 },
-                  { lat: 18.466, lng: -66.118 },
-                  { lat: 32.321, lng: -64.757 },
-                  { lat: 25.774, lng: -80.19 },
-                ]; */
 
                 setMapsObject({ map, maps });
               }}
