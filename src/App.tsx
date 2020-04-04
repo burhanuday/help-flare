@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,9 +11,18 @@ import Report from "./containers/Report/Report";
 import Help from "./containers/Help/Help";
 import Profile from "./containers/Profile/Profile";
 import NewHelp from "./containers/Help/NewHelp";
+import VerifyHelp from "./containers/VerifyHelp/VerifyHelp";
+import { ProfileContext } from "./contexts/ProfileContext";
 
 function App() {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
+  const { profileState, profileActions } = useContext(ProfileContext);
+
+  useEffect(() => {
+    profileActions.fetchProfile();
+  }, []);
+
+  const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
   return (
     <Router>
@@ -28,14 +37,16 @@ function App() {
             <Profile />
           </Route>
         )}
-        {/* {loggedIn && (
+        {loggedIn && (
           <Route path="/help">
-            <Help />
+            <NewHelp />
           </Route>
-        )} */}
-        <Route path="/help">
-          <NewHelp />
-        </Route>
+        )}
+        {loggedIn && hasPendingClaims && (
+          <Route path="/verify">
+            <VerifyHelp />
+          </Route>
+        )}
         <Route path="/report">
           <Report />
         </Route>

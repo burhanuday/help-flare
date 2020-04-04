@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Map, GoogleApiWrapper, Polygon, InfoWindow } from "google-maps-react";
 import Header from "../../components/Header/Header";
 import socketIOClient from "socket.io-client";
@@ -16,6 +16,7 @@ import {
 import classes from "*.module.css";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const MapContainer = (props: any) => {
   const [data, setData] = useState<any>([]);
@@ -26,6 +27,9 @@ const MapContainer = (props: any) => {
     showConfirmDialog: false,
     result: null,
   });
+  const [center, setCenter] = useState<any>(null);
+  const { profileState, profileActions } = useContext(ProfileContext);
+  const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
   useEffect(() => {
     let socket: SocketIOClient.Socket;
@@ -74,13 +78,17 @@ const MapContainer = (props: any) => {
           }}
           open={infoWindow.showConfirmDialog}
         >
-          <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+          <DialogTitle>Are you sure?</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+            <DialogContentText>
               You must click a picture of the help provided and upload it after
               you are done. You will not be able to claim any other sites till
               that time
             </DialogContentText>
+            <Typography color="error" variant="body2">
+              We take these claims seriously. Only press the help button if you
+              intend to provide it
+            </Typography>
           </DialogContent>
           <DialogActions>
             <Button
@@ -110,6 +118,7 @@ const MapContainer = (props: any) => {
                       result: response.data.message,
                       showConfirmDialog: false,
                     });
+                    profileActions.fetchProfile();
                   })
                   .catch(error => {
                     console.log(error);
@@ -185,9 +194,18 @@ const MapContainer = (props: any) => {
               <Typography variant="body2">
                 Help required: {infoWindow.data.type_of_help.join(", ")}
               </Typography>
-              <Typography variant="h6">
-                Helper is already assigned for this area
-              </Typography>
+              {infoWindow.data.status === 1 && (
+                <Typography variant="h6">
+                  Helper is already assigned for this area
+                </Typography>
+              )}
+
+              {hasPendingClaims && (
+                <Typography variant="body2" color="error">
+                  Verify your current claim before claiming this area <br />
+                  You can do this by pressing verify on the home screen
+                </Typography>
+              )}
             </DialogContent>
             <DialogActions>
               <Button
@@ -205,7 +223,7 @@ const MapContainer = (props: any) => {
                 Cancel
               </Button>
               <Button
-                disabled={infoWindow.data.status === 1}
+                disabled={infoWindow.data.status === 1 || hasPendingClaims}
                 onClick={() => {
                   setInfoWindow({
                     ...infoWindow,
@@ -226,8 +244,16 @@ const MapContainer = (props: any) => {
         streetViewControl={false}
         disableDoubleClickZoom={true}
         center={{
-          lat: props.coords ? props.coords.latitude : 19.0748,
-          lng: props.coords ? props.coords.longitude : 72.8856,
+          lat: center
+            ? center.lat
+            : props.coords
+            ? props.coords.latitude
+            : 19.0748,
+          lng: center
+            ? center.lng
+            : props.coords
+            ? props.coords.longitude
+            : 72.8856,
         }}
         google={props.google}
         zoom={14}
@@ -250,6 +276,11 @@ const MapContainer = (props: any) => {
               fillOpacity={0.35}
               onClick={(a: any, b: any, c: any) => {
                 console.log(a, b, c);
+                const latLng = a.paths[0];
+                setCenter({
+                  lat: latLng.lat,
+                  lng: latLng.lng,
+                });
                 setInfoWindow({
                   visible: true,
                   data: d,

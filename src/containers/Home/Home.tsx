@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../components/Header/Header";
 import { Container, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const Home = (props: any) => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
+  const { profileState, profileActions } = useContext(ProfileContext);
+  const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
   return (
     <div>
@@ -38,6 +41,20 @@ const Home = (props: any) => {
                 style={{ marginTop: "15px" }}
               >
                 Help an area
+              </Button>
+            </Link>
+          )}
+          {loggedIn && hasPendingClaims && (
+            <Link
+              to="/verify"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ marginTop: "15px" }}
+              >
+                Verify your claim
               </Button>
             </Link>
           )}

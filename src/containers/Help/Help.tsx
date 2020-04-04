@@ -81,16 +81,13 @@ const Help: React.FC = (ogProps: any) => {
           lat: ogProps.coords.latitude,
           lng: ogProps.coords.longitude,
         });
-        /*  socket.emit("new_help", {
-          lat: ogProps.coords.latitude,
-          lng: ogProps.coords.longitude,
-        }); */
-        /* setInterval(() => {
+
+        setInterval(() => {
           socket.emit("new_help", {
             lat: ogProps.coords.latitude,
             lng: ogProps.coords.longitude,
           });
-        }, 4000); */
+        }, 4000);
         socket.on("helps", (data: any) => {
           console.log(data);
           setData(data);
@@ -194,7 +191,7 @@ const Help: React.FC = (ogProps: any) => {
               zoom={zoomLevel}
               svgCoordinate={loc}
             /> */}
-         {/*  {data.map((d: any) => {
+          {/*  {data.map((d: any) => {
             const loc = d.area.coordinates[0][0];
             return (
               <Svg
