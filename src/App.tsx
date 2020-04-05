@@ -10,7 +10,6 @@ import Auth from "./containers/Auth/Auth";
 import Report from "./containers/Report/Report";
 import Help from "./containers/Help/Help";
 import Profile from "./containers/Profile/Profile";
-import NewHelp from "./containers/Help/NewHelp";
 import VerifyHelp from "./containers/VerifyHelp/VerifyHelp";
 import { ProfileContext } from "./contexts/ProfileContext";
 
@@ -39,7 +38,7 @@ function App() {
         )}
         {loggedIn && (
           <Route path="/help">
-            <NewHelp />
+            <Help />
           </Route>
         )}
         {loggedIn && hasPendingClaims && (
