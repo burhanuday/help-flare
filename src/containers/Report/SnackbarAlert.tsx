@@ -20,7 +20,7 @@ const SnackbarAlert = (props: any) => {
         severity="error"
         variant="filled"
       >
-        Zoom in more till you see a satellite view to select an area
+        Zoom in more to draw a polygon
       </Alert>
     </Snackbar>
   );

@@ -83,6 +83,15 @@ const Report = (ogProps: any) => {
     ogProps.isGeolocationEnabled,
   ]);
 
+  useEffect(() => {
+    if (ogProps.coords) {
+      setCenter({
+        lat: ogProps.coords.latitude,
+        lng: ogProps.coords.longitude,
+      });
+    }
+  }, [ogProps.coords]);
+
   const Beacon = (props: any) => <Button {...props}>Show tutorial</Button>;
 
   return (
@@ -127,27 +136,7 @@ const Report = (ogProps: any) => {
               setShowZoomAlert={setShowZoomAlert}
               showZoomAlert={showZoomAlert}
             />
-            {/*
-              onChange={({ center, zoom, bounds, marginBounds }) => {
-                // console.log(center, zoom);
-                if (zoom >= 17) {
-                  // console.log(mapsObject.map.getMapTypeId());
-                  if (mapsObject.map.getMapTypeId() !== "satellite") {
-                    mapsObject.map.setMapTypeId("satellite");
-                  }
-                } else if (
-                  mapsObject &&
-                  mapsObject.map &&
-                  mapsObject.map.getMapTypeId() !== "roadmap"
-                ) {
-                  mapsObject.map.setMapTypeId("roadmap");
-                }
-              }}
-           */}
             <Map
-              /* style={{
-                height: 100,
-              }} */
               // @ts-ignore
               containerStyle={{
                 width: "100%",
@@ -162,6 +151,25 @@ const Report = (ogProps: any) => {
               streetViewControl={false}
               disableDoubleClickZoom={true}
               gestureHandling="greedy"
+              /*  onCenter_changed={(a: any, b: any, c: any) => {
+                console.log(b.center.lat(), b.center.lng());
+                // const latLng = a.paths[0];
+                const lat = b.center.lat();
+                const lng = b.center.lng();
+                if (center) {
+                  if (center.lat !== lat || center.lng !== lng)
+                    setCenter({
+                      lat,
+                      lng,
+                    });
+                }
+              }} */
+              /* onZoom_changed={(a: any, b: any, c: any) => {
+                console.log(a, b, c);
+                if(b.zoom){
+                  
+                }
+              }} */
               initialCenter={{
                 lat: center
                   ? center.lat
@@ -181,7 +189,7 @@ const Report = (ogProps: any) => {
                 const lat = c.latLng.lat();
                 const lng = c.latLng.lng();
                 const zoom = b.zoom;
-                if (zoom >= 17) {
+                if (zoom >= 16) {
                   setMarkerLocations([...markerLocations, [lat, lng]]);
                 } else {
                   setShowZoomAlert(true);
@@ -222,15 +230,6 @@ const Report = (ogProps: any) => {
                   strokeWeight={2}
                   fillColor="#FF0000"
                   fillOpacity={0.35}
-                  /* onClick={(a: any, b: any, c: any) => {
-                    console.log(a, b, c);
-                    const latLng = a.paths[0];
-                    setCenter({
-                      lat: latLng.lat,
-                      lng: latLng.lng,
-                    });
-                   
-                  }} */
                 />
               )}
               {data.map((d: any) => {
@@ -249,20 +248,6 @@ const Report = (ogProps: any) => {
                     strokeWeight={2}
                     fillColor={color}
                     fillOpacity={0.35}
-                    onClick={(a: any, b: any, c: any) => {
-                      console.log(a, b, c);
-                      const latLng = a.paths[0];
-                      setCenter({
-                        lat: latLng.lat,
-                        lng: latLng.lng,
-                      });
-                      /* setInfoWindow({
-                        visible: true,
-                        data: d,
-                        showConfirmDialog: false,
-                        result: null,
-                      }); */
-                    }}
                   />
                 );
               })}
