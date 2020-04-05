@@ -13,7 +13,6 @@ import {
   DialogActions,
   Snackbar,
 } from "@material-ui/core";
-import classes from "*.module.css";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
 import { ProfileContext } from "../../contexts/ProfileContext";
@@ -242,6 +241,9 @@ const MapContainer = (props: any) => {
       )}
       <Map
         streetViewControl={false}
+        /* onBounds_changed={(a: any, b: any, c: any) => {
+          console.log("bounds cahnge", a, b, c);
+        }} */
         disableDoubleClickZoom={true}
         gestureHandling="greedy"
         center={{

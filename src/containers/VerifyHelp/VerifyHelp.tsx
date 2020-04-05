@@ -76,6 +76,7 @@ const VerifyHelp: React.FC = () => {
                 )
                 .then(response => {
                   console.log(response);
+                  // profileActions.fetchProfile();
                 })
                 .catch(error => {
                   console.log(error);
