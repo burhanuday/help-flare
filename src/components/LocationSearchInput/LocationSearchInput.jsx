@@ -27,6 +27,7 @@ class SearchBar extends React.Component {
       errorMessage: "",
     });
     this.props.setGeoData({
+      ...this.props.geoData,
       address,
       latitude: null,
       longitude: null,
@@ -36,6 +37,11 @@ class SearchBar extends React.Component {
 
   handleSelect = selected => {
     this.setState({ isGeocoding: true, address: selected });
+    this.props.setGeoData({
+      ...this.props.geoData,
+      isGeocoding: true,
+      address: selected,
+    });
     geocodeByAddress(selected)
       .then(res => getLatLng(res[0]))
       .then(({ lat, lng }) => {
@@ -45,6 +51,7 @@ class SearchBar extends React.Component {
           isGeocoding: false,
         });
         this.props.setGeoData({
+          ...this.props.geoData,
           latitude: lat,
           longitude: lng,
           isGeocoding: false,
@@ -63,6 +70,7 @@ class SearchBar extends React.Component {
       longitude: null,
     });
     this.props.setGeoData({
+      ...this.props.geoData,
       address: "",
       latitude: null,
       longitude: null,
@@ -74,7 +82,7 @@ class SearchBar extends React.Component {
     this.setState({ errorMessage: status }, () => {
       clearSuggestions();
     });
-    this.props.setGeoData({ errorMessage: status });
+    this.props.setGeoData({ ...this.props.geoData, errorMessage: status });
   };
 
   render() {

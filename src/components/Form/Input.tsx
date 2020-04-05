@@ -23,6 +23,9 @@ export default (props: any) => {
         onBlur={props.onBlur}
         value={props.value || ""}
         onChange={props.onChange}
+        InputProps={{
+          startAdornment: props.startAdornment,
+        }}
       />
       <Typography variant="body2" color="error">
         {props.error && props.touched ? props.error : null}

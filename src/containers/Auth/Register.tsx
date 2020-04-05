@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Button } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  Button,
+  InputAdornment,
+} from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import Input from "../../components/Form/Input";
@@ -8,6 +13,7 @@ import LocationSearchInput from "../../components/LocationSearchInput/LocationSe
 import axios from "../../axios/axios";
 import { Formik } from "formik";
 import * as yup from "yup";
+import OtpModal from "./OtpModal";
 
 interface GeoData {
   latitude: string;
@@ -38,9 +44,17 @@ const Register = (props: any) => {
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [otpModal, setOtpModal] = useState(false);
 
   return (
     <div>
+      {otpModal && (
+        <OtpModal
+          visible={otpModal}
+          setOtpModal={setOtpModal}
+          setSuccessMessage={setSuccessMessage}
+        />
+      )}
       <Container maxWidth="sm">
         <div
           style={{
@@ -77,13 +91,14 @@ const Register = (props: any) => {
               const formData = new FormData();
               formData.append("group_name", data.organisation);
               formData.append("representative", data.name);
-              formData.append("phone", data.phone);
+              formData.append("phone", `+91${data.phone}`);
               formData.append("password", data.password);
               formData.append(
                 "locality",
                 JSON.stringify({
                   lat: geoData.latitude,
                   lng: geoData.longitude,
+                  place: geoData.address,
                 })
               );
               formData.append(
@@ -98,7 +113,7 @@ const Register = (props: any) => {
                 .then(response => {
                   console.log(response);
                   if (response.data.error === 0) {
-                    setSuccessMessage("Registered successfully!");
+                    setSuccessMessage("");
                     setErrorMessage("");
                     actions.resetForm();
                     setGeoData({
@@ -106,6 +121,7 @@ const Register = (props: any) => {
                       longitude: "",
                       address: "",
                     });
+                    setOtpModal(true);
                   } else if (response.data.error === 1) {
                     setErrorMessage(response.data.message);
                     setSuccessMessage("");
@@ -160,7 +176,21 @@ const Register = (props: any) => {
                   placeholder="Enter phone"
                   label="Phone"
                   touched={props.touched.phone}
+                  startAdornment={
+                    <InputAdornment position="start">+91</InputAdornment>
+                  }
                 />
+                <div
+                  style={{
+                    margin: "0px",
+                    padding: "0px",
+                    color: "blue",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  Your phone number will be verified via OTP. <br />
+                  Your phone number might be used to contact you if required.
+                </div>
 
                 <Input
                   fullWidth
@@ -193,6 +223,7 @@ const Register = (props: any) => {
                 <LocationSearchInput
                   disabled={props.isSubmitting}
                   setGeoData={setGeoData}
+                  geoData={geoData}
                 />
 
                 {showAlert && (

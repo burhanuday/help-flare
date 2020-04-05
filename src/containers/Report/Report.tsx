@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "../../components/Header/Header";
 import {
   Grid,
@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   Button,
   Snackbar,
+  InputAdornment,
 } from "@material-ui/core";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -22,6 +23,9 @@ import Joyride, {
   EVENTS,
   STATUS,
 } from "react-joyride";
+import OtpModal from "./OtpModal";
+import Axios from "axios";
+import { ProfileContext } from "../../contexts/ProfileContext";
 
 const steps = [
   {
@@ -50,9 +54,12 @@ const Report: React.FC = (ogProps: any) => {
   const [mapsObject, setMapsObject] = useState<any>(undefined);
   const [currentPolygon, setCurrentPolygon] = useState<any>(undefined);
   const [showZoomAlert, setShowZoomAlert] = useState<boolean>(false);
+  const [otpModal, setOtpModal] = useState(false);
   const tutorialComplete = localStorage.getItem("tutorialComplete")
     ? true
     : false;
+  const isLoggedIn = localStorage.getItem("accessToken") ? true : false;
+  const { profileState, profileActions } = useContext(ProfileContext);
 
   useEffect(() => {
     if (mapsObject) {
@@ -115,8 +122,27 @@ const Report: React.FC = (ogProps: any) => {
 
   const Beacon = (props: any) => <Button {...props}>Show tutorial</Button>;
 
+  /* useEffect(() => {
+    Axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
+    )
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []); */
+
   return (
     <div>
+      {otpModal && (
+        <OtpModal
+          visible={otpModal}
+          setOtpModal={setOtpModal}
+          setSuccessMessage={setSuccessMessage}
+        />
+      )}
       <Header />
       {!tutorialComplete && (
         <Joyride
@@ -140,8 +166,12 @@ const Report: React.FC = (ogProps: any) => {
           <Formik
             validationSchema={schema}
             initialValues={{
-              phone: "",
-              name: "",
+              phone:
+                profileState?.profile?.contact?.substring(
+                  3,
+                  profileState?.profile?.contact.length
+                ) || "",
+              name: profileState?.profile?.representative || "",
               helpType: [],
             }}
             onSubmit={(values, actions) => {
@@ -156,39 +186,68 @@ const Report: React.FC = (ogProps: any) => {
                 setErrorMessage("");
                 setSuccessMessage("");
               }
-              const locations = `${JSON.stringify(markerLocations)}`;
-              const formData = new FormData();
-              formData.append("area_coordinates", locations);
-              formData.append("reported_by", data.name);
-              formData.append("phone", data.phone);
-              formData.append("helpType", `${JSON.stringify(data.helpType)}`);
-              for (var value of formData.values()) {
-                console.log(value);
-              }
+              const { map, maps } = mapsObject;
+              console.log("befo ge", maps, map);
+              const geoCoder = new maps.Geocoder();
+              console.log(geoCoder);
+              if (markerLocations && markerLocations[0]) {
+                geoCoder.geocode(
+                  {
+                    location: new maps.LatLng({
+                      lat: markerLocations[0][0],
+                      lng: markerLocations[0][1],
+                    }),
+                  },
+                  (a: any) => {
+                    console.log("from geocode", a[4]);
+                    const locations = `${JSON.stringify(markerLocations)}`;
+                    const formData = new FormData();
+                    formData.append("area_coordinates", locations);
+                    formData.append("reported_by", data.name);
+                    formData.append("phone", `+91${data.phone}`);
+                    formData.append(
+                      "helpType",
+                      `${JSON.stringify(data.helpType)}`
+                    );
+                    formData.append(
+                      "place",
+                      a[4].formatted_address ||
+                        a[3].formatted_address ||
+                        a[2].formatted_address ||
+                        a[1].formatted_address ||
+                        a[0].formatted_address
+                    );
+                    for (var value of formData.values()) {
+                      console.log(value);
+                    }
 
-              actions.setSubmitting(true);
-              axios
-                .post(`/report_help`, formData)
-                .then(response => {
-                  console.log(response);
-                  if (response.data.error === 0) {
-                    setSuccessMessage("Submitted successfully!");
-                    setErrorMessage("");
-                    setMarkerLocations([]);
-                    actions.resetForm();
-                  } else if (response.data.error === 1) {
-                    setErrorMessage(response.data.message);
-                    setSuccessMessage("");
+                    actions.setSubmitting(true);
+                    axios
+                      .post(`/report_help`, formData)
+                      .then(response => {
+                        console.log(response);
+                        if (response.data.error === 0) {
+                          setSuccessMessage("");
+                          setErrorMessage("");
+                          setMarkerLocations([]);
+                          setOtpModal(true);
+                          actions.resetForm();
+                        } else if (response.data.error === 1) {
+                          setErrorMessage(response.data.message);
+                          setSuccessMessage("");
+                        }
+                      })
+                      .catch(error => {
+                        console.log(error);
+                        setErrorMessage("There was an error with the request");
+                        setSuccessMessage("");
+                      })
+                      .finally(() => {
+                        actions.setSubmitting(false);
+                      });
                   }
-                })
-                .catch(error => {
-                  console.log(error);
-                  setErrorMessage("There was an error with the request");
-                  setSuccessMessage("");
-                })
-                .finally(() => {
-                  actions.setSubmitting(false);
-                });
+                );
+              }
             }}
             render={props => (
               <form
@@ -233,6 +292,7 @@ const Report: React.FC = (ogProps: any) => {
                   placeholder="Enter name"
                   label="Name"
                   touched={props.touched.name}
+                  size="small"
                 />
 
                 <Input
@@ -248,7 +308,22 @@ const Report: React.FC = (ogProps: any) => {
                   placeholder="Enter phone"
                   label="Phone"
                   touched={props.touched.phone}
+                  startAdornment={
+                    <InputAdornment position="start">+91</InputAdornment>
+                  }
+                  size="small"
                 />
+                <div
+                  style={{
+                    margin: "0px",
+                    padding: "0px",
+                    color: "blue",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  Your phone number will be verified via OTP <br />
+                  Groups or NGOs might contact you if required
+                </div>
 
                 <Select
                   fullWidth
@@ -266,6 +341,7 @@ const Report: React.FC = (ogProps: any) => {
                     { title: "Sanitation", value: "sanitation" },
                   ]}
                   multiple
+                  size="small"
                 />
 
                 <div

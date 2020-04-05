@@ -1,11 +1,17 @@
-import React, { useState } from "react";
-import { Container, Typography, Button } from "@material-ui/core";
+import React, { useState, useContext } from "react";
+import {
+  Container,
+  Typography,
+  Button,
+  InputAdornment,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Input from "../../components/Form/Input";
 import axios from "../../axios/axios";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Alert } from "@material-ui/lab";
+import OtpModal from "./OtpModal";
 
 const schema = yup.object({
   phone: yup
@@ -22,9 +28,17 @@ const schema = yup.object({
 const Login = (props: any) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [otpModal, setOtpModal] = useState(false);
 
   return (
     <div>
+      {otpModal && (
+        <OtpModal
+          visible={otpModal}
+          setOtpModal={setOtpModal}
+          setSuccessMessage={setSuccessMessage}
+        />
+      )}
       <Container maxWidth="sm">
         <div
           style={{
@@ -48,7 +62,7 @@ const Login = (props: any) => {
               const data = values;
               console.log(data);
               const formData = new FormData();
-              formData.append("phone", data.phone);
+              formData.append("phone", `+91${data.phone}`);
               formData.append("password", data.password);
 
               actions.setSubmitting(true);
@@ -57,14 +71,21 @@ const Login = (props: any) => {
                 .then(response => {
                   console.log(response);
                   if (response.data.error === 0) {
-                    setSuccessMessage("Logged in successfully!");
-                    setErrorMessage("");
-                    actions.resetForm();
-                    localStorage.setItem(
-                      "accessToken",
-                      response.data.accessToken
-                    );
-                    window.location.reload();
+                    if (response.data.message === "OTP was sent") {
+                      setErrorMessage(
+                        "Log in again after verifying your number"
+                      );
+                      setOtpModal(true);
+                    } else {
+                      setSuccessMessage("Logged in successfully!");
+                      setErrorMessage("");
+                      actions.resetForm();
+                      localStorage.setItem(
+                        "accessToken",
+                        response.data.accessToken
+                      );
+                      window.location.reload();
+                    }
                   } else if (response.data.error === 1) {
                     setErrorMessage(response.data.message);
                     setSuccessMessage("");
@@ -105,6 +126,9 @@ const Login = (props: any) => {
                   placeholder="Enter phone"
                   label="Phone"
                   touched={props.touched.phone}
+                  startAdornment={
+                    <InputAdornment position="start">+91</InputAdornment>
+                  }
                 />
 
                 <Input

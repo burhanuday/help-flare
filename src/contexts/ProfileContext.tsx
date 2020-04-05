@@ -45,6 +45,7 @@ const ProfileProvider = (props: any) => {
 
   const actions = {
     fetchProfile: () => {
+      if (!localStorage.getItem("accessToken")) return;
       dispatch({ type: PROFILE_START });
       axios
         .get(`/profile`)
