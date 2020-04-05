@@ -12,7 +12,7 @@ import {
 import { ProfileContext } from "../../contexts/ProfileContext";
 
 const VerifyHelp: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File>();
   const { profileState, profileActions } = useContext(ProfileContext);
   console.log("profile state", profileState);
 
@@ -68,7 +68,7 @@ const VerifyHelp: React.FC = () => {
           <Button
             onClick={() => {
               const formData = new FormData();
-              //   formData.append("photo", file);
+              // formData.append("photo", file, file?.name || "file");
               axios
                 .post(
                   `/help/verify?helpId=${profileState.profile.claims[0]._id}`,
