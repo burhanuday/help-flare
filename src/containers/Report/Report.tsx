@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import { Grid, useTheme, useMediaQuery, Button } from "@material-ui/core";
-import GoogleMapReact from "google-map-react";
 import { geolocated, GeolocatedProps } from "react-geolocated";
-import MapMarker from "./MapMarker";
 import Joyride, { BeaconRenderProps, STATUS } from "react-joyride";
 import Form from "./Form";
 import SnackbarAlert from "./SnackbarAlert";
+import {
+  Map,
+  GoogleApiWrapper,
+  Polygon,
+  InfoWindow,
+  Marker,
+} from "google-maps-react";
+import socketIOClient from "socket.io-client";
 
 const steps = [
   {
@@ -17,75 +23,72 @@ const steps = [
   },
 ];
 
-const Report: React.FC = (ogProps: any) => {
+const Report = (ogProps: any) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>([]);
+  const [infoWindow, setInfoWindow] = useState<any>({
+    visible: false,
+    data: null,
+    showConfirmDialog: false,
+    result: null,
+  });
+  const [center, setCenter] = useState<any>(null);
   const [markerLocations, setMarkerLocations] = useState<any>([]);
   const [mapsObject, setMapsObject] = useState<any>(undefined);
-  const [currentPolygon, setCurrentPolygon] = useState<any>(undefined);
   const [showZoomAlert, setShowZoomAlert] = useState<boolean>(false);
   const tutorialComplete = localStorage.getItem("tutorialComplete")
     ? true
     : false;
 
   useEffect(() => {
-    if (mapsObject) {
-      const { map, maps } = mapsObject;
-      if (ogProps.isGeolocationAvailable && ogProps.isGeolocationEnabled) {
-        if (
-          ogProps.coords &&
-          ogProps.coords.latitude &&
-          ogProps.coords.longitude
-        ) {
-          console.log("triggered");
-          map.setCenter({
-            lat: ogProps.coords.latitude,
-            lng: ogProps.coords.longitude,
-          });
-        }
+    let socket: SocketIOClient.Socket;
+    if (ogProps.isGeolocationAvailable && ogProps.isGeolocationEnabled) {
+      if (
+        ogProps.coords &&
+        ogProps.coords.latitude &&
+        ogProps.coords.longitude
+      ) {
+        socket = socketIOClient(process.env.REACT_APP_API_URL as string);
+        socket.emit("new_help", {
+          lat: ogProps.coords.latitude,
+          lng: ogProps.coords.longitude,
+        });
+        /*  socket.emit("new_help", {
+                lat: ogProps.coords.latitude,
+                lng: ogProps.coords.longitude,
+              }); */
+        /* setInterval(() => {
+                socket.emit("new_help", {
+                  lat: ogProps.coords.latitude,
+                  lng: ogProps.coords.longitude,
+                });
+              }, 4000); */
+        socket.on("helps", (data: any) => {
+          console.log(data);
+          setData(data);
+        });
       }
     }
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
   }, [
-    mapsObject,
     ogProps.coords,
     ogProps.isGeolocationAvailable,
     ogProps.isGeolocationEnabled,
   ]);
-
-  useEffect(() => {
-    if (mapsObject) {
-      const { map, maps } = mapsObject;
-      const triangleCoords = markerLocations.map((loc: any) => ({
-        lat: loc[0],
-        lng: loc[1],
-      }));
-
-      if (currentPolygon) {
-        currentPolygon.setMap(null);
-      }
-
-      // Construct the polygon.
-      var bermudaTriangle = new maps.Polygon({
-        paths: triangleCoords,
-        strokeColor: "#0000FF",
-        strokeOpacity: 0.6,
-        strokeWeight: 2,
-        fillColor: "#0000FF",
-        fillOpacity: 0.35,
-      });
-      bermudaTriangle.setMap(map);
-      setCurrentPolygon(bermudaTriangle);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [markerLocations, mapsObject]);
 
   const Beacon = (props: any) => <Button {...props}>Show tutorial</Button>;
 
   return (
     <div>
       <Header />
-      {!tutorialComplete && (
+      {/*  {!tutorialComplete && (
         <Joyride
           beaconComponent={Beacon as React.ElementType<BeaconRenderProps>}
           steps={steps}
@@ -97,7 +100,7 @@ const Report: React.FC = (ogProps: any) => {
             }
           }}
         />
-      )}
+      )} */}
       <Grid
         container
         direction={matches ? "column-reverse" : "row"}
@@ -115,32 +118,16 @@ const Report: React.FC = (ogProps: any) => {
         <Grid item xs={12} md={8} lg={9}>
           <div
             id="step-1"
-            style={{ height: matches ? "50vh" : "100vh", width: "100%" }}
+            style={{
+              height: matches ? "50vh" : "100vh",
+              width: "100%",
+            }}
           >
             <SnackbarAlert
               setShowZoomAlert={setShowZoomAlert}
               showZoomAlert={showZoomAlert}
             />
-            <GoogleMapReact
-              options={() => ({
-                fullscreenControl: false,
-                zoomControl: false,
-                gestureHandling: "greedy",
-              })}
-              defaultCenter={{
-                lat: 19.0748,
-                lng: 72.8856,
-              }}
-              defaultZoom={10}
-              onClick={({ x, y, lat, lng, event }) => {
-                // console.log(lat, lng);
-                // console.log(mapsObject.map.getZoom());
-                if (mapsObject.map.getZoom() >= 17) {
-                  setMarkerLocations([...markerLocations, [lat, lng]]);
-                } else {
-                  setShowZoomAlert(true);
-                }
-              }}
+            {/*
               onChange={({ center, zoom, bounds, marginBounds }) => {
                 // console.log(center, zoom);
                 if (zoom >= 17) {
@@ -156,31 +143,130 @@ const Report: React.FC = (ogProps: any) => {
                   mapsObject.map.setMapTypeId("roadmap");
                 }
               }}
-              onChildClick={(a, b) => {
-                console.log(a, b);
-                const newMarkerLocations = markerLocations.filter(
-                  (location: any) =>
-                    location[0] !== b.loc[0] && location[1] !== b.loc[1]
-                );
-                setMarkerLocations(newMarkerLocations);
+           */}
+            <Map
+              /* style={{
+                height: 100,
+              }} */
+              // @ts-ignore
+              containerStyle={{
+                width: "100%",
+                position: "relative",
               }}
-              yesIWantToUseGoogleMapApiInternals
-              onGoogleApiLoaded={({ map, maps }) => {
-                console.log(map, maps);
-
-                setMapsObject({ map, maps });
+              onReady={(mapProps, map) => {
+                // @ts-ignore
+                const { google } = mapProps;
+                setMapsObject(google.maps);
+                console.log("google", google);
+              }}
+              streetViewControl={false}
+              disableDoubleClickZoom={true}
+              gestureHandling="greedy"
+              initialCenter={{
+                lat: center
+                  ? center.lat
+                  : ogProps.coords
+                  ? ogProps.coords.latitude
+                  : 19.0748,
+                lng: center
+                  ? center.lng
+                  : ogProps.coords
+                  ? ogProps.coords.longitude
+                  : 72.8856,
+              }}
+              google={ogProps.google}
+              zoom={14}
+              onClick={(a: any, b: any, c: any) => {
+                console.log(a, b, c, c.latLng.lat(), c.latLng.lng());
+                const lat = c.latLng.lat();
+                const lng = c.latLng.lng();
+                const zoom = b.zoom;
+                if (zoom >= 17) {
+                  setMarkerLocations([...markerLocations, [lat, lng]]);
+                } else {
+                  setShowZoomAlert(true);
+                }
               }}
             >
-              {markerLocations.map((loc: any, index: number) => (
-                <MapMarker
-                  key={`${loc[0]}${loc[1]}`}
-                  lat={loc[0]}
-                  lng={loc[1]}
-                  loc={loc}
-                  index={index}
+              {markerLocations.map((loc: any, index: number) => {
+                return (
+                  <Marker
+                    title={`${index}`}
+                    draggable={true}
+                    name={`${index}`}
+                    position={{ lat: loc[0], lng: loc[1] }}
+                    onDragend={(a: any, b: any, c: any) => {
+                      console.log(a, b, c);
+                      const clone = JSON.parse(JSON.stringify(markerLocations));
+                      clone[index] = [c.latLng.lat(), c.latLng.lng()];
+                      setMarkerLocations(clone);
+                    }}
+                    onClick={() => {
+                      const newMarkerLocations = markerLocations.filter(
+                        (location: any) =>
+                          location[0] !== loc[0] && location[1] !== loc[1]
+                      );
+                      setMarkerLocations(newMarkerLocations);
+                    }}
+                  />
+                );
+              })}
+              {markerLocations.length > 2 && (
+                <Polygon
+                  paths={markerLocations.map((coordinate: any) => ({
+                    lat: coordinate[0],
+                    lng: coordinate[1],
+                  }))}
+                  strokeColor="#FF0000"
+                  strokeOpacity={0.8}
+                  strokeWeight={2}
+                  fillColor="#FF0000"
+                  fillOpacity={0.35}
+                  /* onClick={(a: any, b: any, c: any) => {
+                    console.log(a, b, c);
+                    const latLng = a.paths[0];
+                    setCenter({
+                      lat: latLng.lat,
+                      lng: latLng.lng,
+                    });
+                   
+                  }} */
                 />
-              ))}
-            </GoogleMapReact>
+              )}
+              {data.map((d: any) => {
+                const coordinates = d.area.coordinates[0];
+                const poly_lines = coordinates.map((coordinate: any) => ({
+                  lat: coordinate[0],
+                  lng: coordinate[1],
+                }));
+                const color = d.status ? "green" : "blue";
+                return (
+                  <Polygon
+                    key={`${coordinates[0][0]}${coordinates[0][1]}`}
+                    paths={poly_lines}
+                    strokeColor={color}
+                    strokeOpacity={0.8}
+                    strokeWeight={2}
+                    fillColor={color}
+                    fillOpacity={0.35}
+                    onClick={(a: any, b: any, c: any) => {
+                      console.log(a, b, c);
+                      const latLng = a.paths[0];
+                      setCenter({
+                        lat: latLng.lat,
+                        lng: latLng.lng,
+                      });
+                      /* setInfoWindow({
+                        visible: true,
+                        data: d,
+                        showConfirmDialog: false,
+                        result: null,
+                      }); */
+                    }}
+                  />
+                );
+              })}
+            </Map>
           </div>
         </Grid>
       </Grid>
@@ -188,9 +274,13 @@ const Report: React.FC = (ogProps: any) => {
   );
 };
 
-export default geolocated({
-  positionOptions: {
-    enableHighAccuracy: true,
-  },
-  userDecisionTimeout: 5000,
-})(Report);
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ",
+})(
+  geolocated({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    userDecisionTimeout: 5000,
+  })(Report)
+);

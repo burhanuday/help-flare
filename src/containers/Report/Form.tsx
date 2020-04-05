@@ -5,7 +5,6 @@ import axios from "../../axios/axios";
 import { Formik } from "formik";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { Alert } from "@material-ui/lab";
-import { error } from "console";
 import { InputAdornment, Button } from "@material-ui/core";
 import * as yup from "yup";
 import OtpModal from "./OtpModal";
@@ -58,8 +57,8 @@ const Form = (ogProps: any) => {
             setErrorMessage("");
             setSuccessMessage("");
           }
-          const { map, maps } = ogProps.mapsObject;
-          console.log("befo ge", maps, map);
+          const maps = ogProps.mapsObject;
+          console.log("befo ge", maps);
           const geoCoder = new maps.Geocoder();
           console.log(geoCoder);
           if (ogProps.markerLocations && ogProps.markerLocations[0]) {

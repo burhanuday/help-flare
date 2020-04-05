@@ -243,6 +243,7 @@ const MapContainer = (props: any) => {
       <Map
         streetViewControl={false}
         disableDoubleClickZoom={true}
+        gestureHandling="greedy"
         center={{
           lat: center
             ? center.lat
@@ -291,16 +292,6 @@ const MapContainer = (props: any) => {
             />
           );
         })}
-        {/*    <InfoWindow visible={true}>
-          <div>sdasdasd</div>
-        </InfoWindow> */}
-        {/* <Marker onClick={this.onMarkerClick} name={"Current location"} /> */}
-        {/* 
-        <InfoWindow onClose={this.onInfoWindowClose}>
-          <div>
-            <h1>{this.state.selectedPlace.name}</h1>
-          </div>
-        </InfoWindow> */}
       </Map>
     </div>
   );
