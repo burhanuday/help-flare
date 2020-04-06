@@ -23,6 +23,9 @@ const steps = [
   },
 ];
 
+let socket: SocketIOClient.Socket;
+socket = socketIOClient(process.env.REACT_APP_API_URL as string);
+
 const Report = (ogProps: any) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
@@ -44,30 +47,30 @@ const Report = (ogProps: any) => {
     : false;
 
   useEffect(() => {
-    let socket: SocketIOClient.Socket;
+    console.log("sendign re");
+    if (center && socket) {
+      socket.emit("new_help", {
+        lat: center.lat,
+        lng: center.lng,
+      });
+    }
+  }, [center]);
+
+  useEffect(() => {
     if (ogProps.isGeolocationAvailable && ogProps.isGeolocationEnabled) {
       if (
         ogProps.coords &&
         ogProps.coords.latitude &&
-        ogProps.coords.longitude
+        ogProps.coords.longitude &&
+        socket
       ) {
-        socket = socketIOClient(process.env.REACT_APP_API_URL as string);
+        console.log("eitted", socket);
         socket.emit("new_help", {
           lat: ogProps.coords.latitude,
           lng: ogProps.coords.longitude,
         });
-        /*  socket.emit("new_help", {
-                lat: ogProps.coords.latitude,
-                lng: ogProps.coords.longitude,
-              }); */
-        /* setInterval(() => {
-                socket.emit("new_help", {
-                  lat: ogProps.coords.latitude,
-                  lng: ogProps.coords.longitude,
-                });
-              }, 4000); */
         socket.on("helps", (data: any) => {
-          console.log(data);
+          console.log("from gelps", data);
           setData(data);
         });
       }
@@ -151,23 +154,32 @@ const Report = (ogProps: any) => {
               streetViewControl={false}
               disableDoubleClickZoom={true}
               gestureHandling="greedy"
-              /*  onCenter_changed={(a: any, b: any, c: any) => {
-                console.log(b.center.lat(), b.center.lng());
-                // const latLng = a.paths[0];
+              /* onCenter_changed={(a: any, b: any, c: any) => {
                 const lat = b.center.lat();
                 const lng = b.center.lng();
-                if (center) {
-                  if (center.lat !== lat || center.lng !== lng)
-                    setCenter({
-                      lat,
-                      lng,
-                    });
-                }
+               
               }} */
               /* onZoom_changed={(a: any, b: any, c: any) => {
                 console.log(a, b, c);
                 if(b.zoom){
                   
+                }
+              }} */
+              /* onDragend={(a: any, b: any) => {
+                const lat = b.center.lat();
+                const lng = b.center.lng();
+                console.log(a, b);
+                if (
+                  Math.abs(center.lat - lat) >= 0.009 ||
+                  Math.abs(center.lng - lng) >= 0.009
+                ) {
+                  if (center) {
+                    if (center.lat !== lat || center.lng !== lng)
+                      setCenter({
+                        lat,
+                        lng,
+                      });
+                  }
                 }
               }} */
               initialCenter={{

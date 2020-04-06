@@ -44,6 +44,7 @@ const Form = (ogProps: any) => {
             ) || "",
           name: profileState?.profile?.representative || "",
           helpType: [],
+          message: "",
         }}
         onSubmit={(values, actions) => {
           const data = values;
@@ -209,6 +210,22 @@ const Form = (ogProps: any) => {
                 { title: "Sanitation", value: "sanitation" },
               ]}
               multiple
+              size="small"
+            />
+
+            <Input
+              required
+              fullWidth
+              multiline
+              name="message"
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
+              value={props.values.message}
+              error={props.errors.message}
+              disabled={props.isSubmitting}
+              placeholder="Enter details about the needs"
+              label="Message"
+              touched={props.touched.message}
               size="small"
             />
 
