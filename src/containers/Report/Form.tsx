@@ -78,6 +78,7 @@ const Form = (ogProps: any) => {
                 formData.append("reported_by", data.name);
                 formData.append("phone", `+91${data.phone}`);
                 formData.append("helpType", `${JSON.stringify(data.helpType)}`);
+                formData.append("message", data.message);
                 formData.append(
                   "place",
                   a[4].formatted_address ||
@@ -224,8 +225,8 @@ const Form = (ogProps: any) => {
                 value={props.values.message}
                 error={props.errors.message}
                 disabled={props.isSubmitting}
-                placeholder="Enter details about the needs"
-                label="Message"
+                placeholder="eg. People need rice and other basic food items"
+                label="More details"
                 touched={props.touched.message}
                 size="small"
               />
