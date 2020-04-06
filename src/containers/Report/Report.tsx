@@ -17,9 +17,23 @@ import socketIOClient from "socket.io-client";
 const steps = [
   {
     target: "#step-1",
-    content: `Zoom in till you see then satellite view
-      \n then select at least 3 points on the map covering the area that needs help`,
+    content: `Zoom in and drop three markers to make an area. You can drop a marker by pressing the map`,
     disableBeacon: true,
+    title: "Add markers",
+  },
+  {
+    target: "#step-1",
+    content: `You can remove a marker by clicking it again`,
+    disableBeacon: true,
+    title: "Remove markers",
+  },
+  {
+    target: "#message_box",
+    content: `Enter details about the needs here`,
+    disableBeacon: true,
+    title: "Enter details",
+    // placement: "top-start",
+    offset: 0,
   },
 ];
 
@@ -99,7 +113,7 @@ const Report = (ogProps: any) => {
   return (
     <div>
       <Header />
-      {/*  {!tutorialComplete && (
+      {!tutorialComplete && (
         <Joyride
           beaconComponent={Beacon as React.ElementType<BeaconRenderProps>}
           steps={steps}
@@ -111,7 +125,7 @@ const Report = (ogProps: any) => {
             }
           }}
         />
-      )} */}
+      )}
       <Grid
         container
         direction={matches ? "column-reverse" : "row"}
@@ -210,6 +224,7 @@ const Report = (ogProps: any) => {
               {markerLocations.map((loc: any, index: number) => {
                 return (
                   <Marker
+                    key={`${loc[0]}${loc[1]}`}
                     title={`${index}`}
                     draggable={true}
                     name={`${index}`}

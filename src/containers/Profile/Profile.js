@@ -11,6 +11,7 @@ import {
   CardMedia,
   Grid,
   Paper,
+  CardActionArea,
 } from "@material-ui/core";
 import { LocalPhone, LocationOn } from "@material-ui/icons";
 import Header from "../../components/Header/Header";
@@ -36,22 +37,21 @@ function Profile() {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            padding: "30px 30px",
           }}
         >
           <Card variant="outlined">
             <CardContent>
-              <Typography variant="h4">
+              <Typography variant="h6">
                 {profileState.profile && profileState.profile.group_name}
               </Typography>
-              <Typography variant="h5">
+              <Typography variant="body1">
                 {profileState.profile && profileState.profile.representative}
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 <LocalPhone />
                 {profileState.profile && profileState.profile.contact}
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="body1">
                 <LocationOn />
                 {profileState.profile && profileState.profile.locality.place}
               </Typography>
@@ -61,7 +61,9 @@ function Profile() {
                   profileState.profile.social_service.map(
                     (social_service, key) => {
                       return (
-                        <span className={classes.tag}>{social_service}</span>
+                        <span key={`${social_service}`} className={classes.tag}>
+                          {social_service}
+                        </span>
                       );
                     }
                   )}
@@ -69,34 +71,42 @@ function Profile() {
             </CardContent>
           </Card>
         </div>
+
+        <div
+          style={{
+            marginTop: "30px",
+            marginBottom: "30px",
+          }}
+        >
+          {profileState.profile &&
+            profileState.profile.helps.map(help => {
+              return (
+                <div key={help._id} style={{ marginTop: "18px" }}>
+                  <Card elevation={4}>
+                    <CardMedia
+                      style={{
+                        height: "250px",
+                      }}
+                      image={help.photo}
+                    />
+                    <CardContent>
+                      <Typography variant="h6">{help.helpId.place}</Typography>
+                      {/* <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          component="p"
+                          >
+                          Lizards are a widespread group of squamate reptiles,
+                          with over 6,000 species, ranging across all continents
+                          except Antarctica
+                        </Typography> */}
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })}
+        </div>
       </Container>
-      <div
-        style={{
-          marginTop: "30px",
-          marginBottom: "30px",
-          padding: "30px 30px",
-        }}
-      >
-        {/* Maps Image url to Card Media */}
-        {/*Prints caption on screen*/}
-        <Grid container spacing={3}>
-          {/* {profileState.profile && profileState.profile.helps.map((help,key) => {
-        return(
-          <Grid item xs={12} sm={4}>
-            <Card>
-            
-              <CardMedia
-                style={{ height: 0, paddingTop: "56.25%" }}
-                image={help.imageUrl}
-                title="Donation Images"
-              />
-              <Typography>{help.caption}</Typography> 
-            </Card>
-          </Grid>
-        );
-      })} */}
-        </Grid>
-      </div>
     </div>
   );
 }

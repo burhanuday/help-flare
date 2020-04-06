@@ -32,6 +32,7 @@ function App() {
             <Tutorial />
           </Route>
         )}
+
         {!loggedIn && (
           <Route path="/auth">
             <Auth />

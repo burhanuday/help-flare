@@ -2,27 +2,34 @@ import React, { useState } from "react";
 import { Container, Button } from "@material-ui/core";
 import Page from "./Page";
 import { Pagination } from "@material-ui/lab";
+import help from "../../assets/help.jpg";
+import upload from "../../assets/upload.jpg";
+import marker2 from "../../assets/marker2.png";
 
 const pages = [
   {
     title: "Report",
     description:
       "Report an area by selecting points on screen and mention the help needed",
+    image: marker2,
   },
   {
     title: "Help",
     description:
       "NGOs and social service groups can view the help required by registering and then going to the help section",
+    image: help,
   },
-  {
+ /*  {
     title: "View Help",
     description:
       "Press the marked area to claim an area and provide the help requested",
-  },
+    image: help,
+  }, */
   {
     title: "Upload a photo",
     description:
-      "Upload a photo of the help provided for verification purposes",
+      "NGOs and groups upload a photo of the help provided for verification purposes",
+    image: upload,
   },
 ];
 
@@ -41,6 +48,7 @@ const Tutorial = () => {
               pageNumber={index + 1}
               title={page.title}
               description={page.description}
+              image={page.image}
             />
           ))}
 

@@ -44,7 +44,17 @@ const Header: React.FC<Props> = props => {
             </Link>
             <Button
               onClick={() => {
-                localStorage.clear();
+                const keys = localStorage.length;
+                for (let i = 0; i < keys; i++) {
+                  const key = localStorage.key(i);
+                  if (
+                    key &&
+                    key !== "firstTutorial" &&
+                    key !== "tutorialComplete"
+                  ) {
+                    localStorage.removeItem(key);
+                  }
+                }
                 window.location.reload();
               }}
               color="inherit"

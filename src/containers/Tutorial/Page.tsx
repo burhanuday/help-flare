@@ -26,7 +26,7 @@ const Page = (props: any) => {
             boxSizing: "border-box",
           }}
           alt="img-tutorial"
-          src="https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=889&q=80"
+          src={props.image}
         />
         <div
           style={{

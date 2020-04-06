@@ -10,6 +10,9 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
+// version
+const cacheName = "v2";
+
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
@@ -60,19 +63,6 @@ export function register(config?: Config) {
 }
 
 function registerValidSW(swUrl: string, config?: Config) {
-  /* navigator.serviceWorker.addEventListener("activate", function (event ) {
-    event.waitUntil(
-      caches.keys().then(function (cacheNames) {
-        return Promise.all(
-          cacheNames.map(function (cacheName) {
-            if ("v1" !== cacheName && cacheName.startsWith("gih-cache")) {
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-    );
-  }); */
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -92,18 +82,29 @@ function registerValidSW(swUrl: string, config?: Config) {
                   "tabs for this page are closed. See https://bit.ly/CRA-PWA."
               );
 
+              // Call Activate Event
+              navigator.serviceWorker.addEventListener("activate", e => {
+                // console.log("Service Worker: Activated");
+                // Remove unwanted caches
+                // @ts-ignore
+                e.waitUntil(
+                  caches.keys().then(cacheNames => {
+                    return Promise.all(
+                      cacheNames.map(cache => {
+                        if (cache !== cacheName) {
+                          // console.log("Service Worker: Clearing Old Cache");
+                          return caches.delete(cache);
+                        }
+                      })
+                    );
+                  })
+                );
+              });
+
               alert(
                 "An update is available and will be used when all " +
                   "tabs for this page are closed"
               );
-
-              /*   if ("serviceWorker" in navigator) {
-                caches.keys().then(function (cacheNames) {
-                  cacheNames.forEach(function (cacheName) {
-                    caches.delete(cacheName);
-                  });
-                });
-              } */
 
               // Execute callback
               if (config && config.onUpdate) {
