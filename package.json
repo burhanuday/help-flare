@@ -39,6 +39,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:dev": "dotenv -e .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy:firebase": "firebase deploy --only hosting:social-connect-now",
@@ -60,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv-cli": "^3.1.0",
     "prettier": "^2.0.2"
   }
 }

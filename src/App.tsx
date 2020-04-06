@@ -12,6 +12,7 @@ import Help from "./containers/Help/Help";
 import Profile from "./containers/Profile/Profile";
 import VerifyHelp from "./containers/VerifyHelp/VerifyHelp";
 import { ProfileContext } from "./contexts/ProfileContext";
+import Tutorial from "./containers/Tutorial/Tutorial";
 
 function App() {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -26,6 +27,11 @@ function App() {
   return (
     <Router>
       <Switch>
+        {!localStorage.getItem("firstTutorial") && (
+          <Route path="/">
+            <Tutorial />
+          </Route>
+        )}
         {!loggedIn && (
           <Route path="/auth">
             <Auth />

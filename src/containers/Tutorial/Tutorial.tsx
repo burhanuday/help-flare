@@ -1,7 +1,100 @@
-import React from "react";
+import React, { useState } from "react";
+import { Container, Button } from "@material-ui/core";
+import Page from "./Page";
+import { Pagination } from "@material-ui/lab";
+
+const pages = [
+  {
+    title: "Report",
+    description:
+      "Report an area by selecting points on screen and mention the help needed",
+  },
+  {
+    title: "Help",
+    description:
+      "NGOs and social service groups can view the help required by registering and then going to the help section",
+  },
+  {
+    title: "View Help",
+    description:
+      "Press the marked area to claim an area and provide the help requested",
+  },
+  {
+    title: "Upload a photo",
+    description:
+      "Upload a photo of the help provided for verification purposes",
+  },
+];
 
 const Tutorial = () => {
-  return <div>Tutorial</div>;
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  return (
+    <div>
+      <Container maxWidth="sm">
+        <div
+          style={{ height: "100vh", position: "relative", overflow: "hidden" }}
+        >
+          {pages.map((page, index) => (
+            <Page
+              currentPage={currentPage}
+              pageNumber={index + 1}
+              title={page.title}
+              description={page.description}
+            />
+          ))}
+
+          <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              bottom: 0,
+              width: "100%",
+              justifyContent: "space-between",
+              height: "10vh",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              disabled={currentPage === 1}
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              variant="text"
+            >
+              Prev
+            </Button>
+            <Pagination
+              hideNextButton
+              hidePrevButton
+              page={currentPage}
+              count={pages.length}
+              variant="outlined"
+              color="primary"
+              onChange={(_, page) => {
+                setCurrentPage(page);
+              }}
+            />
+            <Button
+              onClick={() => {
+                if (currentPage < pages.length) {
+                  setCurrentPage(currentPage + 1);
+                } else {
+                  localStorage.setItem("firstTutorial", "done");
+                  window.location.reload();
+                }
+              }}
+              variant="text"
+            >
+              {currentPage === pages.length ? "Done" : "Next"}
+            </Button>
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
 };
 
 export default Tutorial;

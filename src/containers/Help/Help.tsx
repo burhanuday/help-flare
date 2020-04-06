@@ -323,7 +323,7 @@ const MapContainer = (props: any) => {
 };
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ",
+  apiKey: process.env.REACT_APP_MAP_KEY as string,
 })(
   geolocated({
     positionOptions: {

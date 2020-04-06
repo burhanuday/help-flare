@@ -62,7 +62,7 @@ const VerifyHelp: React.FC = () => {
             // center={`${latestClaim.area.coordinates[0][0][0]},${latestClaim.area.coordinates[0][0][1]}`}
             zoom="17"
             size="400x400"
-            apiKey="AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ"
+            apiKey={process.env.REACT_APP_MAP_KEY as string}
           >
             <Path
               color="0x00ff00ff"
