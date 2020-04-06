@@ -23,9 +23,6 @@ const steps = [
   },
 ];
 
-let socket: SocketIOClient.Socket;
-socket = socketIOClient(process.env.REACT_APP_API_URL as string);
-
 const Report = (ogProps: any) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
@@ -46,7 +43,7 @@ const Report = (ogProps: any) => {
     ? true
     : false;
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("sendign re");
     if (center && socket) {
       socket.emit("new_help", {
@@ -54,24 +51,26 @@ const Report = (ogProps: any) => {
         lng: center.lng,
       });
     }
-  }, [center]);
+  }, [center]); */
 
   useEffect(() => {
+    let socket: SocketIOClient.Socket;
     if (ogProps.isGeolocationAvailable && ogProps.isGeolocationEnabled) {
       if (
         ogProps.coords &&
         ogProps.coords.latitude &&
-        ogProps.coords.longitude &&
-        socket
+        ogProps.coords.longitude
       ) {
+        socket = socketIOClient(process.env.REACT_APP_API_URL as string);
+        console.log(socket);
         console.log("eitted", socket);
-        socket.emit("new_help", {
-          lat: ogProps.coords.latitude,
-          lng: ogProps.coords.longitude,
-        });
         socket.on("helps", (data: any) => {
           console.log("from gelps", data);
           setData(data);
+        });
+        socket.emit("new_help", {
+          lat: ogProps.coords.latitude,
+          lng: ogProps.coords.longitude,
         });
       }
     }

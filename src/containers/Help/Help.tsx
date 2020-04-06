@@ -16,6 +16,7 @@ import {
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { useHistory } from "react-router-dom";
 
 const MapContainer = (props: any) => {
   const [data, setData] = useState<any>([]);
@@ -30,11 +31,17 @@ const MapContainer = (props: any) => {
   const { profileState, profileActions } = useContext(ProfileContext);
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
+  let history = useHistory();
+
   useEffect(() => {
     let socket: SocketIOClient.Socket;
     if (props.isGeolocationAvailable && props.isGeolocationEnabled) {
       if (props.coords && props.coords.latitude && props.coords.longitude) {
         socket = socketIOClient(process.env.REACT_APP_API_URL as string);
+        socket.on("helps", (data: any) => {
+          console.log(data);
+          setData(data);
+        });
         socket.emit("new_help", {
           lat: props.coords.latitude,
           lng: props.coords.longitude,
@@ -49,10 +56,6 @@ const MapContainer = (props: any) => {
                 lng: props.coords.longitude,
               });
             }, 4000); */
-        socket.on("helps", (data: any) => {
-          console.log(data);
-          setData(data);
-        });
       }
     }
     return () => {
@@ -118,6 +121,25 @@ const MapContainer = (props: any) => {
                       showConfirmDialog: false,
                     });
                     profileActions.fetchProfile();
+                    setTimeout(() => {
+                      history.replace("/home");
+                    }, 4000);
+                    /*  const socket = socketIOClient(
+                      process.env.REACT_APP_API_URL as string
+                    );
+                    socket.on("helps", (data: any) => {
+                      console.log("tri");
+                      console.log(data);
+                      setData(data);
+                      socket.close();
+                    });
+                    setTimeout(() => {
+                      console.log("se");
+                      socket.emit("new_help", {
+                        lat: props.coords.latitude,
+                        lng: props.coords.longitude,
+                      });
+                    }, 2000); */
                   })
                   .catch(error => {
                     console.log(error);
@@ -280,6 +302,7 @@ const MapContainer = (props: any) => {
               onClick={(a: any, b: any, c: any) => {
                 console.log(a, b, c);
                 const latLng = a.paths[0];
+                b.map.setZoom(16);
                 setCenter({
                   lat: latLng.lat,
                   lng: latLng.lng,

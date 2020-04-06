@@ -10,11 +10,17 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import { Alert } from "@material-ui/lab";
+import { StaticGoogleMap, Marker, Path } from "react-static-google-map";
 
 const VerifyHelp: React.FC = () => {
   const [file, setFile] = useState<File>();
   const { profileState, profileActions } = useContext(ProfileContext);
-  console.log("profile state", profileState);
+  const [error, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const latestClaim = profileState?.profile?.claims[0];
 
   return (
     <div>
@@ -29,11 +35,47 @@ const VerifyHelp: React.FC = () => {
           <Typography variant="h6" gutterBottom>
             Upload a picture of the help you provided
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" gutterBottom>
             This picture will be displayed publicly on your profile. <br />
-            This step is only for verification purposes. <br /> You will not be
-            able to make any other claims if you do not do this step
+            This step is for verification purposes. <br /> You will not be able
+            to make any other claims if you do not do this step
           </Typography>
+          {error && (
+            <Alert variant="filled" severity="error">
+              {error}
+            </Alert>
+          )}
+
+          {successMessage && (
+            <Alert variant="filled" severity="success">
+              {successMessage}
+            </Alert>
+          )}
+
+          <Typography variant="body2">Place: {latestClaim.place} </Typography>
+          <Typography variant="body2">
+            Reported by: {latestClaim.reported_by}
+          </Typography>
+          <Typography variant="body2">Contact: {latestClaim.phone} </Typography>
+
+          <StaticGoogleMap
+            // center={`${latestClaim.area.coordinates[0][0][0]},${latestClaim.area.coordinates[0][0][1]}`}
+            zoom="17"
+            size="400x400"
+            apiKey="AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ"
+          >
+            <Path
+              color="0x00ff00ff"
+              weight="5"
+              points={latestClaim.area.coordinates[0].map(
+                (coordinate: any) => ({
+                  lat: coordinate[0],
+                  lng: coordinate[1],
+                })
+              )}
+            />
+          </StaticGoogleMap>
+
           <div
             style={{
               display: "flex",
@@ -42,7 +84,7 @@ const VerifyHelp: React.FC = () => {
               marginBottom: "30px",
             }}
           >
-            <Button variant="contained" component="label">
+            <Button disabled={loading} variant="contained" component="label">
               Upload File
               <input
                 accept="image/*"
@@ -67,8 +109,10 @@ const VerifyHelp: React.FC = () => {
           </div>
           <Button
             onClick={() => {
+              setLoading(true);
               const formData = new FormData();
-              // formData.append("photo", file, file?.name || "file");
+              // @ts-ignore
+              formData.append("photo", file, file?.name || "file");
               axios
                 .post(
                   `/help/verify?helpId=${profileState.profile.claims[0]._id}`,
@@ -76,13 +120,26 @@ const VerifyHelp: React.FC = () => {
                 )
                 .then(response => {
                   console.log(response);
-                  // profileActions.fetchProfile();
+                  if (response.data.error === 0) {
+                    setSuccessMessage(response.data.message);
+                    setErrorMessage("");
+                    setFile(undefined);
+                    setTimeout(() => {
+                      profileActions.fetchProfile();
+                    }, 2000);
+                  } else {
+                    setSuccessMessage("");
+                    setErrorMessage(response.data.message);
+                  }
                 })
                 .catch(error => {
                   console.log(error);
-                });
+                  setSuccessMessage("");
+                  setErrorMessage("There was an error!");
+                })
+                .finally(() => setLoading(false));
             }}
-            disabled={!file}
+            disabled={!file || loading}
             variant="contained"
             color="primary"
           >

@@ -60,6 +60,19 @@ export function register(config?: Config) {
 }
 
 function registerValidSW(swUrl: string, config?: Config) {
+  /* navigator.serviceWorker.addEventListener("activate", function (event ) {
+    event.waitUntil(
+      caches.keys().then(function (cacheNames) {
+        return Promise.all(
+          cacheNames.map(function (cacheName) {
+            if ("v1" !== cacheName && cacheName.startsWith("gih-cache")) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+    );
+  }); */
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -78,6 +91,19 @@ function registerValidSW(swUrl: string, config?: Config) {
                 "New content is available and will be used when all " +
                   "tabs for this page are closed. See https://bit.ly/CRA-PWA."
               );
+
+              alert(
+                "An update is available and will be used when all " +
+                  "tabs for this page are closed"
+              );
+
+              /*   if ("serviceWorker" in navigator) {
+                caches.keys().then(function (cacheNames) {
+                  cacheNames.forEach(function (cacheName) {
+                    caches.delete(cacheName);
+                  });
+                });
+              } */
 
               // Execute callback
               if (config && config.onUpdate) {
@@ -106,7 +132,10 @@ function registerValidSW(swUrl: string, config?: Config) {
 function checkValidServiceWorker(swUrl: string, config?: Config) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl, {
-    headers: { "Service-Worker": "script" },
+    headers: {
+      "Service-Worker": "script",
+      "cache-control": "max-age=0,no-cache,no-store,must-revalidate",
+    },
   })
     .then(response => {
       // Ensure service worker exists, and that we really are getting a JS file.

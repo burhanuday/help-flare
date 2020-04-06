@@ -9079,6 +9079,13 @@ react-places-autocomplete@^7.2.1:
     lodash.debounce "^4.0.8"
     prop-types "^15.5.8"
 
+react-promise@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-promise/-/react-promise-2.1.0.tgz#8a8d590b4ec9dc8fca428859bafe65c6f04e151e"
+  integrity sha512-j9B97+RWlC/OS36asazn1mn24F+xfi5x6PP6b/vq1TyKZ9CfI8mFJGIvqEJCngO8orC2+OaUM4ZlvQiEsY19bQ==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-proptype-conditional-require@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/react-proptype-conditional-require/-/react-proptype-conditional-require-1.0.4.tgz#69c2d5741e6df5e08f230f36bbc2944ee1222555"
@@ -9173,6 +9180,15 @@ react-scripts@3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
+react-static-google-map@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/react-static-google-map/-/react-static-google-map-0.5.4.tgz#37e956cca1479a2989bdb9f6f5f0fc01c37dc60c"
+  integrity sha512-0Yj3QbsGTp1nyPgfsYvf40PgxAyv6H6CH3HWN3h64au3ClLbPC3xjnWW5MSCbLmv8DLX0EkbqrR3jyS3Bg2iuA==
+  dependencies:
+    invariant "^2.2.2"
+    react ">=0.14.x"
+    react-promise "^2.0.0"
+
 react-transition-group@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.3.0.tgz#fea832e386cf8796c58b61874a3319704f5ce683"
@@ -9183,7 +9199,7 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@^16.13.1:
+react@>=0.14.x, react@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
