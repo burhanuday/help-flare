@@ -52,11 +52,11 @@ const VerifyHelp: React.FC = () => {
             </Alert>
           )}
 
-          <Typography variant="body2">Place: {latestClaim.place} </Typography>
-          <Typography variant="body2">
+          <Typography variant="body1">Place: {latestClaim.place} </Typography>
+          <Typography variant="body1">
             Reported by: {latestClaim.reported_by}
           </Typography>
-          <Typography variant="body2">Contact: {latestClaim.phone} </Typography>
+          <Typography variant="body1">Contact: {latestClaim.phone} </Typography>
 
           <StaticGoogleMap
             // center={`${latestClaim.area.coordinates[0][0][0]},${latestClaim.area.coordinates[0][0][1]}`}
@@ -75,17 +75,21 @@ const VerifyHelp: React.FC = () => {
               )}
             />
           </StaticGoogleMap>
+          <Typography style={{ marginTop: "20px" }} variant="h6" gutterBottom>
+            Verify:
+          </Typography>
+          <br />
+          <Typography variant="body1">Select image: </Typography>
 
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              marginTop: "20px",
               marginBottom: "30px",
             }}
           >
             <Button disabled={loading} variant="contained" component="label">
-              Upload File
+              Select image
               <input
                 accept="image/*"
                 type="file"
