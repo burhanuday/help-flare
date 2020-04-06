@@ -26,6 +26,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-geolocated": "^3.0.1",
+    "react-image-file-resizer": "^0.2.1",
     "react-joyride": "^2.2.1",
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.1.2",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { Map, GoogleApiWrapper, Polygon, InfoWindow } from "google-maps-react";
 import Header from "../../components/Header/Header";
 import socketIOClient from "socket.io-client";
@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 const MapContainer = (props: any) => {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
   const [infoWindow, setInfoWindow] = useState<any>({
     visible: false,
     data: null,
@@ -33,29 +34,28 @@ const MapContainer = (props: any) => {
 
   let history = useHistory();
 
+  const getData = useCallback(() => {
+    console.log("from callback");
+    socket?.emit("new_help", {
+      lat: props.coords.latitude,
+      lng: props.coords.longitude,
+    });
+  }, [props.coords, socket]);
+
   useEffect(() => {
     let socket: SocketIOClient.Socket;
     if (props.isGeolocationAvailable && props.isGeolocationEnabled) {
       if (props.coords && props.coords.latitude && props.coords.longitude) {
         socket = socketIOClient(process.env.REACT_APP_API_URL as string);
+        setSocket(socket);
         socket.on("helps", (data: any) => {
-          console.log(data);
+          console.log("data from socket", data);
           setData(data);
         });
         socket.emit("new_help", {
           lat: props.coords.latitude,
           lng: props.coords.longitude,
         });
-        /*  socket.emit("new_help", {
-              lat: props.coords.latitude,
-              lng: props.coords.longitude,
-            }); */
-        /* setInterval(() => {
-              socket.emit("new_help", {
-                lat: props.coords.latitude,
-                lng: props.coords.longitude,
-              });
-            }, 4000); */
       }
     }
     return () => {
@@ -72,7 +72,7 @@ const MapContainer = (props: any) => {
         width: "100%",
       }}
     >
-      <Header />
+      <Header title="Help" />
       {infoWindow.showConfirmDialog && (
         <Dialog
           style={{
@@ -114,32 +114,22 @@ const MapContainer = (props: any) => {
                 axios
                   .post(`/help?helpId=${infoWindow.data._id}`)
                   .then(response => {
-                    console.log("response", response);
-                    setInfoWindow({
-                      ...infoWindow,
-                      result: response.data.message,
-                      showConfirmDialog: false,
-                    });
-                    profileActions.fetchProfile();
-                    setTimeout(() => {
-                      history.replace("/home");
-                    }, 4000);
-                    /*  const socket = socketIOClient(
-                      process.env.REACT_APP_API_URL as string
-                    );
-                    socket.on("helps", (data: any) => {
-                      console.log("tri");
-                      console.log(data);
-                      setData(data);
-                      socket.close();
-                    });
-                    setTimeout(() => {
-                      console.log("se");
-                      socket.emit("new_help", {
-                        lat: props.coords.latitude,
-                        lng: props.coords.longitude,
+                    if (response.data.error === 0) {
+                      console.log("response", response);
+                      getData();
+                      setInfoWindow({
+                        ...infoWindow,
+                        result: response.data.message,
+                        showConfirmDialog: false,
                       });
-                    }, 2000); */
+                      profileActions.fetchProfile();
+                      setTimeout(() => {
+                        history.replace("/home");
+                      }, 3000);
+                    }
+                    /* setTimeout(() => {
+                      history.replace("/home");
+                    }, 4000); */
                   })
                   .catch(error => {
                     console.log(error);
@@ -215,6 +205,9 @@ const MapContainer = (props: any) => {
               <Typography variant="body2">
                 Help required: {infoWindow.data.type_of_help.join(", ")}
               </Typography>
+              <Typography variant="body2">
+                Place: {infoWindow.data.place}
+              </Typography>
               {infoWindow.data.status === 1 && (
                 <Typography variant="h6">
                   Helper is already assigned for this area
@@ -289,7 +282,7 @@ const MapContainer = (props: any) => {
             lat: coordinate[0],
             lng: coordinate[1],
           }));
-          const color = d.status ? "green" : "blue";
+          const color = d.status === 1 ? "green" : "blue";
           return (
             <Polygon
               key={`${coordinates[0][0]}${coordinates[0][1]}`}

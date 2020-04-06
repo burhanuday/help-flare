@@ -25,7 +25,7 @@ const VerifyHelp: React.FC = () => {
   return (
     <div>
       {console.log(profileState)}
-      <Header />
+      <Header title="Verify" />
       <Container maxWidth="sm">
         <div
           style={{

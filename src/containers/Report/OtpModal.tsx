@@ -63,6 +63,7 @@ const OtpModal = (props: any) => {
               .then(response => {
                 console.log("response", response);
                 if (response.data.error === 0) {
+                  props.getData();
                   props.setSuccessMessage(
                     "Phone number verified. Report submitted successfully!"
                   );

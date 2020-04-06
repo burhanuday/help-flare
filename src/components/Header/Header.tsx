@@ -12,6 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 
 interface Props {
   showBackButton?: boolean;
+  title?: string;
 }
 
 const Header: React.FC<Props> = props => {
@@ -32,7 +33,9 @@ const Header: React.FC<Props> = props => {
           to="/home"
           style={{ flexGrow: 1, color: "white", textDecoration: "none" }}
         >
-          <Typography variant="h6">Social Connect</Typography>
+          <Typography variant="h6">
+            {props.title || "Social Connect"}
+          </Typography>
         </Link>
         {loggedIn && (
           <>

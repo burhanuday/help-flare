@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Header from "../../components/Header/Header";
 import { Grid, useTheme, useMediaQuery, Button } from "@material-ui/core";
 import { geolocated, GeolocatedProps } from "react-geolocated";
@@ -50,6 +50,7 @@ const Report = (ogProps: any) => {
     result: null,
   });
   const [center, setCenter] = useState<any>(null);
+  const [socket, setSocket] = useState<SocketIOClient.Socket>();
   const [markerLocations, setMarkerLocations] = useState<any>([]);
   const [mapsObject, setMapsObject] = useState<any>(undefined);
   const [showZoomAlert, setShowZoomAlert] = useState<boolean>(false);
@@ -57,15 +58,13 @@ const Report = (ogProps: any) => {
     ? true
     : false;
 
-  /* useEffect(() => {
-    console.log("sendign re");
-    if (center && socket) {
-      socket.emit("new_help", {
-        lat: center.lat,
-        lng: center.lng,
-      });
-    }
-  }, [center]); */
+  const getData = useCallback(() => {
+    console.log("from callback");
+    socket?.emit("new_help", {
+      lat: ogProps.coords.latitude,
+      lng: ogProps.coords.longitude,
+    });
+  }, [ogProps.coords, socket]);
 
   useEffect(() => {
     let socket: SocketIOClient.Socket;
@@ -78,6 +77,7 @@ const Report = (ogProps: any) => {
         socket = socketIOClient(process.env.REACT_APP_API_URL as string);
         console.log(socket);
         console.log("eitted", socket);
+        setSocket(socket);
         socket.on("helps", (data: any) => {
           console.log("from gelps", data);
           setData(data);
@@ -112,7 +112,7 @@ const Report = (ogProps: any) => {
 
   return (
     <div>
-      <Header />
+      <Header title="Report" />
       {!tutorialComplete && (
         <Joyride
           beaconComponent={Beacon as React.ElementType<BeaconRenderProps>}
@@ -138,6 +138,7 @@ const Report = (ogProps: any) => {
             setMarkerLocations={setMarkerLocations}
             mapsObject={mapsObject}
             markerLocations={markerLocations}
+            getData={getData}
           />
         </Grid>
         <Grid item xs={12} md={8} lg={9}>

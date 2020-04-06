@@ -32,6 +32,7 @@ const Form = (ogProps: any) => {
           visible={otpModal}
           setOtpModal={setOtpModal}
           setSuccessMessage={setSuccessMessage}
+          getData={ogProps.getData}
         />
       )}
       <Formik

@@ -31,7 +31,7 @@ function Profile() {
   // }
   return (
     <div>
-      <Header />
+      <Header title="Profile" />
       <Container maxWidth="sm">
         <div
           style={{
