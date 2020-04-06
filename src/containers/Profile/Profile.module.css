@@ -1,0 +1,13 @@
+.tags_wrap {
+  padding-top: 20px;
+}
+
+.tags_wrap span.tag {
+  background: #ffffff;
+  padding: 10px 15px;
+  display: inline-block;
+  border: 1px solid;
+  border-radius: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
