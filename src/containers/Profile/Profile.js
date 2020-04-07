@@ -53,7 +53,9 @@ function Profile() {
               </Typography>
               <Typography variant="body1">
                 <LocationOn />
-                {profileState.profile && profileState.profile.locality.place}
+                {profileState.profile &&
+                  profileState.profile.locality &&
+                  profileState.profile.locality.place}
               </Typography>
 
               <div className={classes.tags_wrap}>
