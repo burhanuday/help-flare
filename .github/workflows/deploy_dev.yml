@@ -16,7 +16,7 @@ jobs:
       with:
         node-version: '12.x'
     - run: yarn
-    - run: yarn build:dev
+    - run: CI=false yarn build:dev
     - uses: w9jds/firebase-action@master
       with:
         args: deploy --only hosting:social-connect-now
