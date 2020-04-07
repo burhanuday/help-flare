@@ -82,7 +82,7 @@ function registerValidSW(swUrl: string, config?: Config) {
                   "tabs for this page are closed. See https://bit.ly/CRA-PWA."
               );
 
-              // Call Activate Event
+            /*   // Call Activate Event
               navigator.serviceWorker.addEventListener("activate", e => {
                 // console.log("Service Worker: Activated");
                 // Remove unwanted caches
@@ -99,7 +99,7 @@ function registerValidSW(swUrl: string, config?: Config) {
                     );
                   })
                 );
-              });
+              }); */
 
               alert(
                 "An update is available and will be used when all " +
