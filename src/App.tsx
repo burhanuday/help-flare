@@ -42,12 +42,12 @@ function App() {
     profileActions.fetchProfile();
     sendEvent(FIREBASE_APP_START);
 
-    window.addEventListener("beforeinstallprompt", e => {
+   /*  window.addEventListener("beforeinstallprompt", e => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event so it can be triggered later.
       localStorage.setItem("a2hs", JSON.stringify(e));
-    });
+    }); */
   }, []);
 
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;

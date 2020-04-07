@@ -9,14 +9,14 @@ const Home = (props: any) => {
   const { profileState, profileActions } = useContext(ProfileContext);
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
-  useEffect(() => {
+  /* useEffect(() => {
     let prompt = localStorage.getItem("a2hs");
     if (prompt) {
       prompt = JSON.parse(prompt);
       // @ts-ignore
       prompt.prompt();
     }
-  }, []);
+  }, []); */
 
   return (
     <div>
