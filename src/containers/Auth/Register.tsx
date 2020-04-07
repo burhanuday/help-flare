@@ -39,6 +39,9 @@ const schema = yup.object({
 });
 
 const Register = (props: any) => {
+  const APP_NAME = process.env.REACT_APP_NAME as string;
+  const DEV = process.env.REACT_APP_DEVELOPER as string;
+
   const [geoData, setGeoData] = useState<GeoData>({
     latitude: "",
     longitude: "",
@@ -66,7 +69,7 @@ const Register = (props: any) => {
             padding: "30px 30px",
           }}
         >
-          <Typography variant="h4">Social Connect</Typography>
+          <Typography variant="h4">{APP_NAME}</Typography>
           <Typography variant="body2" gutterBottom>
             Registration for NGOs or groups interested in helping
           </Typography>

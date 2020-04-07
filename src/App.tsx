@@ -13,6 +13,8 @@ import Profile from "./containers/Profile/Profile";
 import VerifyHelp from "./containers/VerifyHelp/VerifyHelp";
 import { ProfileContext } from "./contexts/ProfileContext";
 import Tutorial from "./containers/Tutorial/Tutorial";
+import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
+import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 
 function App() {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -53,6 +55,12 @@ function App() {
             <VerifyHelp />
           </Route>
         )}
+        <Route path="/privacy-policy">
+          <PrivacyPolicy />
+        </Route>
+        <Route path="/terms-and-conditions">
+          <TermsAndConditions />
+        </Route>
         <Route path="/report">
           <Report />
         </Route>

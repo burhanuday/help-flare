@@ -16,6 +16,8 @@ interface Props {
 }
 
 const Header: React.FC<Props> = props => {
+  const APP_NAME = process.env.REACT_APP_NAME as string;
+  const DEV = process.env.REACT_APP_DEVELOPER as string;
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
   let location = useLocation();
 
@@ -33,9 +35,7 @@ const Header: React.FC<Props> = props => {
           to="/home"
           style={{ flexGrow: 1, color: "white", textDecoration: "none" }}
         >
-          <Typography variant="h6">
-            {props.title || "Social Connect"}
-          </Typography>
+          <Typography variant="h6">{props.title || APP_NAME}</Typography>
         </Link>
         {loggedIn && (
           <>

@@ -26,6 +26,9 @@ const schema = yup.object({
 });
 
 const Login = (props: any) => {
+  const APP_NAME = process.env.REACT_APP_NAME as string;
+  const DEV = process.env.REACT_APP_DEVELOPER as string;
+
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [otpModal, setOtpModal] = useState(false);
@@ -47,7 +50,7 @@ const Login = (props: any) => {
             padding: "30px 30px",
           }}
         >
-          <Typography variant="h4">Social Connect</Typography>
+          <Typography variant="h4">{APP_NAME}</Typography>
           <Typography variant="body2" gutterBottom>
             Login for helper groups
           </Typography>
