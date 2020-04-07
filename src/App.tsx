@@ -17,7 +17,7 @@ import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
-import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
+// import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
@@ -36,10 +36,18 @@ firebase.analytics();
 function App() {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
   const { profileState, profileActions } = useContext(ProfileContext);
+  // let deferredPrompt;
 
   useEffect(() => {
     profileActions.fetchProfile();
     sendEvent(FIREBASE_APP_START);
+
+    window.addEventListener("beforeinstallprompt", e => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      localStorage.setItem("a2hs", JSON.stringify(e));
+    });
   }, []);
 
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
@@ -54,7 +62,7 @@ function App() {
 
   return (
     <>
-      <AddToHomeScreen startDelay={1} />
+      {/* <AddToHomeScreen startDelay={1} /> */}
       <Router>
         <Switch>
           {!localStorage.getItem("firstTutorial") && (

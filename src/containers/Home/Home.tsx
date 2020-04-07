@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import { Container, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -8,6 +8,15 @@ const Home = (props: any) => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
   const { profileState, profileActions } = useContext(ProfileContext);
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
+
+  useEffect(() => {
+    let prompt = localStorage.getItem("a2hs");
+    if (prompt) {
+      prompt = JSON.parse(prompt);
+      // @ts-ignore
+      prompt.prompt();
+    }
+  }, []);
 
   return (
     <div>
