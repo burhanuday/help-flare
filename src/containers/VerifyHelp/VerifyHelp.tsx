@@ -46,17 +46,6 @@ const VerifyHelp: React.FC = () => {
             This step is for verification purposes. <br /> You will not be able
             to make any other claims if you do not do this step
           </Typography>
-          {error && (
-            <Alert variant="filled" severity="error">
-              {error}
-            </Alert>
-          )}
-
-          {successMessage && (
-            <Alert variant="filled" severity="success">
-              {successMessage}
-            </Alert>
-          )}
 
           <Typography variant="body1">Place: {latestClaim.place} </Typography>
           <Typography variant="body1">
@@ -66,7 +55,7 @@ const VerifyHelp: React.FC = () => {
 
           <StaticGoogleMap
             // center={`${latestClaim.area.coordinates[0][0][0]},${latestClaim.area.coordinates[0][0][1]}`}
-            zoom="17"
+            zoom="16"
             size="400x400"
             apiKey={process.env.REACT_APP_MAP_KEY as string}
           >
@@ -84,6 +73,18 @@ const VerifyHelp: React.FC = () => {
           <Typography style={{ marginTop: "20px" }} variant="h6" gutterBottom>
             Verify:
           </Typography>
+          <br />
+          {error && (
+            <Alert variant="filled" severity="error">
+              {error}
+            </Alert>
+          )}
+
+          {successMessage && (
+            <Alert variant="filled" severity="success">
+              {successMessage}
+            </Alert>
+          )}
           <br />
           <Typography variant="body1">Select image: </Typography>
 
