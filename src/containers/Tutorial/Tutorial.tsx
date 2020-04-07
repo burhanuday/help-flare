@@ -5,8 +5,15 @@ import { Pagination } from "@material-ui/lab";
 import help from "../../assets/help.jpg";
 import upload from "../../assets/upload.jpg";
 import marker2 from "../../assets/marker2.png";
+import hs from "../../assets/hs.png";
 
 const pages = [
+  {
+    title: "Add to home screen",
+    description:
+      "Add the app to home screen to get alerts about your reports and other important information",
+    image: hs,
+  },
   {
     title: "Report",
     description:
@@ -19,7 +26,7 @@ const pages = [
       "NGOs and social service groups can view the help required by registering and then going to the help section",
     image: help,
   },
- /*  {
+  /*  {
     title: "View Help",
     description:
       "Press the marked area to claim an area and provide the help requested",
