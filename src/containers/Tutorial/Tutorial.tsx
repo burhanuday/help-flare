@@ -6,13 +6,14 @@ import help from "../../assets/help.jpg";
 import upload from "../../assets/upload.jpg";
 import marker2 from "../../assets/marker2.png";
 import hs from "../../assets/hs.png";
+import sw2 from "../../assets/sw2.png";
 
 const pages = [
   {
     title: "Add to home screen",
     description:
-      "Add the app to home screen to get alerts about your reports and other important information",
-    image: hs,
+      "You can add the app to your home screen from the chrome menu. Get alerts about your reports and other important information",
+    image: sw2,
   },
   {
     title: "Report",
