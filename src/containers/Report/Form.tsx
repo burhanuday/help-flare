@@ -82,9 +82,7 @@ const Form = (ogProps: any) => {
                 formData.append("message", data.message);
                 formData.append(
                   "place",
-                  a[4].formatted_address ||
-                    a[3].formatted_address ||
-                    a[2].formatted_address ||
+                  a[2].formatted_address ||
                     a[1].formatted_address ||
                     a[0].formatted_address
                 );
