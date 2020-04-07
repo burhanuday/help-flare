@@ -41,15 +41,6 @@ function App() {
   useEffect(() => {
     profileActions.fetchProfile();
     sendEvent(FIREBASE_APP_START);
-
-   /*  // @ts-ignore
-    console.log(window.addToHomescreen);
-
-    // @ts-ignore
-    window.addToHomescreen({
-      startDelay: 1,
-      displayPace: 60,
-    }); */
   }, []);
 
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;

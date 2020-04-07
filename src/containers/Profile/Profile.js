@@ -85,7 +85,9 @@ function Profile() {
                       image={help.photo}
                     />
                     <CardContent>
-                      <Typography variant="h6">{help.helpId.place}</Typography>
+                      <Typography variant="h6">
+                        {help.helpId && help.helpId.place}
+                      </Typography>
                       {/* <Typography
                           variant="body2"
                           color="textSecondary"
