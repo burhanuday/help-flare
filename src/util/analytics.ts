@@ -1,4 +1,5 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/analytics";
 
 export const FIREBASE_APP_START = "FIREBASE_APP_START";
 export const FIREBASE_USER_REGISTERED = "FIREBASE_USER_REGISTERED";
