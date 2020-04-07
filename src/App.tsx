@@ -26,6 +26,14 @@ function App() {
 
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
+  function noop() {}
+
+  if (process.env.NODE_ENV !== "development") {
+    console.log = noop;
+    console.warn = noop;
+    console.error = noop;
+  }
+
   return (
     <Router>
       <Switch>
