@@ -17,7 +17,6 @@ import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
-//@ts-ignore
 import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
 
 const firebaseConfig = {
@@ -55,7 +54,7 @@ function App() {
 
   return (
     <>
-      <AddToHomeScreen />
+      <AddToHomeScreen startDelay={1} />
       <Router>
         <Switch>
           {!localStorage.getItem("firstTutorial") && (
