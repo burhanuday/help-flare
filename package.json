@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "dotenv -e .env.production CI=false react-scripts build",
+    "build": "dotenv -e .env.production react-scripts build",
     "build:dev": "dotenv -e .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
