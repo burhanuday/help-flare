@@ -4,6 +4,8 @@ import {
   Typography,
   Button,
   InputAdornment,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
@@ -45,6 +47,7 @@ const Register = (props: any) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [otpModal, setOtpModal] = useState(false);
+  const [agreedToConditions, setAgreedToConditions] = useState<boolean>(false);
 
   return (
     <div>
@@ -252,6 +255,25 @@ const Register = (props: any) => {
 
                 <div
                   style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Checkbox
+                    disabled={props.isSubmitting}
+                    checked={agreedToConditions}
+                    onChange={() => setAgreedToConditions(!agreedToConditions)}
+                    name="agreedToConditions"
+                  />
+                  <span>
+                    By registering you agree to the{" "}
+                    <Link to="/terms-and-conditions">terms and conditions</Link>{" "}
+                    and the <Link to="/privacy-policy">privacy policy</Link>
+                  </span>
+                </div>
+
+                <div
+                  style={{
                     marginTop: "15px",
                     display: "flex",
                     justifyContent: "space-between",
@@ -267,7 +289,7 @@ const Register = (props: any) => {
                     </Button>
                   </Link>
                   <Button
-                    disabled={props.isSubmitting}
+                    disabled={props.isSubmitting || !agreedToConditions}
                     type="submit"
                     variant="contained"
                     color="primary"
