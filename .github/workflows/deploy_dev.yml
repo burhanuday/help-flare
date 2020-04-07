@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-    - master
+    - dev
 
 jobs:
   firebase-deploy:
@@ -19,6 +19,6 @@ jobs:
     - run: yarn build
     - uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting:help-flare
+        args: deploy --only hosting:social-connect-now
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

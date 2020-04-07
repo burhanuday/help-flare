@@ -13,16 +13,12 @@ export const FIREBASE_HELP_ERROR = "FIREBASE_HELP_ERROR";
 export const FIREBASE_AUTH_ERROR = "FIREBASE_AUTH_ERROR";
 
 export const sendEvent = (eventName: string, data?: any) => {
-  // do something
-  // TODO only send events in prod
-
-  //   if (process.env.NODE_ENV !== "development") {
-  //   }
-
-  const analytics = firebase.analytics();
-  if (data) {
-    analytics.logEvent(eventName, data);
-  } else {
-    analytics.logEvent(eventName);
+  if (process.env.NODE_ENV !== "development") {
+    const analytics = firebase.analytics();
+    if (data) {
+      analytics.logEvent(eventName, data);
+    } else {
+      analytics.logEvent(eventName);
+    }
   }
 };
