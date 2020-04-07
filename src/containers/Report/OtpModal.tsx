@@ -16,11 +16,13 @@ import {
   FIREBASE_REPORT_CREATED,
   FIREBASE_REPORT_ERROR,
 } from "../../util/analytics";
+import { useHistory } from "react-router-dom";
 
 const OtpModal = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [otp, setOtp] = useState<any>("");
   const [otpError, setOtpError] = useState<string>("");
+  const history = useHistory();
 
   return (
     <Dialog
@@ -75,6 +77,9 @@ const OtpModal = (props: any) => {
                     "Phone number verified. Report submitted successfully!"
                   );
                   props.setOtpModal(false);
+                  setTimeout(() => {
+                    history.replace("/home");
+                  }, 3000);
                 } else {
                   setOtpError("There was an error");
                 }

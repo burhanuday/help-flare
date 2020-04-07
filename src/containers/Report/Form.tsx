@@ -105,9 +105,6 @@ const Form = (ogProps: any) => {
                       ogProps.setMarkerLocations([]);
                       setOtpModal(true);
                       actions.resetForm();
-                      setTimeout(() => {
-                        history.replace("/home");
-                      }, 3000);
                     } else if (response.data.error === 1) {
                       setErrorMessage(response.data.message);
                       setSuccessMessage("");
