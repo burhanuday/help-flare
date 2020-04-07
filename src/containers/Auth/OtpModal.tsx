@@ -16,11 +16,13 @@ import {
   sendEvent,
   FIREBASE_AUTH_ERROR,
 } from "../../util/analytics";
+import { useHistory } from "react-router-dom";
 
 const OtpModal = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [otp, setOtp] = useState<any>("");
   const [otpError, setOtpError] = useState<string>("");
+  let history = useHistory();
 
   return (
     <Dialog
@@ -73,6 +75,9 @@ const OtpModal = (props: any) => {
                   "OTP verified. You have been registered successfully!"
                 );
                 props.setOtpModal(false);
+                setTimeout(() => {
+                  history.replace("/auth");
+                }, 3000);
               })
               .catch(error => {
                 console.log(error);

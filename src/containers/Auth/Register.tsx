@@ -6,6 +6,7 @@ import {
   InputAdornment,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
@@ -293,14 +294,17 @@ const Register = (props: any) => {
                       Login instead
                     </Button>
                   </Link>
-                  <Button
-                    disabled={props.isSubmitting || !agreedToConditions}
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Register
-                  </Button>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {props.isSubmitting && <CircularProgress size={24} />}
+                    <Button
+                      disabled={props.isSubmitting}
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Register
+                    </Button>
+                  </div>
                 </div>
               </form>
             )}

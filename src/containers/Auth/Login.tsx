@@ -4,6 +4,7 @@ import {
   Typography,
   Button,
   InputAdornment,
+  CircularProgress,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Input from "../../components/Form/Input";
@@ -172,14 +173,17 @@ const Login = (props: any) => {
                       Register instead
                     </Button>
                   </Link>
-                  <Button
-                    disabled={props.isSubmitting}
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                  >
-                    Login
-                  </Button>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {props.isSubmitting && <CircularProgress size={24} />}
+                    <Button
+                      disabled={props.isSubmitting}
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                    >
+                      Login
+                    </Button>
+                  </div>
                 </div>
               </form>
             )}

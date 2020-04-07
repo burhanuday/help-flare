@@ -5,10 +5,11 @@ import axios from "../../axios/axios";
 import { Formik } from "formik";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { Alert } from "@material-ui/lab";
-import { InputAdornment, Button } from "@material-ui/core";
+import { InputAdornment, Button, CircularProgress } from "@material-ui/core";
 import * as yup from "yup";
 import OtpModal from "./OtpModal";
 import { sendEvent, FIREBASE_REPORT_ERROR } from "../../util/analytics";
+import { useHistory } from "react-router-dom";
 
 const schema = yup.object({
   phone: yup
@@ -25,6 +26,8 @@ const Form = (ogProps: any) => {
   const [error, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [otpModal, setOtpModal] = useState(false);
+
+  let history = useHistory();
 
   return (
     <>
@@ -102,6 +105,9 @@ const Form = (ogProps: any) => {
                       ogProps.setMarkerLocations([]);
                       setOtpModal(true);
                       actions.resetForm();
+                      setTimeout(() => {
+                        history.replace("/home");
+                      }, 3000);
                     } else if (response.data.error === 1) {
                       setErrorMessage(response.data.message);
                       setSuccessMessage("");
@@ -238,8 +244,10 @@ const Form = (ogProps: any) => {
                 marginTop: "15px",
                 display: "flex",
                 justifyContent: "flex-end",
+                alignItems: "center",
               }}
             >
+              {props.isSubmitting && <CircularProgress size={24} />}
               <Button
                 disabled={props.isSubmitting}
                 type="submit"

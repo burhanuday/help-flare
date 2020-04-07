@@ -8,6 +8,7 @@ import {
   TextField,
   InputLabel,
   Typography,
+  CircularProgress,
 } from "@material-ui/core";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { Alert } from "@material-ui/lab";
@@ -116,46 +117,49 @@ const VerifyHelp: React.FC = () => {
               {file && file.name}
             </InputLabel>
           </div>
-          <Button
-            onClick={() => {
-              setLoading(true);
-              const formData = new FormData();
-              // @ts-ignore
-              formData.append("photo", file, file?.name || "file");
-              axios
-                .post(
-                  `/help/verify?helpId=${profileState.profile.claims[0]._id}`,
-                  formData
-                )
-                .then(response => {
-                  console.log(response);
-                  if (response.data.error === 0) {
-                    sendEvent(FIREBASE_HELP_VERIFIED);
-                    setSuccessMessage(response.data.message);
-                    setErrorMessage("");
-                    setFile(undefined);
-                    setTimeout(() => {
-                      profileActions.fetchProfile();
-                    }, 2000);
-                  } else {
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {loading && <CircularProgress size={24} />}
+            <Button
+              onClick={() => {
+                setLoading(true);
+                const formData = new FormData();
+                // @ts-ignore
+                formData.append("photo", file, file?.name || "file");
+                axios
+                  .post(
+                    `/help/verify?helpId=${profileState.profile.claims[0]._id}`,
+                    formData
+                  )
+                  .then(response => {
+                    console.log(response);
+                    if (response.data.error === 0) {
+                      sendEvent(FIREBASE_HELP_VERIFIED);
+                      setSuccessMessage(response.data.message);
+                      setErrorMessage("");
+                      setFile(undefined);
+                      setTimeout(() => {
+                        profileActions.fetchProfile();
+                      }, 2000);
+                    } else {
+                      setSuccessMessage("");
+                      setErrorMessage(response.data.message);
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                    sendEvent(FIREBASE_HELP_ERROR, error);
                     setSuccessMessage("");
-                    setErrorMessage(response.data.message);
-                  }
-                })
-                .catch(error => {
-                  console.log(error);
-                  sendEvent(FIREBASE_HELP_ERROR, error);
-                  setSuccessMessage("");
-                  setErrorMessage("There was an error!");
-                })
-                .finally(() => setLoading(false));
-            }}
-            disabled={!file || loading}
-            variant="contained"
-            color="primary"
-          >
-            Submit photo
-          </Button>
+                    setErrorMessage("There was an error!");
+                  })
+                  .finally(() => setLoading(false));
+              }}
+              disabled={!file || loading}
+              variant="contained"
+              color="primary"
+            >
+              Submit photo
+            </Button>
+          </div>
         </div>
       </Container>
     </div>
