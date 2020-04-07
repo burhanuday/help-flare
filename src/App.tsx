@@ -17,6 +17,8 @@ import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
+import "./addtohomescreen";
+import "./addtohomescreen.css";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
@@ -39,6 +41,15 @@ function App() {
   useEffect(() => {
     profileActions.fetchProfile();
     sendEvent(FIREBASE_APP_START);
+
+    // @ts-ignore
+    console.log(window.addToHomescreen);
+
+    // @ts-ignore
+    window.addToHomescreen({
+      startDelay: 1,
+      displayPace: 60,
+    });
   }, []);
 
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
