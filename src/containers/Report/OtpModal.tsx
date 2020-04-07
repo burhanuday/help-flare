@@ -40,6 +40,7 @@ const OtpModal = (props: any) => {
           Enter the 6 digit OTP sent to your phone
         </DialogContentText>
         <TextField
+          type="number"
           autoFocus
           placeholder="Enter the 6 digit OTP"
           variant="outlined"
