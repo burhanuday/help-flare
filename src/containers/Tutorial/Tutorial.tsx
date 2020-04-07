@@ -6,7 +6,7 @@ import help from "../../assets/help.jpg";
 import upload from "../../assets/upload.jpg";
 import marker2 from "../../assets/marker2.png";
 import hs from "../../assets/hs.png";
-import sw2 from "../../assets/sw2.png";
+import sw2 from "../../assets/sw2.jpeg";
 
 const pages = [
   {
