@@ -17,8 +17,8 @@ import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
-// import "./addtohomescreen";
-// import "./addtohomescreen.css";
+//@ts-ignore
+import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
@@ -54,49 +54,52 @@ function App() {
   }
 
   return (
-    <Router>
-      <Switch>
-        {!localStorage.getItem("firstTutorial") && (
-          <Route path="/">
-            <Tutorial />
-          </Route>
-        )}
+    <>
+      <AddToHomeScreen />
+      <Router>
+        <Switch>
+          {!localStorage.getItem("firstTutorial") && (
+            <Route path="/">
+              <Tutorial />
+            </Route>
+          )}
 
-        {!loggedIn && (
-          <Route path="/auth">
-            <Auth />
+          {!loggedIn && (
+            <Route path="/auth">
+              <Auth />
+            </Route>
+          )}
+          {loggedIn && (
+            <Route path="/profile">
+              <Profile />
+            </Route>
+          )}
+          {loggedIn && (
+            <Route path="/help">
+              <Help />
+            </Route>
+          )}
+          {loggedIn && hasPendingClaims && (
+            <Route path="/verify">
+              <VerifyHelp />
+            </Route>
+          )}
+          <Route path="/privacy-policy">
+            <PrivacyPolicy />
           </Route>
-        )}
-        {loggedIn && (
-          <Route path="/profile">
-            <Profile />
+          <Route path="/terms-and-conditions">
+            <TermsAndConditions />
           </Route>
-        )}
-        {loggedIn && (
-          <Route path="/help">
-            <Help />
+          <Route path="/report">
+            <Report />
           </Route>
-        )}
-        {loggedIn && hasPendingClaims && (
-          <Route path="/verify">
-            <VerifyHelp />
+          <Route path="/home">
+            <Home />
           </Route>
-        )}
-        <Route path="/privacy-policy">
-          <PrivacyPolicy />
-        </Route>
-        <Route path="/terms-and-conditions">
-          <TermsAndConditions />
-        </Route>
-        <Route path="/report">
-          <Report />
-        </Route>
-        <Route path="/home">
-          <Home />
-        </Route>
-        <Redirect to="/home" />
-      </Switch>
-    </Router>
+          <Redirect to="/home" />
+        </Switch>
+      </Router>
+    </>
   );
 }
 

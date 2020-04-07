@@ -1,0 +1,123 @@
+{
+  "appId": "add-to-homescreen-react",
+  "debug": false,
+  "logging": false,
+  "modal": false,
+  "mandatory": false,
+  "autoStart": true,
+  "skipFirstVisit": false,
+  "minPageViews": 0,
+  "startDelay": 1,
+  "lifespan": 15,
+  "displayPace": 1440,
+  "mustShowCustomPrompt": false,
+  "maxDisplayCount": 0,
+  "validLocation": [],
+  "onInit": null,
+  "onShow": null,
+  "onAdd": null,
+  "onInstall": null,
+  "onCancel": null,
+  "customCriteria": null,
+  "customPromptContent": {},
+  "showClasses": [
+    "animated",
+    "d-flex"
+  ],
+  "showClass": "d-flex",
+  "hideClass": "d-none",
+  "customPromptElements": {
+    "container": "ath-container",
+    "containerAddOns": "banner-bottom-center",
+    "banner": "ath-banner",
+    "bannerAddOns": "",
+    "logoCell": "ath-logo-cell",
+    "logoCellAddOns": "ath-banner-cell",
+    "logo": "ath-prompt-logo",
+    "logoAddOns": "",
+    "titleCell": "ath-title-cell",
+    "titleCellAddOns": "ath-banner-cell",
+    "title": "ath-banner-title",
+    "titleAddOns": "",
+    "cancelButtonCell": "ath-cancel-cell",
+    "cancelButtonCellAddOns": "ath-banner-cell",
+    "cancelButton": "btn-cancel",
+    "cancelButtonAddOns": "btn btn-link",
+    "installButtonCell": "ath-install-cell",
+    "installButtonCellAddOns": "ath-banner-cell",
+    "installButton": "btn-install",
+    "installButtonAddOns": "btn btn-success",
+    "guidance": "ath-guidance",
+    "guidanceAddOns": "",
+    "guidanceImageCell": "ath-guidance-image-cell",
+    "guidanceImageCellAddOns": "ath-banner-cell",
+    "guidanceCancelButton": "btn-cancel",
+    "guidanceCancelButtonAddOns": "btn btn-link"
+  },
+  "customPromptPlatformDependencies": {
+    "native": {
+      "showClasses": [
+        "fadeInUp",
+        "right-banner"
+      ]
+    },
+    "edge": {
+      "showClasses": [
+        "edge-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block",
+        "right-banner"
+      ]
+    },
+    "chromium": {
+      "showClasses": [
+        "chromium-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block",
+        "right-banner"
+      ]
+    },
+    "iphone": {
+      "showClasses": [
+        "iphone-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block"
+      ]
+    },
+    "ipad": {
+      "showClasses": [
+        "ipad-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block"
+      ]
+    },
+    "firefox": {
+      "showClasses": [
+        "firefox-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block"
+      ]
+    },
+    "samsung": {
+      "showClasses": [
+        "samsung-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block"
+      ]
+    },
+    "opera": {
+      "showClasses": [
+        "opera-home-screen-wrapper",
+        "animated",
+        "fadeIn",
+        "d-block"
+      ]
+    }
+  }
+}
