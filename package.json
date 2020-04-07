@@ -20,6 +20,7 @@
     "@types/use-position": "^0.0.0",
     "@types/yup": "^0.26.34",
     "axios": "^0.19.2",
+    "firebase": "^7.13.2",
     "formik": "^2.1.4",
     "google-map-react": "^1.1.7",
     "google-maps-react": "^2.0.2",

@@ -13,6 +13,7 @@ import {
   Marker,
 } from "google-maps-react";
 import socketIOClient from "socket.io-client";
+import { sendEvent, FIREBASE_REPORT_OPENED } from "../../util/analytics";
 
 const steps = [
   {
@@ -65,6 +66,10 @@ const Report = (ogProps: any) => {
       lng: ogProps.coords.longitude,
     });
   }, [ogProps.coords, socket]);
+
+  useEffect(() => {
+    sendEvent(FIREBASE_REPORT_OPENED);
+  }, []);
 
   useEffect(() => {
     let socket: SocketIOClient.Socket;

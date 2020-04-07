@@ -15,6 +15,22 @@ import { ProfileContext } from "./contexts/ProfileContext";
 import Tutorial from "./containers/Tutorial/Tutorial";
 import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
+import * as firebase from "firebase/app";
+import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
+  authDomain: "portfolioprojects-58856.firebaseapp.com",
+  databaseURL: "https://portfolioprojects-58856.firebaseio.com",
+  projectId: "portfolioprojects-58856",
+  storageBucket: "portfolioprojects-58856.appspot.com",
+  messagingSenderId: "488368944319",
+  appId: "1:488368944319:web:b6105dde5c7a1fd1bd020a",
+  measurementId: "G-93YEVCHQ58",
+};
+
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 function App() {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -22,6 +38,7 @@ function App() {
 
   useEffect(() => {
     profileActions.fetchProfile();
+    sendEvent(FIREBASE_APP_START);
   }, []);
 
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;

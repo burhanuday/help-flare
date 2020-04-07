@@ -8,6 +8,7 @@ import { Alert } from "@material-ui/lab";
 import { InputAdornment, Button } from "@material-ui/core";
 import * as yup from "yup";
 import OtpModal from "./OtpModal";
+import { sendEvent, FIREBASE_REPORT_ERROR } from "../../util/analytics";
 
 const schema = yup.object({
   phone: yup
@@ -110,6 +111,7 @@ const Form = (ogProps: any) => {
                     console.log(error);
                     setErrorMessage("There was an error with the request");
                     setSuccessMessage("");
+                    sendEvent(FIREBASE_REPORT_ERROR, error);
                   })
                   .finally(() => {
                     actions.setSubmitting(false);

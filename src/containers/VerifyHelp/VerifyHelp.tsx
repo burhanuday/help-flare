@@ -12,6 +12,11 @@ import {
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { Alert } from "@material-ui/lab";
 import { StaticGoogleMap, Marker, Path } from "react-static-google-map";
+import {
+  sendEvent,
+  FIREBASE_HELP_VERIFIED,
+  FIREBASE_HELP_ERROR,
+} from "../../util/analytics";
 
 const VerifyHelp: React.FC = () => {
   const [file, setFile] = useState<File>();
@@ -125,6 +130,7 @@ const VerifyHelp: React.FC = () => {
                 .then(response => {
                   console.log(response);
                   if (response.data.error === 0) {
+                    sendEvent(FIREBASE_HELP_VERIFIED);
                     setSuccessMessage(response.data.message);
                     setErrorMessage("");
                     setFile(undefined);
@@ -138,6 +144,7 @@ const VerifyHelp: React.FC = () => {
                 })
                 .catch(error => {
                   console.log(error);
+                  sendEvent(FIREBASE_HELP_ERROR, error);
                   setSuccessMessage("");
                   setErrorMessage("There was an error!");
                 })

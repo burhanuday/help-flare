@@ -17,6 +17,11 @@ import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import { useHistory } from "react-router-dom";
+import {
+  sendEvent,
+  FIREBASE_HELP_OPENED,
+  FIREBASE_HELP_ERROR,
+} from "../../util/analytics";
 
 const MapContainer = (props: any) => {
   const [data, setData] = useState<any>([]);
@@ -41,6 +46,10 @@ const MapContainer = (props: any) => {
       lng: props.coords.longitude,
     });
   }, [props.coords, socket]);
+
+  useEffect(() => {
+    sendEvent(FIREBASE_HELP_OPENED);
+  }, []);
 
   useEffect(() => {
     let socket: SocketIOClient.Socket;
@@ -133,6 +142,7 @@ const MapContainer = (props: any) => {
                   })
                   .catch(error => {
                     console.log(error);
+                    sendEvent(FIREBASE_HELP_ERROR, error);
                     setInfoWindow({
                       ...infoWindow,
                       result: "There was an error!",

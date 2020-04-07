@@ -12,6 +12,11 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Alert } from "@material-ui/lab";
 import OtpModal from "./OtpModal";
+import {
+  sendEvent,
+  FIREBASE_USER_LOGIN,
+  FIREBASE_AUTH_ERROR,
+} from "../../util/analytics";
 
 const schema = yup.object({
   phone: yup
@@ -80,6 +85,7 @@ const Login = (props: any) => {
                       );
                       setOtpModal(true);
                     } else {
+                      sendEvent(FIREBASE_USER_LOGIN);
                       setSuccessMessage("Logged in successfully!");
                       setErrorMessage("");
                       actions.resetForm();
@@ -98,6 +104,7 @@ const Login = (props: any) => {
                   console.log(error);
                   setErrorMessage("There was an error with the request");
                   setSuccessMessage("");
+                  sendEvent(FIREBASE_AUTH_ERROR, error);
                 })
                 .finally(() => {
                   actions.setSubmitting(false);

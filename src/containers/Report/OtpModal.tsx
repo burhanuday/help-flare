@@ -11,6 +11,11 @@ import {
 } from "@material-ui/core";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
+import {
+  sendEvent,
+  FIREBASE_REPORT_CREATED,
+  FIREBASE_REPORT_ERROR,
+} from "../../util/analytics";
 
 const OtpModal = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -63,6 +68,7 @@ const OtpModal = (props: any) => {
               .then(response => {
                 console.log("response", response);
                 if (response.data.error === 0) {
+                  sendEvent(FIREBASE_REPORT_CREATED);
                   props.getData();
                   props.setSuccessMessage(
                     "Phone number verified. Report submitted successfully!"
@@ -75,6 +81,7 @@ const OtpModal = (props: any) => {
               .catch(error => {
                 console.log(error);
                 setOtpError("There was an error");
+                sendEvent(FIREBASE_REPORT_ERROR, error);
               })
               .finally(() => {
                 setLoading(false);

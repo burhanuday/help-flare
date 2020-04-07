@@ -11,6 +11,11 @@ import {
 } from "@material-ui/core";
 import axios from "../../axios/axios";
 import { Alert } from "@material-ui/lab";
+import {
+  FIREBASE_USER_REGISTERED,
+  sendEvent,
+  FIREBASE_AUTH_ERROR,
+} from "../../util/analytics";
 
 const OtpModal = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -62,6 +67,7 @@ const OtpModal = (props: any) => {
               .post(`/helper/verify`, formData)
               .then(response => {
                 console.log("response", response);
+                sendEvent(FIREBASE_USER_REGISTERED);
                 props.setSuccessMessage(
                   "OTP verified. You have been registered successfully!"
                 );
@@ -70,6 +76,7 @@ const OtpModal = (props: any) => {
               .catch(error => {
                 console.log(error);
                 setOtpError("There was an error");
+                sendEvent(FIREBASE_AUTH_ERROR, error);
               })
               .finally(() => {
                 setLoading(false);

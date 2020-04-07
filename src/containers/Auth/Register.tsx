@@ -16,6 +16,7 @@ import axios from "../../axios/axios";
 import { Formik } from "formik";
 import * as yup from "yup";
 import OtpModal from "./OtpModal";
+import { sendEvent, FIREBASE_AUTH_ERROR } from "../../util/analytics";
 
 interface GeoData {
   latitude: string;
@@ -135,6 +136,7 @@ const Register = (props: any) => {
                 })
                 .catch(error => {
                   console.log(error);
+                  sendEvent(FIREBASE_AUTH_ERROR, error);
                   setErrorMessage("There was an error with the request");
                   setSuccessMessage("");
                 })
