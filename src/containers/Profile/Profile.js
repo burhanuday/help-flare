@@ -21,14 +21,7 @@ import classes from "./Profile.module.css";
 function Profile() {
   const { profileState, profileActions } = useContext(ProfileContext);
   console.log(profileState.profile);
-  // if (profileState && profileState.profile) {
 
-  //   // const typesOfService = profileState.profile.social_services.map(
-  //   //         (social_service, key) => {
-  //   //           return <span className={classes.tag}>{social_service}</span>;
-  //   //         }
-  //   //       );
-  // }
   return (
     <div>
       <Header title="Profile" />
