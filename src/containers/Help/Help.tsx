@@ -218,6 +218,9 @@ const MapContainer = (props: any) => {
               <Typography variant="body2">
                 Place: {infoWindow.data.place}
               </Typography>
+              <Typography variant="body2">
+                More information: {infoWindow.data.message}
+              </Typography>
               {infoWindow.data.status === 1 && (
                 <Typography variant="h6">
                   Helper is already assigned for this area
