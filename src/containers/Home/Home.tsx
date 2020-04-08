@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import Header from "../../components/Header/Header";
-import { Container, Button } from "@material-ui/core";
+import { Container, Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../../contexts/ProfileContext";
+import HomeItem from "./HomeItem";
 
 const Home = (props: any) => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -22,66 +23,45 @@ const Home = (props: any) => {
     <div>
       <Header />
       <Container maxWidth="sm">
-        <div
+        <Grid
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            padding: "30px 30px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
+            padding: "0px 10px",
           }}
+          container
+          spacing={3}
         >
-          <Link to="/report" style={{ textDecoration: "none", color: "white" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: "15px" }}
-            >
-              Report an area that needs help
-            </Button>
-          </Link>
+          <HomeItem
+            title="Report"
+            description="Report an area that needs help"
+            to="/report"
+          />
+
           {loggedIn && (
-            <Link to="/help" style={{ textDecoration: "none", color: "white" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginTop: "15px" }}
-              >
-                Help an area
-              </Button>
-            </Link>
+            <HomeItem
+              title="Help"
+              description="Help an area by providing what they need"
+              to="/help"
+            />
           )}
+
           {loggedIn && hasPendingClaims && (
-            <Link
+            <HomeItem
+              title="Verify"
+              description="View information and upload a picture for verification"
               to="/verify"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginTop: "15px" }}
-              >
-                Verify your claim
-              </Button>
-            </Link>
+            />
           )}
+
           {!loggedIn && (
-            <Link
+            <HomeItem
+              title="Register"
+              description="Register as a helper"
               to="/auth/register"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ marginTop: "15px" }}
-              >
-                Register as a helper
-              </Button>
-            </Link>
+            />
           )}
-        </div>
+        </Grid>
       </Container>
     </div>
   );
