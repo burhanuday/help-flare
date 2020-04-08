@@ -173,11 +173,14 @@ const Report = (ogProps: any) => {
               streetViewControl={false}
               disableDoubleClickZoom={true}
               gestureHandling="greedy"
-              /* onCenter_changed={(a: any, b: any, c: any) => {
+              onCenter_changed={(a: any, b: any, c: any) => {
                 const lat = b.center.lat();
                 const lng = b.center.lng();
-               
-              }} */
+                setCenter({
+                  lat: lat,
+                  lng: lng,
+                });
+              }}
               /* onZoom_changed={(a: any, b: any, c: any) => {
                 console.log(a, b, c);
                 if(b.zoom){

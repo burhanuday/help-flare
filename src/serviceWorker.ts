@@ -10,9 +10,6 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-// version
-const cacheName = "v2";
-
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
@@ -82,27 +79,8 @@ function registerValidSW(swUrl: string, config?: Config) {
                   "tabs for this page are closed. See https://bit.ly/CRA-PWA."
               );
 
-            /*   // Call Activate Event
-              navigator.serviceWorker.addEventListener("activate", e => {
-                // console.log("Service Worker: Activated");
-                // Remove unwanted caches
-                // @ts-ignore
-                e.waitUntil(
-                  caches.keys().then(cacheNames => {
-                    return Promise.all(
-                      cacheNames.map(cache => {
-                        if (cache !== cacheName) {
-                          // console.log("Service Worker: Clearing Old Cache");
-                          return caches.delete(cache);
-                        }
-                      })
-                    );
-                  })
-                );
-              }); */
-
               alert(
-                "An update is available and will be used when all " +
+                "New content is available and will be used when all " +
                   "tabs for this page are closed"
               );
 
@@ -135,7 +113,6 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
   fetch(swUrl, {
     headers: {
       "Service-Worker": "script",
-      "cache-control": "max-age=0,no-cache,no-store,must-revalidate",
     },
   })
     .then(response => {
@@ -160,6 +137,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       console.log(
         "No internet connection found. App is running in offline mode."
       );
+      alert("No internet connection. Some features might not work");
     });
 }
 
