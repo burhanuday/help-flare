@@ -8,7 +8,7 @@ const HomeItem = (props: any) => {
       <Link style={{ textDecoration: "none", color: "white" }} to={props.to}>
         <Paper
           style={{
-            minHeight: "120px",
+            minHeight: "100px",
           }}
           variant="outlined"
           elevation={2}
@@ -21,7 +21,7 @@ const HomeItem = (props: any) => {
             <Typography variant="h6" gutterBottom>
               {props.title}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body1" color="textSecondary">
               {props.description}
             </Typography>
           </CardActionArea>

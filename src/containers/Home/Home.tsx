@@ -62,6 +62,31 @@ const Home = (props: any) => {
             />
           )}
         </Grid>
+
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            margin: "auto auto",
+            boxSizing: "border-box",
+            width: "auto",
+            textAlign: "center",
+            fontSize: "0.9rem",
+            marginBottom: "10px",
+          }}
+        >
+          For updates and problems contact us at{" "}
+          <a
+            style={{
+              fontSize: "1.0rem",
+            }}
+            href="https://www.instagram.com/codendeavour/"
+          >
+            Codendeavour
+          </a>
+        </div>
       </Container>
     </div>
   );
