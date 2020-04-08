@@ -297,7 +297,7 @@ const Register = (props: any) => {
                   <div style={{ display: "flex", alignItems: "center" }}>
                     {props.isSubmitting && <CircularProgress size={24} />}
                     <Button
-                      disabled={props.isSubmitting}
+                      disabled={props.isSubmitting || !agreedToConditions}
                       type="submit"
                       variant="contained"
                       color="primary"
