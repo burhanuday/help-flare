@@ -1,6 +1,13 @@
 import React from "react";
-import { Grid, Paper, Typography, CardActionArea } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Typography,
+  CardActionArea,
+  IconButton,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { ArrowForward } from "@material-ui/icons";
 
 const HomeItem = (props: any) => {
   return (
@@ -24,6 +31,15 @@ const HomeItem = (props: any) => {
             <Typography variant="body1" color="textSecondary">
               {props.description}
             </Typography>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "15px",
+              }}
+            >
+              <ArrowForward color="primary" />
+            </div>
           </CardActionArea>
         </Paper>
       </Link>

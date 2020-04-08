@@ -83,6 +83,8 @@ const Home = (props: any) => {
               fontSize: "1.0rem",
             }}
             href="https://www.instagram.com/codendeavour/"
+            target="_blank"
+            rel="noreferrer"
           >
             Codendeavour
           </a>
