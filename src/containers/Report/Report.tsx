@@ -204,7 +204,7 @@ const Report = (ogProps: any) => {
                   }
                 }
               }} */
-              initialCenter={{
+              center={{
                 lat: center
                   ? center.lat
                   : ogProps.coords

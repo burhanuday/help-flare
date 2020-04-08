@@ -7,9 +7,9 @@
   "autoStart": true,
   "skipFirstVisit": false,
   "minPageViews": 0,
-  "startDelay": 1,
+  "startDelay": 30,
   "lifespan": 15,
-  "displayPace": 1440,
+  "displayPace": 140,
   "mustShowCustomPrompt": false,
   "maxDisplayCount": 0,
   "validLocation": [],
@@ -20,10 +20,7 @@
   "onCancel": null,
   "customCriteria": null,
   "customPromptContent": {},
-  "showClasses": [
-    "animated",
-    "d-flex"
-  ],
+  "showClasses": ["animated", "d-flex"],
   "showClass": "d-flex",
   "hideClass": "d-none",
   "customPromptElements": {
@@ -56,10 +53,7 @@
   },
   "customPromptPlatformDependencies": {
     "native": {
-      "showClasses": [
-        "fadeInUp",
-        "right-banner"
-      ]
+      "showClasses": ["fadeInUp", "right-banner"]
     },
     "edge": {
       "showClasses": [
@@ -80,36 +74,16 @@
       ]
     },
     "iphone": {
-      "showClasses": [
-        "iphone-wrapper",
-        "animated",
-        "fadeIn",
-        "d-block"
-      ]
+      "showClasses": ["iphone-wrapper", "animated", "fadeIn", "d-block"]
     },
     "ipad": {
-      "showClasses": [
-        "ipad-wrapper",
-        "animated",
-        "fadeIn",
-        "d-block"
-      ]
+      "showClasses": ["ipad-wrapper", "animated", "fadeIn", "d-block"]
     },
     "firefox": {
-      "showClasses": [
-        "firefox-wrapper",
-        "animated",
-        "fadeIn",
-        "d-block"
-      ]
+      "showClasses": ["firefox-wrapper", "animated", "fadeIn", "d-block"]
     },
     "samsung": {
-      "showClasses": [
-        "samsung-wrapper",
-        "animated",
-        "fadeIn",
-        "d-block"
-      ]
+      "showClasses": ["samsung-wrapper", "animated", "fadeIn", "d-block"]
     },
     "opera": {
       "showClasses": [
