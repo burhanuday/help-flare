@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,12 +12,14 @@ import Help from "./containers/Help/Help";
 import Profile from "./containers/Profile/Profile";
 import VerifyHelp from "./containers/VerifyHelp/VerifyHelp";
 import { ProfileContext } from "./contexts/ProfileContext";
-import Tutorial from "./containers/Tutorial/Tutorial";
 import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
 import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
+import { CircularProgress } from "@material-ui/core";
+
+const Tutorial = lazy(() => import("./containers/Tutorial/Tutorial"));
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
@@ -57,47 +59,62 @@ function App() {
     <>
       <AddToHomeScreen />
       <Router>
-        <Switch>
-          {!localStorage.getItem("firstTutorial") && (
-            <Route path="/">
-              <Tutorial />
-            </Route>
-          )}
+        <Suspense
+          fallback={
+            <div
+              style={{
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress color="primary" size={24} />
+            </div>
+          }
+        >
+          <Switch>
+            {!localStorage.getItem("firstTutorial") && (
+              <Route path="/">
+                <Tutorial />
+              </Route>
+            )}
 
-          {!loggedIn && (
-            <Route path="/auth">
-              <Auth />
+            {!loggedIn && (
+              <Route path="/auth">
+                <Auth />
+              </Route>
+            )}
+            {loggedIn && (
+              <Route path="/profile">
+                <Profile />
+              </Route>
+            )}
+            {loggedIn && (
+              <Route path="/help">
+                <Help />
+              </Route>
+            )}
+            {loggedIn && hasPendingClaims && (
+              <Route path="/verify">
+                <VerifyHelp />
+              </Route>
+            )}
+            <Route path="/privacy-policy">
+              <PrivacyPolicy />
             </Route>
-          )}
-          {loggedIn && (
-            <Route path="/profile">
-              <Profile />
+            <Route path="/terms-and-conditions">
+              <TermsAndConditions />
             </Route>
-          )}
-          {loggedIn && (
-            <Route path="/help">
-              <Help />
+            <Route path="/report">
+              <Report />
             </Route>
-          )}
-          {loggedIn && hasPendingClaims && (
-            <Route path="/verify">
-              <VerifyHelp />
+            <Route path="/home">
+              <Home />
             </Route>
-          )}
-          <Route path="/privacy-policy">
-            <PrivacyPolicy />
-          </Route>
-          <Route path="/terms-and-conditions">
-            <TermsAndConditions />
-          </Route>
-          <Route path="/report">
-            <Report />
-          </Route>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Redirect to="/home" />
-        </Switch>
+            <Redirect to="/home" />
+          </Switch>
+        </Suspense>
       </Router>
     </>
   );
