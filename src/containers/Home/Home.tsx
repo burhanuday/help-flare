@@ -112,6 +112,7 @@ const Home = (props: any) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            padding: "0px 20px",
           }}
         >
           <Typography variant="body2" style={{ marginRight: "10px" }}>
