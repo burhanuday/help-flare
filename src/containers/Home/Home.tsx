@@ -36,13 +36,18 @@ const Home = (props: any) => {
   }, []); */
 
   return (
-    <div>
+    <div
+      style={{
+        minHeight: "100%",
+        margin: "0 auto -50%",
+      }}
+    >
       <Header />
       <Container maxWidth="sm">
         <Grid
           style={{
             marginTop: "30px",
-            marginBottom: "12vh",
+            marginBottom: "20px",
             padding: "0px 10px",
           }}
           container
@@ -87,18 +92,7 @@ const Home = (props: any) => {
 
         <div
           style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            margin: "auto auto",
-            boxSizing: "border-box",
-            width: "auto",
-            textAlign: "center",
-            fontSize: "0.9rem",
-            paddingBottom: "5px",
-            backgroundColor: "white",
-            minHeight: "10vh",
+            height: "50px",
           }}
         >
           <Container maxWidth="sm">
@@ -147,17 +141,24 @@ const Home = (props: any) => {
               </RedditShareButton>
             </div>
           </Container>
-          For updates and problems contact us at{" "}
-          <a
+          <div
             style={{
-              fontSize: "1.0rem",
+              textAlign: "center",
+              marginBottom: "6px",
             }}
-            href="https://www.instagram.com/codendeavour/"
-            target="_blank"
-            rel="noreferrer"
           >
-            Code Endeavour
-          </a>
+            For updates and problems contact us at{" "}
+            <a
+              style={{
+                fontSize: "1.0rem",
+              }}
+              href="https://www.instagram.com/codendeavour/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Code Endeavour
+            </a>
+          </div>
         </div>
       </Container>
     </div>
