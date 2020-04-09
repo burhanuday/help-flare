@@ -89,6 +89,11 @@ function App() {
                 <Auth />
               </Route>
             )}
+
+            <Route path="/profile/:orgName">
+              <Profile />
+            </Route>
+
             {loggedIn && (
               <Route path="/profile">
                 <Profile />

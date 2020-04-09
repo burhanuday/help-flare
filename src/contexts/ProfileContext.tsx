@@ -13,7 +13,6 @@ export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
 export const PROFILE_FAILED = "PROFILE_FAILED";
 
 const reducer = (state: any, action: any) => {
-  console.log("action", action);
   switch (action.type) {
     case PROFILE_START:
       return {
@@ -50,7 +49,6 @@ const ProfileProvider = (props: any) => {
       axios
         .get(`/profile`)
         .then(response => {
-          console.log(response);
           if (response.data.error === 0) {
             dispatch({ type: PROFILE_SUCCESS, payload: response.data.helper });
           } else {
