@@ -96,6 +96,10 @@ const MapContainer = (props: any) => {
               you are done. You will not be able to claim any other sites till
               that time
             </DialogContentText>
+            <Typography color="error" variant="body1">
+              You will have 24 hours to provide help failing which you will be
+              unassigned this area
+            </Typography>
             <Typography color="error" variant="body2">
               We take these claims seriously. Only press the help button if you
               intend to provide it
