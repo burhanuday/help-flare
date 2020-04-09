@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
     <div>
       <Link to="/auth/register">
         <IconButton>
-          <ArrowBack style={{ color: "blue" }} />
+          <ArrowBack style={{ color: "#2196F3" }} />
         </IconButton>
       </Link>
       <Container maxWidth="sm">

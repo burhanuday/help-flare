@@ -16,6 +16,7 @@ import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
 import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
 import { CircularProgress } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 const Tutorial = lazy(() => import("./containers/Tutorial/Tutorial"));
 const TermsAndConditions = lazy(() =>
@@ -24,6 +25,30 @@ const TermsAndConditions = lazy(() =>
 const PrivacyPolicy = lazy(() =>
   import("./containers/Legal/PrivacyPolicy/PrivacyPolicy")
 );
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      main: "#2196F3",
+      // dark: will be calculated from palette.primary.main,
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+    secondary: {
+      light: "#BBDEFB",
+      main: "#1976D2",
+      // dark: will be calculated from palette.secondary.main,
+      contrastText: "#ffcc00",
+    },
+    // Used by `getContrastText()` to maximize the contrast between
+    // the background and the text.
+    contrastThreshold: 3,
+    // Used by the functions below to shift a color's luminance by approximately
+    // two indexes within its tonal palette.
+    // E.g., shift from Red 500 to Red 300 or Red 700.
+    tonalOffset: 0.2,
+  },
+});
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
@@ -60,7 +85,7 @@ function App() {
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <AddToHomeScreen />
       <Router>
         <Suspense
@@ -125,7 +150,7 @@ function App() {
           </Switch>
         </Suspense>
       </Router>
-    </>
+    </ThemeProvider>
   );
 }
 

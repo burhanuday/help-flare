@@ -10,7 +10,7 @@ const Auth = (props: any) => {
     <>
       <Link to="/home">
         <IconButton>
-          <ArrowBack style={{ color: "blue" }} />
+          <ArrowBack style={{ color: "#2196F3" }} />
         </IconButton>
       </Link>
       <Switch>

@@ -229,7 +229,7 @@ const Form = (ogProps: any) => {
                 value={props.values.message}
                 error={props.errors.message}
                 disabled={props.isSubmitting}
-                placeholder="eg. People need rice and other basic food items"
+                placeholder="eg. About 100 people living here need rice and other uncooked food items"
                 label="More details"
                 touched={props.touched.message}
                 size="small"
