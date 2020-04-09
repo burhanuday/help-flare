@@ -2,30 +2,25 @@ import React, { useState } from "react";
 import { Container, Button } from "@material-ui/core";
 import Page from "./Page";
 import { Pagination } from "@material-ui/lab";
-import help from "../../assets/help.jpg";
-import upload from "../../assets/upload.jpg";
-import marker2 from "../../assets/marker2.png";
-import hs from "../../assets/hs.png";
-import sw2 from "../../assets/sw2.jpeg";
 
 const pages = [
   {
     title: "Add to home screen",
     description:
       "You can add the app to your home screen from the chrome menu. Get alerts about your reports and other important information",
-    image: sw2,
+    image: "https://i.imgur.com/HR1Wmnr.gif",
   },
   {
     title: "Report",
     description:
       "Report an area by selecting points on screen and mention the help needed",
-    image: marker2,
+    image: "https://i.imgur.com/6Bs3cNc.png",
   },
   {
     title: "Help",
     description:
       "NGOs and social service groups can view the help required by registering and then going to the help section",
-    image: help,
+    image: "https://i.imgur.com/hquj5ai.jpg",
   },
   /*  {
     title: "View Help",
@@ -37,7 +32,7 @@ const pages = [
     title: "Upload a photo",
     description:
       "NGOs and groups upload a photo of the help provided for verification purposes",
-    image: upload,
+    image: "https://i.imgur.com/sa8Wk5a.jpg",
   },
 ];
 
@@ -52,6 +47,7 @@ const Tutorial = () => {
         >
           {pages.map((page, index) => (
             <Page
+              key={page.title}
               currentPage={currentPage}
               pageNumber={index + 1}
               title={page.title}
@@ -59,6 +55,52 @@ const Tutorial = () => {
               image={page.image}
             />
           ))}
+
+          {/*   <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: 0,
+            }}
+          >
+            <IconButton
+              onClick={() => {
+                if (currentPage < pages.length) {
+                  setCurrentPage(currentPage + 1);
+                } else {
+                  localStorage.setItem("firstTutorial", "done");
+                  window.location.reload();
+                }
+              }}
+              style={{
+                backgroundColor: "#f0f0f0",
+              }}
+            >
+              <ChevronRight />
+            </IconButton>
+          </div>
+
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+            }}
+          >
+            <IconButton
+              disabled={currentPage === 1}
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              style={{
+                backgroundColor: "#f0f0f0",
+              }}
+            >
+              <ChevronLeft />
+            </IconButton>
+          </div> */}
 
           <div
             style={{
@@ -68,7 +110,7 @@ const Tutorial = () => {
               width: "100%",
               justifyContent: "space-between",
               height: "10vh",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
             <Button
