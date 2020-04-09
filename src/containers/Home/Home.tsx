@@ -4,22 +4,8 @@ import { Container, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import HomeItem from "./HomeItem";
-import {
-  FacebookShareButton,
-  LinkedinShareButton,
-  RedditShareButton,
-  TelegramShareButton,
-  TwitterShareButton,
-  WhatsappShareButton,
-} from "react-share";
-import {
-  FacebookIcon,
-  LinkedinIcon,
-  RedditIcon,
-  TelegramIcon,
-  TwitterIcon,
-  WhatsappIcon,
-} from "react-share";
+import Footer from "./Footer";
+import Contact from "./Contact";
 
 const Home = (props: any) => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -39,14 +25,12 @@ const Home = (props: any) => {
     <div
       style={{
         minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
-      <div
-        style={{
-          minHeight: "100%",
-          margin: "0 auto -50px",
-        }}
-      >
+      <div>
         <Header />
         <Container maxWidth="sm">
           <Grid
@@ -94,83 +78,13 @@ const Home = (props: any) => {
               to="/faq"
             />
           </Grid>
-
-          <div
-            style={{
-              height: "50px",
-            }}
-          />
         </Container>
       </div>
-      <div
-        style={{
-          height: "50px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "0px 20px",
-          }}
-        >
-          <Typography variant="body2" style={{ marginRight: "10px" }}>
-            Share:
-          </Typography>
-          <WhatsappShareButton
-            title="Help Flare - Drop a flare for those in need"
-            url="https://help-flare.web.app/"
-          >
-            <WhatsappIcon size={32} />
-          </WhatsappShareButton>
-          <FacebookShareButton
-            url="https://help-flare.web.app/"
-            quote="Help those affected by COVID-19. Visit Help Flare"
-          >
-            <FacebookIcon size={32} />
-          </FacebookShareButton>
-          <TwitterShareButton
-            url="https://help-flare.web.app/"
-            title="Help those affected by COVID-19. Visit Help Flare"
-            // via="https://help-flare.web.app/"
-          >
-            <TwitterIcon size={32} />
-          </TwitterShareButton>
-          <LinkedinShareButton
-            url="https://help-flare.web.app/"
-            source="https://help-flare.web.app/"
-            title="Help those affected by COVID-19. Visit Help Flare"
-            summary="Help Flare is an app aimed at helping those who are affected by the virus"
-          >
-            <LinkedinIcon size={32} />
-          </LinkedinShareButton>
-          <RedditShareButton
-            url="https://help-flare.web.app/"
-            title="Help those affected by COVID-19. Visit Help Flare"
-          >
-            <RedditIcon size={32} />
-          </RedditShareButton>
-        </div>
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: "6px",
-            fontSize: "0.85rem",
-          }}
-        >
-          For updates and problems contact us at{" "}
-          <a
-            style={{
-              fontSize: "1.0rem",
-            }}
-            href="https://www.instagram.com/codendeavour/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Code Endeavour
-          </a>
-        </div>
+      <div>
+        <Container maxWidth="sm">
+          <Footer />
+          <Contact />
+        </Container>
       </div>
     </div>
   );
