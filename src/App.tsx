@@ -17,6 +17,7 @@ import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
 import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
 import { CircularProgress } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Faq from "./containers/Faq/Faq";
 
 const Tutorial = lazy(() => import("./containers/Tutorial/Tutorial"));
 const TermsAndConditions = lazy(() =>
@@ -114,6 +115,10 @@ function App() {
                 <Auth />
               </Route>
             )}
+
+            <Route path="/faq">
+              <Faq />
+            </Route>
 
             <Route path="/profile/:orgName">
               <Profile />

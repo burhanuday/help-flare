@@ -1,9 +1,25 @@
 import React, { useContext, useEffect } from "react";
 import Header from "../../components/Header/Header";
-import { Container, Button, Grid } from "@material-ui/core";
+import { Container, Button, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import HomeItem from "./HomeItem";
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+import {
+  FacebookIcon,
+  LinkedinIcon,
+  RedditIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
 
 const Home = (props: any) => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -26,7 +42,7 @@ const Home = (props: any) => {
         <Grid
           style={{
             marginTop: "30px",
-            marginBottom: "30px",
+            marginBottom: "12vh",
             padding: "0px 10px",
           }}
           container
@@ -61,11 +77,17 @@ const Home = (props: any) => {
               to="/auth/register"
             />
           )}
+
+          <HomeItem
+            title="FAQ"
+            description="About us and frequently asked questions"
+            to="/faq"
+          />
         </Grid>
 
         <div
           style={{
-            position: "absolute",
+            position: "fixed",
             bottom: 0,
             left: 0,
             right: 0,
@@ -74,9 +96,57 @@ const Home = (props: any) => {
             width: "auto",
             textAlign: "center",
             fontSize: "0.9rem",
-            marginBottom: "10px",
+            paddingBottom: "5px",
+            backgroundColor: "white",
+            minHeight: "10vh",
           }}
         >
+          <Container maxWidth="sm">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="body2" style={{ marginRight: "10px" }}>
+                Share:
+              </Typography>
+              <WhatsappShareButton
+                title="Help Flare - Drop a flare for those in need"
+                url="https://help-flare.web.app/"
+              >
+                <WhatsappIcon size={32} />
+              </WhatsappShareButton>
+              <FacebookShareButton
+                url="https://help-flare.web.app/"
+                quote="Help those affected by COVID-19. Visit Help Flare"
+              >
+                <FacebookIcon size={32} />
+              </FacebookShareButton>
+              <TwitterShareButton
+                url="https://help-flare.web.app/"
+                title="Help those affected by COVID-19. Visit Help Flare"
+                // via="https://help-flare.web.app/"
+              >
+                <TwitterIcon size={32} />
+              </TwitterShareButton>
+              <LinkedinShareButton
+                url="https://help-flare.web.app/"
+                source="https://help-flare.web.app/"
+                title="Help those affected by COVID-19. Visit Help Flare"
+                summary="Help Flare is an app aimed at helping those who are affected by the virus"
+              >
+                <LinkedinIcon size={32} />
+              </LinkedinShareButton>
+              <RedditShareButton
+                url="https://help-flare.web.app/"
+                title="Help those affected by COVID-19. Visit Help Flare"
+              >
+                <RedditIcon size={32} />
+              </RedditShareButton>
+            </div>
+          </Container>
           For updates and problems contact us at{" "}
           <a
             style={{
@@ -86,7 +156,7 @@ const Home = (props: any) => {
             target="_blank"
             rel="noreferrer"
           >
-            Codendeavour
+            Code Endeavour
           </a>
         </div>
       </Container>
