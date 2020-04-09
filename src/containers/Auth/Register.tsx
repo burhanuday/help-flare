@@ -273,7 +273,7 @@ const Register = (props: any) => {
                   />
                   <span>
                     By registering you agree to the{" "}
-                    <Link to="/terms-and-conditions">terms and conditions</Link>{" "}
+                    <Link to="/terms-and-conditions">terms of service</Link>{" "}
                     and the <Link to="/privacy-policy">privacy policy</Link>
                   </span>
                 </div>

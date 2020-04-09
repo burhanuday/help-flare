@@ -12,14 +12,18 @@ import Help from "./containers/Help/Help";
 import Profile from "./containers/Profile/Profile";
 import VerifyHelp from "./containers/VerifyHelp/VerifyHelp";
 import { ProfileContext } from "./contexts/ProfileContext";
-import PrivacyPolicy from "./containers/Legal/PrivacyPolicy/PrivacyPolicy";
-import TermsAndConditions from "./containers/Legal/TermsAndConditions/TermsAndConditions";
 import * as firebase from "firebase/app";
 import { sendEvent, FIREBASE_APP_START } from "./util/analytics";
 import AddToHomeScreen from "./components/AddToHomeScreen/AddToHomeScreen";
 import { CircularProgress } from "@material-ui/core";
 
 const Tutorial = lazy(() => import("./containers/Tutorial/Tutorial"));
+const TermsAndConditions = lazy(() =>
+  import("./containers/Legal/TermsAndConditions/TermsAndConditions")
+);
+const PrivacyPolicy = lazy(() =>
+  import("./containers/Legal/PrivacyPolicy/PrivacyPolicy")
+);
 
 const firebaseConfig = {
   apiKey: "AIzaSyD0dlRIf-A_i6B_qFVS8-qzkt2sw2MERdY",
