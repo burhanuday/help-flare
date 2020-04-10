@@ -40,10 +40,7 @@ const MapContainer = (props: any) => {
     showConfirmDialog: false,
     result: null,
   });
-  const [center, setCenter] = useState<any>({
-    lat: 19.0748,
-    lng: 72.8856,
-  });
+  const [center, setCenter] = useState<any>();
   const { profileState, profileActions } = useContext(ProfileContext);
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
@@ -288,93 +285,95 @@ const MapContainer = (props: any) => {
           </Dialog>
         </div>
       )}
-      <Map
-        streetViewControl={false}
-        // @ts-ignore
-        onZoom_changed={(a: any, b: any, c: any) => {
-          let showMarkerInsteadOfPoly: boolean;
-          if (b.zoom) {
-            showMarkerInsteadOfPoly = b.zoom <= 15;
-            console.log("show markers", showMarkerInsteadOfPoly);
-            if (showMarkerInsteadOfPoly !== showMarkers) {
-              setShowMarkers(showMarkerInsteadOfPoly);
+      {center && (
+        <Map
+          streetViewControl={false}
+          // @ts-ignore
+          onZoom_changed={(a: any, b: any, c: any) => {
+            let showMarkerInsteadOfPoly: boolean;
+            if (b.zoom) {
+              showMarkerInsteadOfPoly = b.zoom <= 15;
+              console.log("show markers", showMarkerInsteadOfPoly);
+              if (showMarkerInsteadOfPoly !== showMarkers) {
+                setShowMarkers(showMarkerInsteadOfPoly);
+              }
             }
-          }
-        }}
-        disableDoubleClickZoom={true}
-        gestureHandling="greedy"
-        initialCenter={{
-          lat: center.lat,
-          lng: center.lng,
-        }}
-        google={props.google}
-        zoom={14}
-      >
-        {showMarkers &&
-          data.map((d: any) => {
-            const coordinates = d.area.coordinates[0];
-            const loc = coordinates[0];
-            const color = d.status
-              ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-              : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
-            return (
-              <Marker
-                key={`${loc[0]}${loc[1]}`}
-                position={{ lat: loc[0], lng: loc[1] }}
-                icon={color}
-                onClick={(a: any, b: any, c: any) => {
-                  console.log(a, b, c);
-                  b.map.setZoom(16);
-                  setCenter({
-                    lat: loc[0],
-                    lng: loc[1],
-                  });
-                  setInfoWindow({
-                    visible: true,
-                    data: d,
-                    showConfirmDialog: false,
-                    result: null,
-                  });
-                }}
-              />
-            );
-          })}
-        {!showMarkers &&
-          data.map((d: any) => {
-            const coordinates = d.area.coordinates[0];
-            const poly_lines = coordinates.map((coordinate: any) => ({
-              lat: coordinate[0],
-              lng: coordinate[1],
-            }));
-            const color = d.status === 1 ? "green" : "blue";
-            return (
-              <Polygon
-                key={`${coordinates[0][0]}${coordinates[0][1]}`}
-                paths={poly_lines}
-                strokeColor={color}
-                strokeOpacity={0.8}
-                strokeWeight={2}
-                fillColor={color}
-                fillOpacity={0.35}
-                onClick={(a: any, b: any, c: any) => {
-                  console.log(a, b, c);
-                  const latLng = a.paths[0];
-                  b.map.setZoom(16);
-                  setCenter({
-                    lat: latLng.lat,
-                    lng: latLng.lng,
-                  });
-                  setInfoWindow({
-                    visible: true,
-                    data: d,
-                    showConfirmDialog: false,
-                    result: null,
-                  });
-                }}
-              />
-            );
-          })}
-      </Map>
+          }}
+          disableDoubleClickZoom={true}
+          gestureHandling="greedy"
+          initialCenter={{
+            lat: center.lat,
+            lng: center.lng,
+          }}
+          google={props.google}
+          zoom={14}
+        >
+          {showMarkers &&
+            data.map((d: any) => {
+              const coordinates = d.area.coordinates[0];
+              const loc = coordinates[0];
+              const color = d.status
+                ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+              return (
+                <Marker
+                  key={`${loc[0]}${loc[1]}`}
+                  position={{ lat: loc[0], lng: loc[1] }}
+                  icon={color}
+                  onClick={(a: any, b: any, c: any) => {
+                    console.log(a, b, c);
+                    b.map.setZoom(16);
+                    setCenter({
+                      lat: loc[0],
+                      lng: loc[1],
+                    });
+                    setInfoWindow({
+                      visible: true,
+                      data: d,
+                      showConfirmDialog: false,
+                      result: null,
+                    });
+                  }}
+                />
+              );
+            })}
+          {!showMarkers &&
+            data.map((d: any) => {
+              const coordinates = d.area.coordinates[0];
+              const poly_lines = coordinates.map((coordinate: any) => ({
+                lat: coordinate[0],
+                lng: coordinate[1],
+              }));
+              const color = d.status === 1 ? "green" : "blue";
+              return (
+                <Polygon
+                  key={`${coordinates[0][0]}${coordinates[0][1]}`}
+                  paths={poly_lines}
+                  strokeColor={color}
+                  strokeOpacity={0.8}
+                  strokeWeight={2}
+                  fillColor={color}
+                  fillOpacity={0.35}
+                  onClick={(a: any, b: any, c: any) => {
+                    console.log(a, b, c);
+                    const latLng = a.paths[0];
+                    b.map.setZoom(16);
+                    setCenter({
+                      lat: latLng.lat,
+                      lng: latLng.lng,
+                    });
+                    setInfoWindow({
+                      visible: true,
+                      data: d,
+                      showConfirmDialog: false,
+                      result: null,
+                    });
+                  }}
+                />
+              );
+            })}
+        </Map>
+      )}
     </div>
   );
 };

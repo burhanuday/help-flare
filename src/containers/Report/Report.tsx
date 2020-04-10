@@ -50,10 +50,7 @@ const Report = (ogProps: any) => {
     showConfirmDialog: false,
     result: null,
   });
-  const [center, setCenter] = useState<any>({
-    lat: 19.0748,
-    lng: 72.8856,
-  });
+  const [center, setCenter] = useState<any>();
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
   const [markerLocations, setMarkerLocations] = useState<any>([]);
   const [mapsObject, setMapsObject] = useState<any>(undefined);
@@ -163,22 +160,23 @@ const Report = (ogProps: any) => {
               showZoomAlert={showZoomAlert}
             />
 
-            <Map
-              // @ts-ignore
-              containerStyle={{
-                width: "100%",
-                position: "relative",
-              }}
-              onReady={(mapProps, map) => {
+            {center && (
+              <Map
                 // @ts-ignore
-                const { google } = mapProps;
-                setMapsObject(google.maps);
-                console.log("google", google, google.maps);
-              }}
-              streetViewControl={false}
-              disableDoubleClickZoom={true}
-              gestureHandling="greedy"
-              /* onCenter_changed={(a: any, b: any, c: any) => {
+                containerStyle={{
+                  width: "100%",
+                  position: "relative",
+                }}
+                onReady={(mapProps, map) => {
+                  // @ts-ignore
+                  const { google } = mapProps;
+                  setMapsObject(google.maps);
+                  console.log("google", google, google.maps);
+                }}
+                streetViewControl={false}
+                disableDoubleClickZoom={true}
+                gestureHandling="greedy"
+                /* onCenter_changed={(a: any, b: any, c: any) => {
                   // console.log("b", b);
                   const lat = b.center.lat();
                   const lng = b.center.lng();
@@ -187,107 +185,110 @@ const Report = (ogProps: any) => {
                     lng: lng,
                   });
                 }} */
-              onZoom_changed={(a: any, b: any, c: any) => {
-                let showMarkerInsteadOfPoly: boolean;
-                if (b.zoom) {
-                  showMarkerInsteadOfPoly = b.zoom <= 15;
-                  console.log("show markers", showMarkerInsteadOfPoly);
-                  if (showMarkerInsteadOfPoly !== showMarkers) {
-                    setShowMarkers(showMarkerInsteadOfPoly);
+                onZoom_changed={(a: any, b: any, c: any) => {
+                  let showMarkerInsteadOfPoly: boolean;
+                  if (b.zoom) {
+                    showMarkerInsteadOfPoly = b.zoom <= 15;
+                    console.log("show markers", showMarkerInsteadOfPoly);
+                    if (showMarkerInsteadOfPoly !== showMarkers) {
+                      setShowMarkers(showMarkerInsteadOfPoly);
+                    }
                   }
-                }
-              }}
-              initialCenter={{
-                lat: center.lat,
-                lng: center.lng,
-              }}
-              google={ogProps.google}
-              zoom={14}
-              onClick={(a: any, b: any, c: any) => {
-                console.log(a, b, c, c.latLng.lat(), c.latLng.lng());
-                const lat = c.latLng.lat();
-                const lng = c.latLng.lng();
-                const zoom = b.zoom;
-                if (zoom >= 16) {
-                  setMarkerLocations([...markerLocations, [lat, lng]]);
-                } else {
-                  setShowZoomAlert(true);
-                }
-              }}
-            >
-              {markerLocations.map((loc: any, index: number) => {
-                return (
-                  <Marker
-                    key={`${loc[0]}${loc[1]}`}
-                    title={`${index}`}
-                    draggable={true}
-                    name={`${index}`}
-                    position={{ lat: loc[0], lng: loc[1] }}
-                    onDragend={(a: any, b: any, c: any) => {
-                      console.log(a, b, c);
-                      const clone = JSON.parse(JSON.stringify(markerLocations));
-                      clone[index] = [c.latLng.lat(), c.latLng.lng()];
-                      setMarkerLocations(clone);
-                    }}
-                    onClick={() => {
-                      const newMarkerLocations = markerLocations.filter(
-                        (location: any) =>
-                          location[0] !== loc[0] && location[1] !== loc[1]
-                      );
-                      setMarkerLocations(newMarkerLocations);
-                    }}
-                  />
-                );
-              })}
-              {markerLocations.length > 2 && (
-                <Polygon
-                  paths={markerLocations.map((coordinate: any) => ({
-                    lat: coordinate[0],
-                    lng: coordinate[1],
-                  }))}
-                  strokeColor="#FF0000"
-                  strokeOpacity={0.8}
-                  strokeWeight={2}
-                  fillColor="#FF0000"
-                  fillOpacity={0.35}
-                />
-              )}
-              {showMarkers &&
-                data.map((d: any) => {
-                  const coordinates = d.area.coordinates[0];
-                  const loc = coordinates[0];
-                  const color = d.status
-                    ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-                    : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+                }}
+                initialCenter={{
+                  lat: center.lat,
+                  lng: center.lng,
+                }}
+                google={ogProps.google}
+                zoom={14}
+                onClick={(a: any, b: any, c: any) => {
+                  console.log(a, b, c, c.latLng.lat(), c.latLng.lng());
+                  const lat = c.latLng.lat();
+                  const lng = c.latLng.lng();
+                  const zoom = b.zoom;
+                  if (zoom >= 16) {
+                    setMarkerLocations([...markerLocations, [lat, lng]]);
+                  } else {
+                    setShowZoomAlert(true);
+                  }
+                }}
+              >
+                {markerLocations.map((loc: any, index: number) => {
                   return (
                     <Marker
                       key={`${loc[0]}${loc[1]}`}
+                      title={`${index}`}
+                      draggable={true}
+                      name={`${index}`}
                       position={{ lat: loc[0], lng: loc[1] }}
-                      icon={color}
+                      onDragend={(a: any, b: any, c: any) => {
+                        console.log(a, b, c);
+                        const clone = JSON.parse(
+                          JSON.stringify(markerLocations)
+                        );
+                        clone[index] = [c.latLng.lat(), c.latLng.lng()];
+                        setMarkerLocations(clone);
+                      }}
+                      onClick={() => {
+                        const newMarkerLocations = markerLocations.filter(
+                          (location: any) =>
+                            location[0] !== loc[0] && location[1] !== loc[1]
+                        );
+                        setMarkerLocations(newMarkerLocations);
+                      }}
                     />
                   );
                 })}
-              {!showMarkers &&
-                data.map((d: any) => {
-                  const coordinates = d.area.coordinates[0];
-                  const poly_lines = coordinates.map((coordinate: any) => ({
-                    lat: coordinate[0],
-                    lng: coordinate[1],
-                  }));
-                  const color = d.status ? "green" : "blue";
-                  return (
-                    <Polygon
-                      key={`${coordinates[0][0]}${coordinates[0][1]}`}
-                      paths={poly_lines}
-                      strokeColor={color}
-                      strokeOpacity={0.8}
-                      strokeWeight={2}
-                      fillColor={color}
-                      fillOpacity={0.35}
-                    />
-                  );
-                })}
-            </Map>
+                {markerLocations.length > 2 && (
+                  <Polygon
+                    paths={markerLocations.map((coordinate: any) => ({
+                      lat: coordinate[0],
+                      lng: coordinate[1],
+                    }))}
+                    strokeColor="#FF0000"
+                    strokeOpacity={0.8}
+                    strokeWeight={2}
+                    fillColor="#FF0000"
+                    fillOpacity={0.35}
+                  />
+                )}
+                {showMarkers &&
+                  data.map((d: any) => {
+                    const coordinates = d.area.coordinates[0];
+                    const loc = coordinates[0];
+                    const color = d.status
+                      ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                      : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+                    return (
+                      <Marker
+                        key={`${loc[0]}${loc[1]}`}
+                        position={{ lat: loc[0], lng: loc[1] }}
+                        icon={color}
+                      />
+                    );
+                  })}
+                {!showMarkers &&
+                  data.map((d: any) => {
+                    const coordinates = d.area.coordinates[0];
+                    const poly_lines = coordinates.map((coordinate: any) => ({
+                      lat: coordinate[0],
+                      lng: coordinate[1],
+                    }));
+                    const color = d.status ? "green" : "blue";
+                    return (
+                      <Polygon
+                        key={`${coordinates[0][0]}${coordinates[0][1]}`}
+                        paths={poly_lines}
+                        strokeColor={color}
+                        strokeOpacity={0.8}
+                        strokeWeight={2}
+                        fillColor={color}
+                        fillOpacity={0.35}
+                      />
+                    );
+                  })}
+              </Map>
+            )}
           </div>
         </Grid>
       </Grid>
