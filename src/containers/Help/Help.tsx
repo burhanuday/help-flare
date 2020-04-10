@@ -123,7 +123,7 @@ const MapContainer = (props: any) => {
               }}
               color="primary"
             >
-              Disagree
+              Cancel
             </Button>
             <Button
               disabled={loading}
@@ -165,7 +165,7 @@ const MapContainer = (props: any) => {
               color="primary"
               autoFocus
             >
-              Agree
+              OK
             </Button>
           </DialogActions>
         </Dialog>
@@ -310,11 +310,14 @@ const MapContainer = (props: any) => {
           data.map((d: any) => {
             const coordinates = d.area.coordinates[0];
             const loc = coordinates[0];
-            const color = d.status === 1 ? "green" : "blue";
+            const color = d.status
+              ? "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+              : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
             return (
               <Marker
                 key={`${loc[0]}${loc[1]}`}
                 position={{ lat: loc[0], lng: loc[1] }}
+                icon={color}
                 onClick={(a: any, b: any, c: any) => {
                   console.log(a, b, c);
                   b.map.setZoom(16);
