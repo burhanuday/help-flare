@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
-import { Map, GoogleApiWrapper, Polygon, InfoWindow } from "google-maps-react";
+import {
+  Map,
+  GoogleApiWrapper,
+  Polygon,
+  InfoWindow,
+  Marker,
+} from "google-maps-react";
 import Header from "../../components/Header/Header";
 import socketIOClient from "socket.io-client";
 import { geolocated } from "react-geolocated";
@@ -27,6 +33,7 @@ const MapContainer = (props: any) => {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
+  const [showMarkers, setShowMarkers] = useState<boolean>(true);
   const [infoWindow, setInfoWindow] = useState<any>({
     visible: false,
     data: null,
@@ -273,9 +280,17 @@ const MapContainer = (props: any) => {
       )}
       <Map
         streetViewControl={false}
-        /* onBounds_changed={(a: any, b: any, c: any) => {
-          console.log("bounds cahnge", a, b, c);
-        }} */
+        // @ts-ignore
+        onZoom_changed={(a: any, b: any, c: any) => {
+          let showMarkerInsteadOfPoly: boolean;
+          if (b.zoom) {
+            showMarkerInsteadOfPoly = b.zoom <= 15;
+            console.log("show markers", showMarkerInsteadOfPoly);
+            if (showMarkerInsteadOfPoly !== showMarkers) {
+              setShowMarkers(showMarkerInsteadOfPoly);
+            }
+          }
+        }}
         disableDoubleClickZoom={true}
         gestureHandling="greedy"
         center={{
@@ -293,40 +308,67 @@ const MapContainer = (props: any) => {
         google={props.google}
         zoom={14}
       >
-        {data.map((d: any) => {
-          const coordinates = d.area.coordinates[0];
-          const poly_lines = coordinates.map((coordinate: any) => ({
-            lat: coordinate[0],
-            lng: coordinate[1],
-          }));
-          const color = d.status === 1 ? "green" : "blue";
-          return (
-            <Polygon
-              key={`${coordinates[0][0]}${coordinates[0][1]}`}
-              paths={poly_lines}
-              strokeColor={color}
-              strokeOpacity={0.8}
-              strokeWeight={2}
-              fillColor={color}
-              fillOpacity={0.35}
-              onClick={(a: any, b: any, c: any) => {
-                console.log(a, b, c);
-                const latLng = a.paths[0];
-                b.map.setZoom(16);
-                setCenter({
-                  lat: latLng.lat,
-                  lng: latLng.lng,
-                });
-                setInfoWindow({
-                  visible: true,
-                  data: d,
-                  showConfirmDialog: false,
-                  result: null,
-                });
-              }}
-            />
-          );
-        })}
+        {showMarkers &&
+          data.map((d: any) => {
+            const coordinates = d.area.coordinates[0];
+            const loc = coordinates[0];
+            const color = d.status === 1 ? "green" : "blue";
+            return (
+              <Marker
+                key={`${loc[0]}${loc[1]}`}
+                position={{ lat: loc[0], lng: loc[1] }}
+                onClick={(a: any, b: any, c: any) => {
+                  console.log(a, b, c);
+                  b.map.setZoom(16);
+                  setCenter({
+                    lat: loc[0],
+                    lng: loc[1],
+                  });
+                  setInfoWindow({
+                    visible: true,
+                    data: d,
+                    showConfirmDialog: false,
+                    result: null,
+                  });
+                }}
+              />
+            );
+          })}
+        {!showMarkers &&
+          data.map((d: any) => {
+            const coordinates = d.area.coordinates[0];
+            const poly_lines = coordinates.map((coordinate: any) => ({
+              lat: coordinate[0],
+              lng: coordinate[1],
+            }));
+            const color = d.status === 1 ? "green" : "blue";
+            return (
+              <Polygon
+                key={`${coordinates[0][0]}${coordinates[0][1]}`}
+                paths={poly_lines}
+                strokeColor={color}
+                strokeOpacity={0.8}
+                strokeWeight={2}
+                fillColor={color}
+                fillOpacity={0.35}
+                onClick={(a: any, b: any, c: any) => {
+                  console.log(a, b, c);
+                  const latLng = a.paths[0];
+                  b.map.setZoom(16);
+                  setCenter({
+                    lat: latLng.lat,
+                    lng: latLng.lng,
+                  });
+                  setInfoWindow({
+                    visible: true,
+                    data: d,
+                    showConfirmDialog: false,
+                    result: null,
+                  });
+                }}
+              />
+            );
+          })}
       </Map>
     </div>
   );
