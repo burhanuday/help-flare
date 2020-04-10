@@ -5,21 +5,21 @@ import { Pagination } from "@material-ui/lab";
 
 const pages = [
   {
-    title: "Add to home screen",
+    title: "Add to home screen / होम स्क्रीन में शामिल करें",
     description:
-      "You can add the app to your home screen from the chrome menu. Get alerts about your reports and other important information",
+      "You can add the app to your home screen from the chrome menu for easy access / आप क्रोम मेनू से ऐप को अपने होम स्क्रीन पर जोड़ सकते हैं",
     image: "https://i.imgur.com/HR1Wmnr.gif",
   },
   {
-    title: "Report",
+    title: "Report / रिपोर्ट",
     description:
-      "Report an area by selecting points on screen and mention the help needed",
+      "Report an area by selecting points on screen / स्क्रीन पर अंक का चयन करके एक क्षेत्र की रिपोर्ट करें",
     image: "https://i.imgur.com/6Bs3cNc.png",
   },
   {
-    title: "Help",
+    title: "Help / सहायता",
     description:
-      "NGOs and social service groups can view the help required by registering and then going to the help section",
+      "NGOs and social service groups can view the help required / सामाजिक सेवा समूह पंजीकरण करके और फिर सहायता पर जाकर आवश्यक सहायता दे सकते हैं",
     image: "https://i.imgur.com/hquj5ai.jpg",
   },
   /*  {
@@ -29,9 +29,9 @@ const pages = [
     image: help,
   }, */
   {
-    title: "Upload a photo",
+    title: "Upload a photo / फोटो अपलोड करें",
     description:
-      "NGOs and groups upload a photo of the help provided for verification purposes",
+      "NGOs and groups upload a photo of the help provided for verification / सामाजिक सेवा समूह प्रमाणन के लिए दी गई मदद की एक तस्वीर अपलोड करते हैं",
     image: "https://i.imgur.com/sa8Wk5a.jpg",
   },
 ];

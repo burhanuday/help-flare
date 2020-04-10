@@ -56,7 +56,7 @@ const Register = (props: any) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [otpModal, setOtpModal] = useState(false);
-  const [agreedToConditions, setAgreedToConditions] = useState<boolean>(false);
+  const [agreedToConditions, setAgreedToConditions] = useState<boolean>(true);
 
   return (
     <div>
@@ -172,7 +172,7 @@ const Register = (props: any) => {
                   error={props.errors.name}
                   disabled={props.isSubmitting}
                   placeholder="Enter name"
-                  label="Name"
+                  label="Name / नाम"
                   touched={props.touched.name}
                 />
 
@@ -187,7 +187,7 @@ const Register = (props: any) => {
                   error={props.errors.phone}
                   disabled={props.isSubmitting}
                   placeholder="Enter phone"
-                  label="Phone"
+                  label="Phone / फ़ोन नंबर"
                   touched={props.touched.phone}
                   startAdornment={
                     <InputAdornment position="start">+91</InputAdornment>
@@ -215,7 +215,7 @@ const Register = (props: any) => {
                   error={props.errors.organisation}
                   disabled={props.isSubmitting}
                   placeholder="Enter organisation name"
-                  label="Organisation"
+                  label="Organisation / संगठन"
                   touched={props.touched.organisation}
                 />
 
@@ -230,7 +230,7 @@ const Register = (props: any) => {
                   error={props.errors.password}
                   disabled={props.isSubmitting}
                   placeholder="Enter password"
-                  label="Password"
+                  label="Password / पासवर्ड"
                   touched={props.touched.password}
                 />
 
@@ -255,12 +255,12 @@ const Register = (props: any) => {
                   value={props.values.typeOfService}
                   error={props.errors.typeOfService}
                   placeholder={"Select all services you can provide"}
-                  label="Select all the you can provide"
+                  label="Select all you can provide / चुनें जो आप प्रदान कर"
                   touched={props.touched}
                   options={[
-                    { title: "Food", value: "food" },
-                    { title: "Water", value: "water" },
-                    { title: "Sanitation", value: "sanitation" },
+                    { title: "Food / भोजन", value: "food" },
+                    { title: "Water / पानी", value: "water" },
+                    { title: "Sanitation / स्वच्छता", value: "sanitation" },
                   ]}
                   multiple
                 />

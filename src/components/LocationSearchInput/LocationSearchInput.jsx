@@ -104,7 +104,7 @@ class SearchBar extends React.Component {
                   <TextField
                     required
                     fullWidth
-                    label="Area"
+                    label="Area / आसपास का क्षेत्र"
                     placeholder="eg. Bandra East"
                     variant="outlined"
                     {...getInputProps({

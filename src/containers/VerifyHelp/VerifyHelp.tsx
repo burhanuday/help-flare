@@ -39,19 +39,32 @@ const VerifyHelp: React.FC = () => {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Upload a picture of the help you provided
+            Upload a picture of the help you provided / आपके द्वारा प्रदान की गई
+            सहायता की एक तस्वीर अपलोड करें
           </Typography>
           <Typography variant="body2" gutterBottom>
             This picture will be displayed publicly on your profile. <br />
             This step is for verification purposes. <br /> You will not be able
             to make any other claims if you do not do this step
           </Typography>
-
-          <Typography variant="body1">Place: {latestClaim.place} </Typography>
-          <Typography variant="body1">
-            Reported by: {latestClaim.reported_by}
+          <Typography variant="body2" gutterBottom>
+            यह चित्र आपके प्रोफ़ाइल पर सार्वजनिक रूप से प्रदर्शित किया जाएगा।{" "}
+            <br /> यह चरण सत्यापन उद्देश्यों के लिए है। <br /> यदि आप यह कदम
+            नहीं उठाते हैं तो आप कोई अन्य दावा नहीं कर पाएंगे
           </Typography>
-          <Typography variant="body1">Contact: {latestClaim.phone} </Typography>
+
+          <Typography variant="body1">
+            Place / स्थान: {latestClaim.place}{" "}
+          </Typography>
+          <Typography variant="body1">
+            Reported by / रिपोर्ट द्वारा: {latestClaim.reported_by}
+          </Typography>
+          <Typography variant="body1">
+            Contact / संपर्क: {latestClaim.phone}{" "}
+          </Typography>
+          <Typography variant="body1">
+            Help required / सहायता की आवश्यकता: {latestClaim.message}{" "}
+          </Typography>
 
           <StaticGoogleMap
             // center={`${latestClaim.area.coordinates[0][0][0]},${latestClaim.area.coordinates[0][0][1]}`}
@@ -86,7 +99,7 @@ const VerifyHelp: React.FC = () => {
             </Alert>
           )}
           <br />
-          <Typography variant="body1">Select image: </Typography>
+          <Typography variant="body1">Select image / चित्र चुने: </Typography>
 
           <div
             style={{
@@ -96,7 +109,7 @@ const VerifyHelp: React.FC = () => {
             }}
           >
             <Button disabled={loading} variant="contained" component="label">
-              Select image
+              Select / चुने
               <input
                 accept="image/*"
                 type="file"

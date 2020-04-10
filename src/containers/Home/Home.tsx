@@ -43,38 +43,38 @@ const Home = (props: any) => {
             spacing={3}
           >
             <HomeItem
-              title="Report"
-              description="Report an area that needs help"
+              title="Report / रिपोर्ट करें"
+              description="Report an area that needs help / क्षेत्र की रिपोर्ट करें, जिसे मदद की आवश्यकता है"
               to="/report"
             />
 
             {loggedIn && (
               <HomeItem
-                title="Help"
-                description="Help an area by providing what they need"
+                title="Help / सहायता"
+                description="Help an area by providing what they need / सामाजिक सेवा समूह आवश्यक सहायता दे सकते हैं"
                 to="/help"
               />
             )}
 
             {loggedIn && hasPendingClaims && (
               <HomeItem
-                title="Verify"
-                description="View information and upload a picture for verification"
+                title="Verify / प्रमाणन"
+                description="View information and upload a picture for verification / जानकारी देखें और साबित करने के लिए एक तस्वीर अपलोड करें"
                 to="/verify"
               />
             )}
 
             {!loggedIn && (
               <HomeItem
-                title="Register"
-                description="Register as a helper"
+                title="Register / रजिस्टर करें"
+                description="Register as a helper / सामाजिक सेवा समूह के रूप में रजिस्टर करें"
                 to="/auth/register"
               />
             )}
 
             <HomeItem
               title="FAQ"
-              description="About us and frequently asked questions"
+              description="About us and frequently asked questions / हमारे बारे में और अक्सर पूछे जाने वाले प्रश्न"
               to="/faq"
             />
           </Grid>

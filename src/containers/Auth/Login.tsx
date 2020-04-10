@@ -135,7 +135,7 @@ const Login = (props: any) => {
                   error={props.errors.phone}
                   disabled={props.isSubmitting}
                   placeholder="Enter phone"
-                  label="Phone"
+                  label="Phone / फ़ोन नंबर"
                   touched={props.touched.phone}
                   startAdornment={
                     <InputAdornment position="start">+91</InputAdornment>
@@ -153,7 +153,7 @@ const Login = (props: any) => {
                   error={props.errors.password}
                   disabled={props.isSubmitting}
                   placeholder="Enter password"
-                  label="Password"
+                  label="Password / पासवर्ड"
                   touched={props.touched.password}
                 />
 

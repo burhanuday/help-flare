@@ -31,7 +31,7 @@ const OtpModal = (props: any) => {
       }}
       open={props.visible}
     >
-      <DialogTitle>Phone number verification</DialogTitle>
+      <DialogTitle>Phone number verification </DialogTitle>
       <DialogContent>
         {otpError && (
           <Alert variant="filled" severity="error">
@@ -39,7 +39,7 @@ const OtpModal = (props: any) => {
           </Alert>
         )}
         <DialogContentText>
-          Enter the 6 digit OTP sent to your phone
+          Enter the 6 digit OTP sent to your phone / OTP दर्ज करें
         </DialogContentText>
         <TextField
           type="number"

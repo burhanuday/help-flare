@@ -113,10 +113,12 @@ const MapContainer = (props: any) => {
               that time
             </DialogContentText>
             <Typography color="error" variant="body1">
-              Please provide the help in under 24 hours of pressing "Agree"
+              Please provide the help in under 24 hours of pressing "Agree" /
+              कृपया "OK" दबाने के 24 घंटे के भीतर सहायता प्रदान करें
             </Typography>
             <Typography color="textSecondary" variant="body2">
-              We will contact you in case of any problems
+              We will contact you in case of any problems / हम किसी भी समस्या के
+              मामले में आपसे संपर्क करेंगे
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -225,30 +227,35 @@ const MapContainer = (props: any) => {
             <DialogTitle id="alert-dialog-title">Help required</DialogTitle>
             <DialogContent>
               <Typography variant="body2">
-                Reported by: {infoWindow.data.reported_by}
+                Reported by / रिपोर्ट द्वारा: {infoWindow.data.reported_by}
               </Typography>
               <Typography variant="body2">
-                Contact: {infoWindow.data.phone}
+                Contact / संपर्क: {infoWindow.data.phone}
               </Typography>
               <Typography variant="body2">
-                Help required: {infoWindow.data.type_of_help.join(", ")}
+                Help required / सहायता की आवश्यकता:{" "}
+                {infoWindow.data.type_of_help.join(", ")}
               </Typography>
               <Typography variant="body2">
-                Place: {infoWindow.data.place}
+                Place / स्थान: {infoWindow.data.place}
               </Typography>
               <Typography variant="body2">
-                More information: {infoWindow.data.message}
+                More information / अधिक जानकारी: {infoWindow.data.message}
               </Typography>
               {infoWindow.data.status === 1 && (
                 <Typography variant="h6">
-                  Helper is already assigned for this area
+                  Helper is already assigned for this area / हेल्पर को इस
+                  क्षेत्र के लिए पहले से ही सौंपा गया है
                 </Typography>
               )}
 
               {hasPendingClaims && (
                 <Typography variant="body2" color="error">
                   Verify your current claim before claiming this area <br />
-                  You can do this by pressing verify on the home screen
+                  You can do this by pressing verify on the home screen <br />
+                  इस क्षेत्र का दावा करने से पहले अपने वर्तमान दावे को साबित
+                  करें <br />
+                  होम स्क्रीन पर वेरिफिकेशन दबाकर आप ऐसा कर सकते हैं
                 </Typography>
               )}
             </DialogContent>

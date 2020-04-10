@@ -9,7 +9,7 @@ const Contact = () => {
         fontSize: "0.85rem",
       }}
     >
-      For updates and problems contact us at{" "}
+      For updates and problems contact us at / संपर्क करें{" "}
       <a
         style={{
           fontSize: "1.0rem",

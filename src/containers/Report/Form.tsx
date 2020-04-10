@@ -164,7 +164,7 @@ const Form = (ogProps: any) => {
               error={props.errors.name}
               disabled={props.isSubmitting}
               placeholder="Enter name"
-              label="Name"
+              label="Name / नाम"
               touched={props.touched.name}
               size="small"
             />
@@ -180,7 +180,7 @@ const Form = (ogProps: any) => {
               error={props.errors.phone}
               disabled={props.isSubmitting}
               placeholder="Enter phone"
-              label="Phone"
+              label="Phone / फ़ोन नंबर"
               touched={props.touched.phone}
               startAdornment={
                 <InputAdornment position="start">+91</InputAdornment>
@@ -196,7 +196,9 @@ const Form = (ogProps: any) => {
               }}
             >
               Your phone number will be verified via OTP <br />
+              {/* आपके फ़ोन नंबर को OTP के माध्यम से सत्यापित किया जाएगा <br /> */}
               Groups or NGOs might contact you if required
+              {/* यदि आवश्यक हो तो संगठन आपसे संपर्क कर सकते हैं */}
             </div>
 
             <Select
@@ -207,12 +209,12 @@ const Form = (ogProps: any) => {
               value={props.values.helpType}
               error={props.errors.helpType}
               placeholder={"Select the help the area requires"}
-              label="Help required (select multiple)"
+              label="Help required (select multiple) / सहायता की आवश्यकता"
               touched={props.touched}
               options={[
-                { title: "Food", value: "food" },
-                { title: "Water", value: "water" },
-                { title: "Sanitation", value: "sanitation" },
+                { title: "Food / भोजन", value: "food" },
+                { title: "Water / पानी", value: "water" },
+                { title: "Sanitation / स्वच्छता", value: "sanitation" },
               ]}
               multiple
               size="small"
@@ -230,7 +232,7 @@ const Form = (ogProps: any) => {
                 error={props.errors.message}
                 disabled={props.isSubmitting}
                 placeholder="eg. About 100 people living here need rice and other uncooked food items"
-                label="More details"
+                label="More details / अधिक जानकारी"
                 touched={props.touched.message}
                 size="small"
               />

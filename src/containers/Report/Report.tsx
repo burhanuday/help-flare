@@ -18,21 +18,22 @@ import { sendEvent, FIREBASE_REPORT_OPENED } from "../../util/analytics";
 const steps = [
   {
     target: "#step-1",
-    content: `Zoom in and drop three markers to make an area. You can drop a marker by pressing the map`,
+    content: `Zoom in and drop at least three markers to make an area. You can drop a marker by pressing the map
+     / एक क्षेत्र बनाने के लिए तीन मार्करों को ज़ूम इन और ड्रॉप करें। आप मैप पर दबाकर मार्कर लगा सकते है`,
     disableBeacon: true,
-    title: "Add markers",
+    title: "Add markers / मार्कर रखें",
   },
   {
     target: "#step-1",
-    content: `You can remove a marker by clicking it again`,
+    content: `You can remove a marker by clicking it again / आप किसी मार्कर को फिर से क्लिक करके हटा सकते हैं`,
     disableBeacon: true,
-    title: "Remove markers",
+    title: "Remove markers / मार्करों को हटाने के लिए",
   },
   {
     target: "#message_box",
-    content: `Enter details about the needs here`,
+    content: `Enter details about the needs here / यहां जरूरतों के बारे में विवरण दर्ज करें`,
     disableBeacon: true,
-    title: "Enter details",
+    title: "Enter details / विवरण करें",
     // placement: "top-start",
     offset: 0,
   },
