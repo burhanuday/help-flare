@@ -104,12 +104,10 @@ const MapContainer = (props: any) => {
               that time
             </DialogContentText>
             <Typography color="error" variant="body1">
-              You will have 24 hours to provide help failing which you will be
-              unassigned this area
+              Please provide the help in under 24 hours of pressing "Agree"
             </Typography>
-            <Typography color="error" variant="body2">
-              We take these claims seriously. Only press the help button if you
-              intend to provide it
+            <Typography color="textSecondary" variant="body2">
+              We will contact you in case of any problems
             </Typography>
           </DialogContent>
           <DialogActions>

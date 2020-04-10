@@ -104,11 +104,11 @@ class SearchBar extends React.Component {
                   <TextField
                     required
                     fullWidth
-                    label="Vicinity"
-                    placeholder="Enter your vicinity"
+                    label="Area"
+                    placeholder="eg. Bandra East"
                     variant="outlined"
                     {...getInputProps({
-                      placeholder: "Enter your vicinity",
+                      placeholder: "eg. Bandra East",
                       className: "Demo__search-input",
                     })}
                     disabled={this.props.disabled}
