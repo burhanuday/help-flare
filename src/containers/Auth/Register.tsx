@@ -38,6 +38,10 @@ const schema = yup.object({
     .min(6, "Password should be at least 6 characters")
     .max(18, "Password cannot be longer than 18 characters"),
   name: yup.string().required("Name is required"),
+  organisation: yup.string().required("Organisation is required"),
+  typeOfService: yup
+    .array()
+    .required("Select all kinds of helps that you can provide"),
 });
 
 const Register = (props: any) => {
@@ -203,14 +207,15 @@ const Register = (props: any) => {
 
                 <Input
                   fullWidth
+                  required
                   name="organisation"
                   onChange={props.handleChange}
                   onBlur={props.handleBlur}
                   value={props.values.organisation}
                   error={props.errors.organisation}
                   disabled={props.isSubmitting}
-                  placeholder="Enter organisation name (optional)"
-                  label="Organisation (optional)"
+                  placeholder="Enter organisation name"
+                  label="Organisation"
                   touched={props.touched.organisation}
                 />
 
@@ -242,6 +247,7 @@ const Register = (props: any) => {
                 )}
 
                 <Select
+                  required
                   fullWidth
                   name="typeOfService"
                   onChange={props.setFieldValue}
@@ -249,7 +255,7 @@ const Register = (props: any) => {
                   value={props.values.typeOfService}
                   error={props.errors.typeOfService}
                   placeholder={"Select all services you can provide"}
-                  label="Select all the you can provide (optional)"
+                  label="Select all the you can provide"
                   touched={props.touched}
                   options={[
                     { title: "Food", value: "food" },
@@ -273,8 +279,8 @@ const Register = (props: any) => {
                   />
                   <span>
                     By registering you agree to the{" "}
-                    <Link to="/terms-and-conditions">terms of service</Link>{" "}
-                    and the <Link to="/privacy-policy">privacy policy</Link>
+                    <Link to="/terms-and-conditions">terms of service</Link> and
+                    the <Link to="/privacy-policy">privacy policy</Link>
                   </span>
                 </div>
 
