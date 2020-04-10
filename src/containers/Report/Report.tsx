@@ -50,7 +50,10 @@ const Report = (ogProps: any) => {
     showConfirmDialog: false,
     result: null,
   });
-  const [center, setCenter] = useState<any>(null);
+  const [center, setCenter] = useState<any>({
+    lat: 19.0748,
+    lng: 72.8856,
+  });
   const [socket, setSocket] = useState<SocketIOClient.Socket>();
   const [markerLocations, setMarkerLocations] = useState<any>([]);
   const [mapsObject, setMapsObject] = useState<any>(undefined);
@@ -105,14 +108,14 @@ const Report = (ogProps: any) => {
     ogProps.isGeolocationEnabled,
   ]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (ogProps.coords) {
       setCenter({
         lat: ogProps.coords.latitude,
         lng: ogProps.coords.longitude,
       });
     }
-  }, [ogProps.coords]); */
+  }, [ogProps.coords]);
 
   const Beacon = (props: any) => <Button {...props}>Show tutorial</Button>;
 
@@ -195,16 +198,8 @@ const Report = (ogProps: any) => {
                 }
               }}
               initialCenter={{
-                lat: center
-                  ? center.lat
-                  : ogProps.coords
-                  ? ogProps.coords.latitude
-                  : 19.0748,
-                lng: center
-                  ? center.lng
-                  : ogProps.coords
-                  ? ogProps.coords.longitude
-                  : 72.8856,
+                lat: center.lat,
+                lng: center.lng,
               }}
               google={ogProps.google}
               zoom={14}
@@ -269,14 +264,6 @@ const Report = (ogProps: any) => {
                       key={`${loc[0]}${loc[1]}`}
                       position={{ lat: loc[0], lng: loc[1] }}
                       icon={color}
-
-                      /* onClick={() => {
-                          const newMarkerLocations = markerLocations.filter(
-                            (location: any) =>
-                              location[0] !== loc[0] && location[1] !== loc[1]
-                          );
-                          setMarkerLocations(newMarkerLocations);
-                        }} */
                     />
                   );
                 })}

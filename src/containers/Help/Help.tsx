@@ -40,7 +40,10 @@ const MapContainer = (props: any) => {
     showConfirmDialog: false,
     result: null,
   });
-  const [center, setCenter] = useState<any>(null);
+  const [center, setCenter] = useState<any>({
+    lat: 19.0748,
+    lng: 72.8856,
+  });
   const { profileState, profileActions } = useContext(ProfileContext);
   const hasPendingClaims = profileState?.profile?.claims?.length > 0;
 
@@ -80,6 +83,15 @@ const MapContainer = (props: any) => {
       }
     };
   }, [props.coords, props.isGeolocationAvailable, props.isGeolocationEnabled]);
+
+  useEffect(() => {
+    if (props.coords) {
+      setCenter({
+        lat: props.coords.latitude,
+        lng: props.coords.longitude,
+      });
+    }
+  }, [props.coords]);
 
   return (
     <div
@@ -291,17 +303,9 @@ const MapContainer = (props: any) => {
         }}
         disableDoubleClickZoom={true}
         gestureHandling="greedy"
-        center={{
-          lat: center
-            ? center.lat
-            : props.coords
-            ? props.coords.latitude
-            : 19.0748,
-          lng: center
-            ? center.lng
-            : props.coords
-            ? props.coords.longitude
-            : 72.8856,
+        initialCenter={{
+          lat: center.lat,
+          lng: center.lng,
         }}
         google={props.google}
         zoom={14}
