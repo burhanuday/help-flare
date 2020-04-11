@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import { Container, Button, Grid, Typography } from "@material-ui/core";
+import { useTranslation, Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import HomeItem from "./HomeItem";
@@ -21,6 +22,13 @@ const Home = (props: any) => {
     }
   }, []); */
 
+  //Translation function
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div
       style={{
@@ -33,6 +41,8 @@ const Home = (props: any) => {
       <div>
         <Header />
         <Container maxWidth="sm">
+          <Button onClick={() => changeLanguage("en")}>english</Button>
+          <Button onClick={() => changeLanguage("hi")}>hindi</Button>
           <Grid
             style={{
               marginTop: "30px",
@@ -43,38 +53,40 @@ const Home = (props: any) => {
             spacing={3}
           >
             <HomeItem
-              title="Report / रिपोर्ट करें"
-              description="Report an area that needs help / क्षेत्र की रिपोर्ट करें, जिसे मदद की आवश्यकता है"
+              title={t("Report")}
+              description={t("Report an area that needs help")}
               to="/report"
             />
 
             {loggedIn && (
               <HomeItem
-                title="Help / सहायता"
-                description="Help an area by providing what they need / सामाजिक सेवा समूह आवश्यक सहायता दे सकते हैं"
+                title={t("Help")}
+                description={t("Register as helper")}
                 to="/help"
               />
             )}
 
             {loggedIn && hasPendingClaims && (
               <HomeItem
-                title="Verify / प्रमाणन"
-                description="View information and upload a picture for verification / जानकारी देखें और साबित करने के लिए एक तस्वीर अपलोड करें"
+                title={t("Verify")}
+                description={t(
+                  "View information and upload a picture for verification"
+                )}
                 to="/verify"
               />
             )}
 
             {!loggedIn && (
               <HomeItem
-                title="Register / रजिस्टर करें"
-                description="Register as a helper / सामाजिक सेवा समूह के रूप में रजिस्टर करें"
+                title={t("Register")}
+                description={t("Register as a helper")}
                 to="/auth/register"
               />
             )}
 
             <HomeItem
-              title="FAQ"
-              description="About us and frequently asked questions / हमारे बारे में और अक्सर पूछे जाने वाले प्रश्न"
+              title={t("FAQ")}
+              description={t("About us and frequently asked questions")}
               to="/faq"
             />
           </Grid>
