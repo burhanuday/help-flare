@@ -28,6 +28,7 @@ import {
   FIREBASE_HELP_OPENED,
   FIREBASE_HELP_ERROR,
 } from "../../util/analytics";
+import { useTranslation } from "react-i18next";
 
 const MapContainer = (props: any) => {
   const [data, setData] = useState<any>([]);
@@ -89,7 +90,7 @@ const MapContainer = (props: any) => {
       });
     }
   }, [props.coords]);
-
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -105,20 +106,20 @@ const MapContainer = (props: any) => {
           }}
           open={infoWindow.showConfirmDialog}
         >
-          <DialogTitle>Are you sure?</DialogTitle>
+          <DialogTitle>{t("Are you sure?")}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              You must click a picture of the help provided and upload it after
-              you are done. You will not be able to claim any other sites till
-              that time
+              {t(
+                "You must click a picture of the help provided and upload it after you are done. You will not be able to claim any other sites till that time"
+              )}
             </DialogContentText>
             <Typography color="error" variant="body1">
-              Please provide the help in under 24 hours of pressing "Agree" /
-              कृपया "OK" दबाने के 24 घंटे के भीतर सहायता प्रदान करें
+              {t(
+                'Please provide the help in under 24 hours of pressing "Agree"'
+              )}
             </Typography>
             <Typography color="textSecondary" variant="body2">
-              We will contact you in case of any problems / हम किसी भी समस्या के
-              मामले में आपसे संपर्क करेंगे
+              {t("We will contact you in case of any problems")}
             </Typography>
           </DialogContent>
           <DialogActions>
@@ -134,7 +135,7 @@ const MapContainer = (props: any) => {
               }}
               color="primary"
             >
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button
               disabled={loading}
@@ -224,38 +225,39 @@ const MapContainer = (props: any) => {
             </Alert>
           </Snackbar>
           <Dialog open={infoWindow.visible}>
-            <DialogTitle id="alert-dialog-title">Help required</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {t("Help required")}
+            </DialogTitle>
             <DialogContent>
               <Typography variant="body2">
-                Reported by / रिपोर्ट द्वारा: {infoWindow.data.reported_by}
+                {t("Reported by")}: {infoWindow.data.reported_by}
               </Typography>
               <Typography variant="body2">
-                Contact / संपर्क: {infoWindow.data.phone}
+                {t("Contact")}: {infoWindow.data.phone}
               </Typography>
               <Typography variant="body2">
-                Help required / सहायता की आवश्यकता:{" "}
-                {infoWindow.data.type_of_help.join(", ")}
+                {t("Help required")}: {infoWindow.data.type_of_help.join(", ")}
               </Typography>
               <Typography variant="body2">
-                Place / स्थान: {infoWindow.data.place}
+                {t("Place")}: {infoWindow.data.place}
               </Typography>
               <Typography variant="body2">
-                More information / अधिक जानकारी: {infoWindow.data.message}
+                {t("More information")}: {infoWindow.data.message}
               </Typography>
               {infoWindow.data.status === 1 && (
                 <Typography variant="h6">
-                  Helper is already assigned for this area / हेल्पर को इस
-                  क्षेत्र के लिए पहले से ही सौंपा गया है
+                  {t("Helper is already assigned for this area")}
                 </Typography>
               )}
 
               {hasPendingClaims && (
                 <Typography variant="body2" color="error">
-                  Verify your current claim before claiming this area <br />
-                  You can do this by pressing verify on the home screen <br />
-                  इस क्षेत्र का दावा करने से पहले अपने वर्तमान दावे को साबित
-                  करें <br />
-                  होम स्क्रीन पर वेरिफिकेशन दबाकर आप ऐसा कर सकते हैं
+                  {t("Verify your current claim before claiming this area")}{" "}
+                  <br />
+                  {t(
+                    "You can do this by pressing verify on the home screen"
+                  )}{" "}
+                  <br />
                 </Typography>
               )}
             </DialogContent>
@@ -272,7 +274,7 @@ const MapContainer = (props: any) => {
                 size="small"
                 color="primary"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 disabled={infoWindow.data.status === 1 || hasPendingClaims}
@@ -286,7 +288,7 @@ const MapContainer = (props: any) => {
                 color="primary"
                 variant="contained"
               >
-                I will help
+                {t("I will help")}
               </Button>
             </DialogActions>
           </Dialog>

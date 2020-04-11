@@ -18,6 +18,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import OtpModal from "./OtpModal";
 import { sendEvent, FIREBASE_AUTH_ERROR } from "../../util/analytics";
+import { useTranslation } from "react-i18next";
 
 interface GeoData {
   latitude: string;
@@ -57,7 +58,7 @@ const Register = (props: any) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [otpModal, setOtpModal] = useState(false);
   const [agreedToConditions, setAgreedToConditions] = useState<boolean>(true);
-
+  const { t } = useTranslation();
   return (
     <div>
       {otpModal && (
@@ -171,8 +172,8 @@ const Register = (props: any) => {
                   value={props.values.name}
                   error={props.errors.name}
                   disabled={props.isSubmitting}
-                  placeholder="Enter name"
-                  label="Name / नाम"
+                  placeholder="Enter details"
+                  label="Name"
                   touched={props.touched.name}
                 />
 
@@ -187,7 +188,7 @@ const Register = (props: any) => {
                   error={props.errors.phone}
                   disabled={props.isSubmitting}
                   placeholder="Enter phone"
-                  label="Phone / फ़ोन नंबर"
+                  label="Phone"
                   touched={props.touched.phone}
                   startAdornment={
                     <InputAdornment position="start">+91</InputAdornment>
@@ -201,8 +202,8 @@ const Register = (props: any) => {
                     fontSize: "0.8rem",
                   }}
                 >
-                  Your phone number will be verified via OTP. <br />
-                  Your phone number might be used to contact you if required.
+                  {t("We will send OTP on your phone")} <br />
+                  {t("Groups or NGOs might contact you if required")}
                 </div>
 
                 <Input
@@ -215,7 +216,7 @@ const Register = (props: any) => {
                   error={props.errors.organisation}
                   disabled={props.isSubmitting}
                   placeholder="Enter organisation name"
-                  label="Organisation / संगठन"
+                  label="Organisation"
                   touched={props.touched.organisation}
                 />
 
@@ -229,8 +230,8 @@ const Register = (props: any) => {
                   value={props.values.password}
                   error={props.errors.password}
                   disabled={props.isSubmitting}
-                  placeholder="Enter password"
-                  label="Password / पासवर्ड"
+                  placeholder="Enter Password"
+                  label="Password"
                   touched={props.touched.password}
                 />
 
@@ -254,13 +255,13 @@ const Register = (props: any) => {
                   onBlur={props.handleBlur}
                   value={props.values.typeOfService}
                   error={props.errors.typeOfService}
-                  placeholder={"Select all services you can provide"}
-                  label="Select all you can provide / चुनें जो आप प्रदान कर"
+                  placeholder={t("Select all that you can provide")}
+                  label={t("Select all that you can provide")}
                   touched={props.touched}
                   options={[
-                    { title: "Food / भोजन", value: "food" },
-                    { title: "Water / पानी", value: "water" },
-                    { title: "Sanitation / स्वच्छता", value: "sanitation" },
+                    { title: `${t("Food")}`, value: "food" },
+                    { title: `${t("Water")}`, value: "water" },
+                    { title: `${t("Sanitation")}`, value: "sanitation" },
                   ]}
                   multiple
                 />

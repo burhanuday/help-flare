@@ -18,6 +18,7 @@ import {
   FIREBASE_HELP_VERIFIED,
   FIREBASE_HELP_ERROR,
 } from "../../util/analytics";
+import { useTranslation } from "react-i18next";
 
 const VerifyHelp: React.FC = () => {
   const [file, setFile] = useState<File>();
@@ -27,7 +28,7 @@ const VerifyHelp: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const latestClaim = profileState?.profile?.claims[0];
-
+  const { t } = useTranslation();
   return (
     <div>
       {console.log(profileState)}
@@ -39,31 +40,28 @@ const VerifyHelp: React.FC = () => {
           }}
         >
           <Typography variant="h6" gutterBottom>
-            Upload a picture of the help you provided / आपके द्वारा प्रदान की गई
-            सहायता की एक तस्वीर अपलोड करें
+            {t("Upload a picture of the help you provided")}
           </Typography>
           <Typography variant="body2" gutterBottom>
-            This picture will be displayed publicly on your profile. <br />
-            This step is for verification purposes. <br /> You will not be able
-            to make any other claims if you do not do this step
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            यह चित्र आपके प्रोफ़ाइल पर सार्वजनिक रूप से प्रदर्शित किया जाएगा।{" "}
-            <br /> यह चरण सत्यापन उद्देश्यों के लिए है। <br /> यदि आप यह कदम
-            नहीं उठाते हैं तो आप कोई अन्य दावा नहीं कर पाएंगे
+            {t("This picture will be displayed publicly on your profile.")}{" "}
+            <br />
+            {t("This step is for verification purposes.")} <br />{" "}
+            {t(
+              "You will not be able to make any other claims if you do not do this step"
+            )}
           </Typography>
 
           <Typography variant="body1">
-            Place / स्थान: {latestClaim.place}{" "}
+            {t("Place")}: {latestClaim.place}{" "}
           </Typography>
           <Typography variant="body1">
-            Reported by / रिपोर्ट द्वारा: {latestClaim.reported_by}
+            {t("Reported by")}: {latestClaim.reported_by}
           </Typography>
           <Typography variant="body1">
-            Contact / संपर्क: {latestClaim.phone}{" "}
+            {t("Contact")}: {latestClaim.phone}{" "}
           </Typography>
           <Typography variant="body1">
-            Help required / सहायता की आवश्यकता: {latestClaim.message}{" "}
+            {t("Help required")}: {latestClaim.message}{" "}
           </Typography>
 
           <StaticGoogleMap
@@ -84,7 +82,7 @@ const VerifyHelp: React.FC = () => {
             />
           </StaticGoogleMap>
           <Typography style={{ marginTop: "20px" }} variant="h6" gutterBottom>
-            Verify:
+            {t("Verify")}:
           </Typography>
           <br />
           {error && (
@@ -99,7 +97,7 @@ const VerifyHelp: React.FC = () => {
             </Alert>
           )}
           <br />
-          <Typography variant="body1">Select image / चित्र चुने: </Typography>
+          <Typography variant="body1">{t("Select image")}: </Typography>
 
           <div
             style={{
@@ -109,7 +107,7 @@ const VerifyHelp: React.FC = () => {
             }}
           >
             <Button disabled={loading} variant="contained" component="label">
-              Select / चुने
+              Select
               <input
                 accept="image/*"
                 type="file"
@@ -171,7 +169,7 @@ const VerifyHelp: React.FC = () => {
               variant="contained"
               color="primary"
             >
-              Submit photo
+              {t("Upload photo")}
             </Button>
           </div>
         </div>

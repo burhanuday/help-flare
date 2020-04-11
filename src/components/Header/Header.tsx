@@ -6,8 +6,9 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import { ArrowBack } from "@material-ui/icons";
+import { ArrowBack, Person } from "@material-ui/icons";
 import { Link, useLocation } from "react-router-dom";
+import TranslateMenu from "./TranslateMenu";
 // import { Menu } from "@material-ui/icons";
 
 interface Props {
@@ -37,13 +38,16 @@ const Header: React.FC<Props> = props => {
         >
           <Typography variant="h6">{props.title || APP_NAME}</Typography>
         </Link>
+        <TranslateMenu />
         {loggedIn && (
           <>
             <Link
               style={{ color: "white", textDecoration: "none" }}
               to="/profile"
             >
-              <Button color="inherit">Profile</Button>
+              <Button color="inherit">
+                <Person />
+              </Button>
             </Link>
             <Button
               onClick={() => {
