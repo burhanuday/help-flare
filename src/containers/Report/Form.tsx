@@ -10,6 +10,7 @@ import * as yup from "yup";
 import OtpModal from "./OtpModal";
 import { sendEvent, FIREBASE_REPORT_ERROR } from "../../util/analytics";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const schema = yup.object({
   phone: yup
@@ -28,7 +29,7 @@ const Form = (ogProps: any) => {
   const [otpModal, setOtpModal] = useState(false);
 
   let history = useHistory();
-
+  const { t } = useTranslation();
   return (
     <>
       {otpModal && (
@@ -164,7 +165,7 @@ const Form = (ogProps: any) => {
               error={props.errors.name}
               disabled={props.isSubmitting}
               placeholder="Enter name"
-              label="Name / नाम"
+              label="Name"
               touched={props.touched.name}
               size="small"
             />
@@ -180,7 +181,7 @@ const Form = (ogProps: any) => {
               error={props.errors.phone}
               disabled={props.isSubmitting}
               placeholder="Enter phone"
-              label="Phone / फ़ोन नंबर"
+              label="Phone"
               touched={props.touched.phone}
               startAdornment={
                 <InputAdornment position="start">+91</InputAdornment>
@@ -195,10 +196,8 @@ const Form = (ogProps: any) => {
                 fontSize: "0.8rem",
               }}
             >
-              Your phone number will be verified via OTP <br />
-              {/* आपके फ़ोन नंबर को OTP के माध्यम से सत्यापित किया जाएगा <br /> */}
-              Groups or NGOs might contact you if required
-              {/* यदि आवश्यक हो तो संगठन आपसे संपर्क कर सकते हैं */}
+              {t("We will send OTP on your phone")} <br />
+              {t("Groups or NGOs might contact you if required")}
             </div>
 
             <Select
@@ -209,12 +208,12 @@ const Form = (ogProps: any) => {
               value={props.values.helpType}
               error={props.errors.helpType}
               placeholder={"Select the help the area requires"}
-              label="Help required (select multiple) / सहायता की आवश्यकता"
+              label={t("Help required(select multiple)")}
               touched={props.touched}
               options={[
-                { title: "Food / भोजन", value: "food" },
-                { title: "Water / पानी", value: "water" },
-                { title: "Sanitation / स्वच्छता", value: "sanitation" },
+                { title: `${t("Food")}`, value: "food" },
+                { title: `${t("Water")}`, value: "water" },
+                { title: `${t("Sanitation")}`, value: "sanitation" },
               ]}
               multiple
               size="small"
@@ -232,7 +231,7 @@ const Form = (ogProps: any) => {
                 error={props.errors.message}
                 disabled={props.isSubmitting}
                 placeholder="eg. About 100 people living here need rice and other uncooked food items"
-                label="More details / अधिक जानकारी"
+                label="More information"
                 touched={props.touched.message}
                 size="small"
               />
@@ -254,7 +253,7 @@ const Form = (ogProps: any) => {
                 color="primary"
                 fullWidth
               >
-                Report
+                {t("Report")}
               </Button>
             </div>
           </form>

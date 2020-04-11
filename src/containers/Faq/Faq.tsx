@@ -10,19 +10,15 @@ const list = [
   },
   {
     question: "What is the purpose of this project?",
-    answer: `There are many social groups and NGOs out there helping people by providing food
-    and other necesseties but there is a disconnect between the people who are helping and 
-    those who need help. This project is aimed at removing that disconnect`,
+    answer: `There are many social groups and NGOs out there helping people by providing food and other necessities but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect`,
   },
   {
     question: "Is this project affiliated with the government?",
-    answer: `No. But if you are someone who can help or spread the word, 
-    contact us on the Instagram page on the home screen`,
+    answer: `No. But if you are someone who can help or spread the word, contact us on the Instagram page on the home screen`,
   },
   {
     question: "How can I help?",
-    answer: `If you are someone who can prepare food packets and distribute them at the reported areas,
-    register and claim an area. You can also help by reporting areas so that other people can see them`,
+    answer: `If you are someone who can prepare food packets and distribute them at the reported areas, register and claim an area. You can also help by reporting areas so that other people can see them`,
   },
   {
     question: "Why do I have to upload an image of the help I am providing?",
@@ -34,7 +30,7 @@ const list = [
   },
   {
     question: "I am facing an issue with the app. What should I do?",
-    answer: `You can contact us on the Instagram page in the footer of the home screen`,
+    answer: `You can contact us on the details mentioned in the footer of the home screen`,
   },
 ];
 

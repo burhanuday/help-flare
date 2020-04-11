@@ -48,18 +48,26 @@ i18n
           "Your phone number might be used to contact you if required.":
             "Your phone number might be used to contact you if required.",
           Organisation: "Organisation",
+          Phone: "Phone",
           Password: "Password",
           Vicinity: "Vicinity",
           "Select all that you can provide": "Select all that you can provide",
-          "Food, water, sanitation": "Food, water, sanitation",
+          Food: "Food",
+          Water: "Water",
+          Sanitation: "Sanitation",
+          "eg. About 100 people living here need rice and other uncooked food items":
+            "eg. About 100 people living here need rice and other uncooked food items",
           "By registering you agree to the terms of service and the privacy policy":
             "By registering you agree to the terms of service and the privacy policy",
           Register: "Register",
           Login: "Login",
           "Login for helper groups": "Login for helper groups",
+          "Help required(select multiple)": "Help required(select multiple)",
           "Help required": "Help required",
           "Reported by": "Reported by",
           Contact: "Contact",
+          "Enter Password": "Enter Password",
+          "Enter Organisation name": "Enter Organisation name",
           Place: "Place",
           "More information": "More information",
           Cancel: "Cancel",
@@ -85,10 +93,12 @@ i18n
             "This picture will be displayed publicly on your profile.",
           "This step is for verification purposes.":
             "This step is for verification purposes.",
+          "You will not be able to make any other claims if you do not do this step":
+            "You will not be able to make any other claims if you do not do this step",
           Verify: "Verify",
           "Select image": "Select image",
           "Upload photo": "Upload photo",
-          "Who are you ?": "Who are you ?",
+          "Who are you?": "Who are you?",
 
           "We are a group of students from Mumbai":
             "We are a group of students from Mumbai",
@@ -96,8 +106,8 @@ i18n
           "What is the purpose of this project?":
             "What is the purpose of this project?",
 
-          "There are many social groups and NGOs out there helping people by providing food and other necesseties but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect":
-            "There are many social groups and NGOs out there helping people by providing food and other necesseties but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect",
+          "There are many social groups and NGOs out there helping people by providing food and other necessities but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect":
+            "There are many social groups and NGOs out there helping people by providing food and other necessities but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect",
 
           "Is this project affiliated with the government?":
             "Is this project affiliated with the government?",
@@ -157,6 +167,8 @@ i18n
           "You can remove a marker by clicking it again":
             "आप किसी मार्कर को फिर से क्लिक करके हटा सकते हैं",
           "Enter details": "विवरण दर्ज करें",
+          "Enter Password": "पास वर्ड दर्ज करें",
+          "Enter Organisation name": "संगठन का नाम दर्ज करें",
           "Enter details about the needs here":
             "यहां जरूरतों के बारे में विवरण दर्ज करें",
           "We will send OTP on your phone": "हम आपके फ़ोन पर OTP भेजेंगे",
@@ -169,17 +181,23 @@ i18n
           "Your phone number might be used to contact you if required.":
             "आवश्यकता होने पर आपसे संपर्क करने के लिए आपके फ़ोन नंबर का उपयोग किया जा सकता है।",
           Organisation: "संगठन",
+          Phone: "फ़ोन",
           Password: "पासवर्ड",
           Vicinity: "आसपास का क्षेत्र",
           "Select all that you can provide":
             "वह सब चुनें जो आप प्रदान कर सकते हैं",
-          "Food, water, sanitation": "भोजन, पानी, स्वच्छता",
+          Food: "भोजन",
+          Water: "पानी",
+          Sanitation: "स्वच्छता",
+          "eg. About 100 people living here need rice and other uncooked food items":
+            "जैसे। यहां रहने वाले लगभग 100 लोगों को चावल और अन्य पदार्थों की आवश्यकता होती है",
           "By registering you agree to the terms of service and the privacy policy":
             "पंजीकरण करके आप सेवा की शर्तों और गोपनीयता नीति से सहमत होते हैं",
           Register: "रजिस्टर",
           Login: "लॉग इन",
           "Login for helper groups": "सहायक समूहों के लिए लॉग इन करें",
-          "Help required": "मदद चाहिए",
+          "Help required(select multiple)": "सहायता की आवश्यकता",
+          "Help required": "सहायता की आवश्यकता",
           "Reported by": "रिपोर्ट द्वारा",
           Contact: "संपर्क",
           Place: "स्थान",
@@ -204,13 +222,15 @@ i18n
           "Upload a picture of the help you provided":
             "आपके द्वारा प्रदान की गई सहायता की एक तस्वीर अपलोड करें",
           "This picture will be displayed publicly on your profile.":
-            "यह चित्र आपके प्रोफ़ाइल पर सार्वजनिक रूप से प्रदर्शित किया जाएगा। यह चरण सत्यापन उद्देश्यों के लिए है।",
+            "यह चित्र आपके प्रोफ़ाइल पर सार्वजनिक रूप से प्रदर्शित किया जाएगा।",
           "This step is for verification purposes.":
+            "यदि आप यह कदम नहीं उठाते हैं तो आप कोई अन्य दावा नहीं कर पाएंगे",
+          "You will not be able to make any other claims if you do not do this step":
             "यदि आप यह कदम नहीं उठाते हैं तो आप कोई अन्य दावा नहीं कर पाएंगे",
           Verify: "साबित करें",
           "Select image": "इमेज चुने",
           "Upload photo": "फोटो अपलोड करें",
-          "Who are you ?": "तुम कौन हो ?",
+          "Who are you?": "तुम कौन हो?",
 
           "We are a group of students from Mumbai":
             "हम मुंबई के छात्रों का एक समूह हैं",
@@ -218,7 +238,7 @@ i18n
           "What is the purpose of this project?":
             "इस परियोजना का उद्देश्य क्या है?",
 
-          "There are many social groups and NGOs out there helping people by providing food and other necesseties but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect":
+          "There are many social groups and NGOs out there helping people by providing food and other necessities but there is a disconnect between the people who are helping and those who need help. This project is aimed at removing that disconnect":
             "वहाँ कई सामाजिक समूह और गैर सरकारी संगठन हैं जो लोगों को भोजन और अन्य आवश्यकताएं प्रदान करके मदद करते हैं लेकिन उन लोगों के बीच एक डिस्कनेक्ट है जो मदद कर रहे हैं और जिन्हें मदद की आवश्यकता है। यह परियोजना उस डिस्कनेक्ट को हटाने के उद्देश्य से है",
 
           "Is this project affiliated with the government?":

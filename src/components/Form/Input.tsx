@@ -1,7 +1,9 @@
 import React from "react";
 import { TextField, Typography } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 export default (props: any) => {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -13,8 +15,8 @@ export default (props: any) => {
         style={props.style}
         fullWidth={props.fullWidth}
         type={props.type || "text"}
-        label={props.label}
-        placeholder={props.placeholder}
+        label={t(props.label)}
+        placeholder={t(props.placeholder)}
         variant="outlined"
         multiline={props.multiline}
         disabled={props.disabled}

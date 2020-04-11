@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import { Container, Button, Grid, Typography } from "@material-ui/core";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { ProfileContext } from "../../contexts/ProfileContext";
 import HomeItem from "./HomeItem";
@@ -23,11 +23,7 @@ const Home = (props: any) => {
   }, []); */
 
   //Translation function
-  const { t, i18n } = useTranslation();
-
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
+  const { t } = useTranslation();
 
   return (
     <div
@@ -41,8 +37,6 @@ const Home = (props: any) => {
       <div>
         <Header />
         <Container maxWidth="sm">
-          <Button onClick={() => changeLanguage("en")}>english</Button>
-          <Button onClick={() => changeLanguage("hi")}>hindi</Button>
           <Grid
             style={{
               marginTop: "30px",
@@ -69,9 +63,7 @@ const Home = (props: any) => {
             {loggedIn && hasPendingClaims && (
               <HomeItem
                 title={t("Verify")}
-                description={t(
-                  "View information and upload a picture for verification"
-                )}
+                description={t("Upload a picture of the help you provided")}
                 to="/verify"
               />
             )}

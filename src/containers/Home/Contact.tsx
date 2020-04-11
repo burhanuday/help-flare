@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -9,9 +11,10 @@ const Contact = () => {
         fontSize: "0.85rem",
       }}
     >
-      For updates and problems contact us at / संपर्क करें{" "}
+      {t("For updates and problems contact us at")}
       <a
         style={{
+          paddingLeft: "5px",
           fontSize: "1.0rem",
         }}
         href="https://www.instagram.com/codendeavour/"

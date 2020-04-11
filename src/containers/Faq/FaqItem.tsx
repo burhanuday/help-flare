@@ -1,7 +1,9 @@
 import React from "react";
 import { Card, CardContent, Typography } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 const FaqItem = (props: any) => {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -11,10 +13,10 @@ const FaqItem = (props: any) => {
       <Card variant="outlined">
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {props.question}
+            {t(props.question)}
           </Typography>
           <Typography variant="body1" color="textPrimary">
-            {props.answer}
+            {t(props.answer)}
           </Typography>
         </CardContent>
       </Card>

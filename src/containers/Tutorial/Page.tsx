@@ -1,8 +1,10 @@
 import React from "react";
 import { Slide, Paper, Typography } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
+import { useTranslation } from "react-i18next";
 
 const Page = (props: any) => {
+  const { t } = useTranslation();
   return (
     <Slide
       direction="left"
@@ -35,10 +37,10 @@ const Page = (props: any) => {
           }}
         >
           <Typography align="center" variant="h5" gutterBottom>
-            {props.title}
+            {t(props.title)}
           </Typography>
           <Typography align="center" variant="body1">
-            {props.description}
+            {t(props.description)}
           </Typography>
         </div>
       </div>
