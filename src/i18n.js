@@ -10,6 +10,9 @@ i18n
     resources: {
       en: {
         translations: {
+          "View Tutorial": "View Tutorial",
+          "Watch a short video on how to use Help Flare":
+            "Watch a short video on how to use Help Flare",
           "Add to home screen": "Add to home screen",
           "You can add the app to your home screen from the chrome menu for easy access":
             "You can add the app to your home screen from the chrome menu for easy access",
@@ -141,6 +144,9 @@ i18n
       },
       hi: {
         translations: {
+          "View Tutorial": "डेमो देखें",
+          "Watch a short video on how to use Help Flare":
+            "Help Flare का उपयोग करने के तरीके पर एक छोटा वीडियो देखें",
           "Add to home screen": "होम स्क्रीन में शामिल करें",
           "You can add the app to your home screen from the chrome menu for easy access":
             "आप क्रोम मेनू से ऐप को अपने होम स्क्रीन पर जोड़ सकते हैं",

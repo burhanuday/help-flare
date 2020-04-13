@@ -7,6 +7,7 @@ import { ProfileContext } from "../../contexts/ProfileContext";
 import HomeItem from "./HomeItem";
 import Footer from "./Footer";
 import Contact from "./Contact";
+import ViewTutorialCard from "./ViewTutorialCard";
 
 const Home = (props: any) => {
   const loggedIn = localStorage.getItem("accessToken") ? true : false;
@@ -81,6 +82,8 @@ const Home = (props: any) => {
               description={t("About us and frequently asked questions")}
               to="/faq"
             />
+
+            <ViewTutorialCard />
           </Grid>
         </Container>
       </div>
