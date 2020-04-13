@@ -104,11 +104,16 @@ function App() {
           }
         >
           <Switch>
-            {!localStorage.getItem("firstTutorial") && (
+            {true && (
               <Route path="/">
                 <Tutorial />
               </Route>
             )}
+            {/* {!localStorage.getItem("firstTutorial") && (
+              <Route path="/">
+                <Tutorial />
+              </Route>
+            )} */}
 
             {!loggedIn && (
               <Route path="/auth">

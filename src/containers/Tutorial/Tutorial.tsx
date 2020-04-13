@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Button } from "@material-ui/core";
 import Page from "./Page";
 import { Pagination } from "@material-ui/lab";
+import LanguageSelect from "./LanguageSelect";
 
 const pages = [
   {
@@ -35,7 +36,7 @@ const pages = [
 ];
 
 const Tutorial = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   return (
     <div>
@@ -43,6 +44,7 @@ const Tutorial = () => {
         <div
           style={{ height: "100vh", position: "relative", overflow: "hidden" }}
         >
+          {currentPage === 0 && <LanguageSelect />}
           {pages.map((page, index) => (
             <Page
               key={page.title}
@@ -112,9 +114,9 @@ const Tutorial = () => {
             }}
           >
             <Button
-              disabled={currentPage === 1}
+              disabled={currentPage === 0}
               onClick={() => {
-                if (currentPage > 1) {
+                if (currentPage > 0) {
                   setCurrentPage(currentPage - 1);
                 }
               }}
@@ -125,12 +127,12 @@ const Tutorial = () => {
             <Pagination
               hideNextButton
               hidePrevButton
-              page={currentPage}
-              count={pages.length}
+              page={currentPage + 1}
+              count={pages.length + 1}
               variant="outlined"
               color="primary"
               onChange={(_, page) => {
-                setCurrentPage(page);
+                setCurrentPage(page - 1);
               }}
             />
             <Button
