@@ -26,7 +26,7 @@ i18n
           "NGOs and groups upload a photo of the help provided for verification":
             "NGOs and groups upload a photo of the help provided for verification",
           "Report an area that needs help": "Report an area that needs help",
-          "Register as helper": "Register as helper",
+          "Register as a helper": "Register as a helper",
           FAQ: "FAQ",
           "About us and frequently asked questions":
             "About us and frequently asked questions",
@@ -161,7 +161,7 @@ i18n
             "सामाजिक सेवा समूह प्रमाणन के लिए दी गई मदद की एक तस्वीर अपलोड करते हैं",
           "Report an area that needs help":
             "ऐसे क्षेत्र की रिपोर्ट करें, जिसे मदद की आवश्यकता है",
-          "Register as helper": "सहायक के रूप में रजिस्टर करें",
+          "Register as a helper": "सहायक के रूप में रजिस्टर करें",
           FAQ: "सामान्य प्रश्न",
           "About us and frequently asked questions":
             "हमारे बारे में और अक्सर पूछे जाने वाले प्रश्न",
