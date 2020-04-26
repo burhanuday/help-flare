@@ -139,8 +139,8 @@ const Form = (ogProps: any) => {
 
             {!ogProps.isGeolocationEnabled && (
               <Alert variant="filled" severity="warning">
-                Geolocation is not enabled. Give location permission for a
-                better experience
+                Geolocation is not enabled. Grant location permission from Site
+                Settings
               </Alert>
             )}
 

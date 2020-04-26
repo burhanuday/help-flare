@@ -10,6 +10,7 @@ i18n
     resources: {
       en: {
         translations: {
+          "Help an area": "Help an area",
           "View Tutorial": "View Tutorial",
           "Watch a short video on how to use Help Flare":
             "Watch a short video on how to use Help Flare",
@@ -144,6 +145,7 @@ i18n
       },
       hi: {
         translations: {
+          "Help an area": "एक क्षेत्र में मदद करें",
           "View Tutorial": "डेमो देखें",
           "Watch a short video on how to use Help Flare":
             "Help Flare का उपयोग करने के तरीके पर एक छोटा वीडियो देखें",

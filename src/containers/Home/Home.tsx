@@ -56,7 +56,7 @@ const Home = (props: any) => {
             {loggedIn && (
               <HomeItem
                 title={t("Help")}
-                description={t("Register as helper")}
+                description={t("Help an area")}
                 to="/help"
               />
             )}

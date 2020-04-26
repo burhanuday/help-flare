@@ -74,6 +74,10 @@ const MapContainer = (props: any) => {
           lng: props.coords.longitude,
         });
       }
+    } else {
+      alert(
+        "Geolocation is not enabled. Grant location permission from Site Settings"
+      );
     }
     return () => {
       if (socket) {
